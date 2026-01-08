@@ -30,6 +30,9 @@ class FundingCalculator {
 
         // --- ADMIN CHECK ---
         this.checkAccessMode();
+
+        // --- INVESTOR JOURNEY ---
+        this.initInvestorJourney();
     }
 
     getProjectIdFromUrl() {
@@ -456,6 +459,11 @@ class FundingCalculator {
         });
 
         this.updateResultsTables();
+
+        // Update investor journey with new data
+        if (this.phases) {
+            this.updateInvestorJourney();
+        }
     }
 
     updateRoundUI(round) {
@@ -463,7 +471,7 @@ class FundingCalculator {
         if (el(`preVal-${round.id}`)) el(`preVal-${round.id}`).textContent = this.formatCurrency(round.preValuation);
         if (el(`postVal-${round.id}`)) el(`postVal-${round.id}`).textContent = this.formatCurrency(round.postValuation);
         if (el(`stockPrice-${round.id}`)) el(`stockPrice-${round.id}`).textContent = this.formatCurrency(round.stockPrice, 4);
-        if (el(`multiplier-${round.id}`)) el(`multiplier-${round.id}`).textContent = round.profitMultiplier.toFixed(1) + 'x';
+        if (el(`multiplier-${round.id}`)) el(`multiplier-${round.id}`).textContent = round.profitMultiplier.toFixed(2) + 'x';
         if (el(`roundShares-${round.id}`)) el(`roundShares-${round.id}`).textContent = this.formatNumber(round.roundShares);
         if (el(`totalShares-${round.id}`)) el(`totalShares-${round.id}`).textContent = this.formatNumber(round.totalShares);
     }
@@ -473,16 +481,27 @@ class FundingCalculator {
         const tbody = document.getElementById('resultsBody');
         tbody.innerHTML = '';
 
-        this.rounds.forEach(round => {
+        // توقيت كل جولة بناءً على خطة التمويل
+        const roundTimings = {
+            0: 'التأسيس',      // جولة 1 - pre-seed
+            1: 'الشهر 1',      // جولة 2 - الافتتاح
+            2: 'الشهر 11',     // جولة 3 - التعادل
+            3: 'الشهر 12',     // جولة 4 - EMI Series C
+            4: 'الشهر 36'      // جولة 5 - التوسع الدولي
+        };
+
+        this.rounds.forEach((round, index) => {
+            const timing = roundTimings[index] || '-';
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><strong>${round.name}</strong></td>
+                <td>${timing}</td>
                 <td>${this.formatCurrency(round.fundingAmount)}</td>
                 <td>${round.soldPercentage.toFixed(2)}%</td>
                 <td>${this.formatCurrency(round.preValuation)}</td>
                 <td>${this.formatCurrency(round.postValuation)}</td>
                 <td>${this.formatCurrency(round.stockPrice, 4)}</td>
-                <td>${round.profitMultiplier.toFixed(1)}x</td>
+                <td>${round.profitMultiplier.toFixed(2)}x</td>
                 <td>${this.formatNumber(round.roundShares)}</td>
                 <td>${this.formatNumber(round.totalShares)}</td>
             `;
@@ -656,6 +675,217 @@ class FundingCalculator {
                     }
                 }
             });
+        }
+    }
+
+    // ===== INVESTOR JOURNEY METHODS =====
+
+    initInvestorJourney() {
+        // Data for phases - LINKED TO FUNDING ROUNDS from Excel
+        // roundIndex: which round's stock price to use (0-based)
+        // جولة 1 = index 0, جولة 2 = index 1, جولة 3 = index 2, جولة 4 = index 3, جولة 5 = index 4
+        this.phases = {
+            launch: {
+                name: 'الافتتاح',
+                month: 1,
+                members: 0,
+                annualProfit: 0,
+                target: 'الهدف: إطلاق التطبيق',
+                roundIndex: 1  // جولة 2 - الافتتاح Series A ($1.09)
+            },
+            breakeven: {
+                name: 'نقطة التعادل',
+                month: 11,
+                members: 2047,
+                annualProfit: 0,
+                target: 'الهدف: 2,047 عضو نشط',
+                roundIndex: 2  // جولة 3 - التعادل Series B ($2.56)
+            },
+            weak: {
+                name: 'أرباح ضعيفة',
+                month: 12,
+                members: 4095,
+                annualProfit: 124254,
+                target: 'الهدف: 4,095 عضو نشط',
+                roundIndex: 3  // جولة 4 - EMI Series C ($34.61)
+            },
+            normal: {
+                name: 'أرباح عادية',
+                month: 18,
+                members: 8191,
+                annualProfit: 342218,
+                target: 'الهدف: 8,191 عضو نشط',
+                roundIndex: 3  // لا يزال جولة 4 ($34.61)
+            },
+            good: {
+                name: 'أرباح جيدة',
+                month: 24,
+                members: 16383,
+                annualProfit: 949865,
+                target: 'الهدف: 16,383 عضو نشط',
+                roundIndex: 3  // لا يزال جولة 4 ($34.61) - جولة 5 لم تحدث بعد!
+            },
+            veryGood: {
+                name: 'أرباح جيدة جداً',
+                month: 36,
+                members: 32767,
+                annualProfit: 1985341,
+                target: 'الهدف: 32,767 عضو نشط',
+                roundIndex: 4  // جولة 5 - التوسع الدولي ($78.45)
+            },
+            excellent: {
+                name: 'أرباح ممتازة',
+                month: 48,
+                members: 65535,
+                annualProfit: 4498647,
+                target: 'الهدف: 65,535 عضو نشط',
+                roundIndex: 4  // لا يزال جولة 5 ($78.45)
+            }
+        };
+
+        this.currentPhase = 'weak';
+
+        // Setup listeners
+        this.setupInvestorJourneyListeners();
+
+        // Initial calculation
+        this.updateInvestorJourney();
+    }
+
+    setupInvestorJourneyListeners() {
+        // Distribution rate input
+        const distInput = document.getElementById('distributionRate');
+        if (distInput) {
+            distInput.addEventListener('input', (e) => {
+                const rate = parseFloat(e.target.value) || 0;
+                document.getElementById('reinvestmentRate').textContent = (100 - rate) + '%';
+                this.updateInvestorJourney();
+                this.saveState();
+            });
+        }
+
+        // Expected profit input
+        const profitInput = document.getElementById('expectedProfit');
+        if (profitInput) {
+            profitInput.addEventListener('input', () => {
+                this.updateInvestorJourney();
+                this.saveState();
+            });
+        }
+
+        // Timeline points click
+        const timelinePoints = document.querySelectorAll('.timeline-point');
+        timelinePoints.forEach(point => {
+            point.addEventListener('click', () => {
+                // Remove active from all
+                timelinePoints.forEach(p => p.classList.remove('active'));
+                // Add to clicked
+                point.classList.add('active');
+                // Update phase
+                this.currentPhase = point.dataset.phase;
+                this.updateInvestorJourney();
+            });
+        });
+
+        // Apply read-only if needed
+        if (this.isReadOnly) {
+            const journeyInputs = document.querySelectorAll('#investorJourneySection input');
+            journeyInputs.forEach(input => {
+                input.setAttribute('disabled', 'true');
+                input.style.backgroundColor = 'transparent';
+                input.style.border = 'none';
+                input.style.color = '#fff';
+            });
+        }
+    }
+
+    updateInvestorJourney() {
+        // Get values from inputs
+        const distributionRate = parseFloat(document.getElementById('distributionRate')?.value) || 30;
+        const reinvestRate = 100 - distributionRate;
+
+        // Get current phase data
+        const phase = this.phases[this.currentPhase];
+        const annualProfit = phase.annualProfit;
+
+        // Update the profit input to show current phase profit
+        const profitInput = document.getElementById('expectedProfit');
+        if (profitInput) {
+            profitInput.value = annualProfit;
+        }
+
+        // Get stock price from the LINKED round (based on roundIndex)
+        const roundIndex = phase.roundIndex;
+        let phaseRound = this.rounds[roundIndex];
+
+        // Fallback to last round if index doesn't exist
+        if (!phaseRound && this.rounds.length > 0) {
+            phaseRound = this.rounds[this.rounds.length - 1];
+        }
+
+        // Get baseline (first round or initial) for comparison
+        const baseStockPrice = this.initialPrice;
+        const phaseStockPrice = phaseRound ? phaseRound.stockPrice : this.initialPrice;
+        const totalShares = phaseRound ? phaseRound.totalShares : this.initialShares;
+
+        // EPS calculation based on shares at that phase
+        const eps = totalShares > 0 ? annualProfit / totalShares : 0;
+
+        // Distribution calculations
+        const cashPerShare = eps * (distributionRate / 100);
+        const reinvestPerShare = eps * (reinvestRate / 100);
+
+        // Growth from initial price
+        const priceGrowth = baseStockPrice > 0 ? ((phaseStockPrice - baseStockPrice) / baseStockPrice) * 100 : 0;
+
+        // Update UI
+        this.updateInvestorJourneyUI({
+            phase,
+            distributionRate,
+            reinvestRate,
+            cashPerShare,
+            reinvestPerShare,
+            eps,
+            baseStockPrice,
+            phaseStockPrice,
+            priceGrowth,
+            annualProfit,
+            roundName: phaseRound ? phaseRound.name : 'التأسيس'
+        });
+    }
+
+    updateInvestorJourneyUI(data) {
+        const el = (id) => document.getElementById(id);
+
+        // Phase info
+        if (el('phaseBadge')) el('phaseBadge').textContent = data.phase.name;
+        if (el('phaseTarget')) el('phaseTarget').textContent = data.phase.target;
+
+        // Percentages
+        if (el('cashPercentage')) el('cashPercentage').textContent = data.distributionRate + '%';
+        if (el('reinvestPercentage')) el('reinvestPercentage').textContent = data.reinvestRate + '%';
+
+        // Card values (formatted)
+        if (el('cashValue')) el('cashValue').textContent = this.formatCurrency(data.cashPerShare, 2);
+        if (el('reinvestValue')) el('reinvestValue').textContent = this.formatCurrency(data.reinvestPerShare, 2);
+        if (el('totalEPS')) el('totalEPS').textContent = this.formatCurrency(data.eps, 2);
+
+        // Stock price - Shows price AT this phase from linked round
+        // Display the phase stock price as the main value
+        if (el('currentStockPrice')) el('currentStockPrice').textContent = '$' + data.phaseStockPrice.toFixed(4);
+        if (el('projectedStockPrice')) el('projectedStockPrice').textContent = '$' + data.phaseStockPrice.toFixed(2);
+
+        if (el('projectedGrowth')) {
+            const growth = data.priceGrowth;
+            if (growth > 0) {
+                el('projectedGrowth').textContent = '+' + growth.toFixed(0) + '%';
+                el('projectedGrowth').style.color = 'var(--success-color)';
+                el('projectedGrowth').style.background = 'rgba(0, 210, 106, 0.1)';
+            } else {
+                el('projectedGrowth').textContent = growth.toFixed(0) + '%';
+                el('projectedGrowth').style.color = 'var(--accent-color)';
+                el('projectedGrowth').style.background = 'rgba(233, 69, 96, 0.1)';
+            }
         }
     }
 }

@@ -464,3 +464,402 @@ footer {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--accent-gold);
 }
+
+/* ===== Investor Journey Section ===== */
+.investor-journey-section {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    margin-top: 2rem;
+}
+
+.section-description {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+.profit-inputs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+/* Timeline Styles */
+.investor-timeline {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: rgba(102, 126, 234, 0.05);
+    border-radius: 16px;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.timeline-container {
+    padding: 2rem 0;
+    overflow-x: auto;
+}
+
+.timeline-track {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 500px;
+    gap: 0;
+}
+
+.timeline-point {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--transition);
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+.timeline-point:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.timeline-point.active .point-circle {
+    background: var(--gradient-gold);
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(244, 196, 48, 0.5);
+}
+
+.point-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    border: 3px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    transition: var(--transition);
+    margin-bottom: 0.8rem;
+}
+
+.timeline-point.active .point-circle {
+    color: #1a1a2e;
+}
+
+.point-label {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.point-sublabel {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.3rem;
+}
+
+.timeline-line {
+    flex: 1;
+    height: 4px;
+    background: linear-gradient(90deg, var(--border-color), var(--accent-gold), var(--border-color));
+    min-width: 80px;
+    max-width: 150px;
+    border-radius: 2px;
+}
+
+/* Phase Details */
+.phase-details {
+    margin-top: 2rem;
+}
+
+.phase-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.phase-badge {
+    background: var(--gradient-gold);
+    color: #1a1a2e;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.phase-target {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Investor Cards */
+.investor-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.investor-card {
+    background: var(--secondary-color);
+    padding: 1.5rem;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.investor-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+}
+
+.investor-card.cash-card::before {
+    background: linear-gradient(90deg, #3498db, #2980b9);
+}
+
+.investor-card.reinvest-card::before {
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
+}
+
+.investor-card.total-card::before {
+    background: linear-gradient(90deg, #f1c40f, #e6a800);
+}
+
+.investor-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-gold);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.card-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.3rem;
+}
+
+.card-percentage {
+    font-size: 0.8rem;
+    color: var(--accent-gold);
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+
+.card-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--success-color);
+    margin-bottom: 0.5rem;
+}
+
+.cash-card .card-value {
+    color: #3498db;
+}
+
+.reinvest-card .card-value {
+    color: #2ecc71;
+}
+
+.total-card .card-value {
+    color: var(--accent-gold);
+}
+
+.card-note {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Stock Projection */
+.stock-projection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    flex-wrap: wrap;
+}
+
+.projection-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.projection-item.highlight {
+    padding: 1rem 2rem;
+    background: rgba(244, 196, 48, 0.1);
+    border-radius: 12px;
+    border: 1px dashed var(--accent-gold);
+}
+
+.projection-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.projection-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.projection-item.highlight .projection-value {
+    color: var(--accent-gold);
+}
+
+.projection-growth {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--success-color);
+    background: rgba(0, 210, 106, 0.1);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+}
+
+.projection-arrow {
+    color: var(--accent-gold);
+    font-size: 1.5rem;
+    animation: pulseArrow 1.5s infinite;
+}
+
+@keyframes pulseArrow {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: translateX(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateX(-5px);
+    }
+}
+
+/* Strategy Note */
+.strategy-note {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 12px;
+    border-right: 4px solid var(--accent-gold);
+    margin-top: 2rem;
+}
+
+.note-icon {
+    font-size: 1.5rem;
+    color: var(--accent-gold);
+}
+
+.note-content {
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.note-content strong {
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive for Investor Journey */
+@media (max-width: 768px) {
+    .timeline-track {
+        flex-direction: column;
+        min-width: auto;
+    }
+
+    .timeline-line {
+        width: 4px;
+        min-width: 4px;
+        height: 40px;
+        min-height: 40px;
+    }
+
+    .stock-projection {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .projection-arrow {
+        transform: rotate(-90deg);
+    }
+
+    @keyframes pulseArrow {
+
+        0%,
+        100% {
+            opacity: 0.5;
+            transform: rotate(-90deg) translateX(0);
+        }
+
+        50% {
+            opacity: 1;
+            transform: rotate(-90deg) translateX(-5px);
+        }
+    }
+}
+
+/* Round Tags inside Timeline Points */
+.round-tag {
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gradient-gold);
+    color: #1a1a2e;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(244, 196, 48, 0.3);
+    z-index: 10;
+}
+
+.round-tag::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #f4c430;
+}
+
+.timeline-point {
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .round-tag {
+        font-size: 0.55rem;
+        padding: 0.15rem 0.35rem;
+        top: -30px;
+    }
+}

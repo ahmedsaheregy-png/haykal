@@ -68,6 +68,7 @@
                     <thead>
                         <tr>
                             <th>الجولة</th>
+                            <th>التوقيت</th>
                             <th>مبلغ التمويل</th>
                             <th>الحصة المباعة</th>
                             <th>التقييم قبل</th>
@@ -100,6 +101,158 @@
                     <tbody id="ownershipBody">
                     </tbody>
                 </table>
+            </div>
+        </section>
+
+        <!-- Investor Journey Section - NEW -->
+        <section class="investor-journey-section" id="investorJourneySection">
+            <h2><i class="fa-solid fa-road"></i> مستقبل استثمارك</h2>
+            <p class="section-description">شاهد كيف تنمو أموالك عبر الزمن مع استراتيجية التوزيع الذكي 30/70</p>
+
+            <!-- Profit Inputs -->
+            <div class="profit-inputs-grid">
+                <div class="input-group">
+                    <label for="expectedProfit">صافي الربح السنوي المتوقع ($)</label>
+                    <input type="number" id="expectedProfit" value="342218" min="0" step="1000">
+                </div>
+                <div class="input-group">
+                    <label for="distributionRate">نسبة التوزيع النقدي (%)</label>
+                    <input type="number" id="distributionRate" value="30" min="0" max="100" step="5">
+                </div>
+                <div class="input-group calculated">
+                    <label>إعادة الاستثمار (%)</label>
+                    <div class="calculated-value" id="reinvestmentRate">70%</div>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="investor-timeline">
+                <h3><i class="fa-solid fa-clock"></i> رحلة المستثمر عبر الزمن</h3>
+
+                <div class="timeline-container">
+                    <div class="timeline-track">
+                        <div class="timeline-point" data-phase="launch">
+                            <div class="round-tag">جولة 2</div>
+                            <div class="point-circle">
+                                <i class="fa-solid fa-rocket"></i>
+                            </div>
+                            <div class="point-label">الشهر 1</div>
+                            <div class="point-sublabel">الافتتاح</div>
+                        </div>
+                        <div class="timeline-line"></div>
+                        <div class="timeline-point" data-phase="breakeven">
+                            <div class="round-tag">جولة 3</div>
+                            <div class="point-circle">
+                                <i class="fa-solid fa-equals"></i>
+                            </div>
+                            <div class="point-label">الشهر 11</div>
+                            <div class="point-sublabel">نقطة التعادل</div>
+                        </div>
+                        <div class="timeline-line"></div>
+                        <div class="timeline-point active" data-phase="weak">
+                            <div class="round-tag">جولة 4</div>
+                            <div class="point-circle">
+                                <i class="fa-solid fa-seedling"></i>
+                            </div>
+                            <div class="point-label">الشهر 12</div>
+                            <div class="point-sublabel">أرباح ضعيفة</div>
+                        </div>
+                        <div class="timeline-line"></div>
+                        <div class="timeline-point" data-phase="normal">
+                            <div class="point-circle">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <div class="point-label">الشهر 18</div>
+                            <div class="point-sublabel">أرباح عادية</div>
+                        </div>
+                        <div class="timeline-line"></div>
+                        <div class="timeline-point" data-phase="good">
+                            <div class="point-circle">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                            </div>
+                            <div class="point-label">الشهر 24</div>
+                            <div class="point-sublabel">أرباح جيدة</div>
+                        </div>
+                        <div class="timeline-line"></div>
+                        <div class="timeline-point" data-phase="veryGood">
+                            <div class="round-tag">جولة 5</div>
+                            <div class="point-circle">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <div class="point-label">الشهر 36</div>
+                            <div class="point-sublabel">أرباح جيدة جداً</div>
+                        </div>
+                        <div class="timeline-line"></div>
+                        <div class="timeline-point" data-phase="excellent">
+                            <div class="point-circle">
+                                <i class="fa-solid fa-crown"></i>
+                            </div>
+                            <div class="point-label">الشهر 48</div>
+                            <div class="point-sublabel">أرباح ممتازة</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase Details -->
+            <div class="phase-details" id="phaseDetails">
+                <div class="phase-header">
+                    <span class="phase-badge" id="phaseBadge">مرحلة التمويل</span>
+                    <span class="phase-target" id="phaseTarget">الهدف: بناء القاعدة التقنية</span>
+                </div>
+
+                <!-- Cards -->
+                <div class="investor-cards">
+                    <div class="investor-card cash-card">
+                        <div class="card-icon">💰</div>
+                        <div class="card-label">توزيعات نقدية</div>
+                        <div class="card-percentage" id="cashPercentage">30%</div>
+                        <div class="card-value" id="cashValue">$0</div>
+                        <div class="card-note">سيولة نقدية في يدك سنوياً</div>
+                    </div>
+
+                    <div class="investor-card reinvest-card">
+                        <div class="card-icon">📈</div>
+                        <div class="card-label">إعادة استثمار</div>
+                        <div class="card-percentage" id="reinvestPercentage">70%</div>
+                        <div class="card-value" id="reinvestValue">$0</div>
+                        <div class="card-note">قيمة مضافة لرفع سعر السهم</div>
+                    </div>
+
+                    <div class="investor-card total-card">
+                        <div class="card-icon">🏆</div>
+                        <div class="card-label">إجمالي العائد</div>
+                        <div class="card-percentage">EPS</div>
+                        <div class="card-value" id="totalEPS">$0</div>
+                        <div class="card-note">إجمالي ربح سهمك السنوي</div>
+                    </div>
+                </div>
+
+                <!-- Stock Price Projection -->
+                <div class="stock-projection">
+                    <div class="projection-item">
+                        <span class="projection-label">سعر السهم الحالي:</span>
+                        <span class="projection-value" id="currentStockPrice">$0.00</span>
+                    </div>
+                    <div class="projection-arrow">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </div>
+                    <div class="projection-item highlight">
+                        <span class="projection-label">السعر المتوقع:</span>
+                        <span class="projection-value" id="projectedStockPrice">$0.00</span>
+                        <span class="projection-growth" id="projectedGrowth">+0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Strategy Note -->
+            <div class="strategy-note">
+                <div class="note-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                <div class="note-content">
+                    <strong>استراتيجية العائد التراكمي (30/70):</strong>
+                    توزيع 30% كأرباح نقدية فورية، وإعادة ضخ 70% لتطوير أصول البنك.
+                    أنت لا تربح من الدخل فقط، بل يرتفع سهمك من سهم قيمته $1 إلى سهم قيمته $5 في وقت قياسي.
+                </div>
             </div>
         </section>
     </main>
