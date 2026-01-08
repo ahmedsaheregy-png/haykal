@@ -27,6 +27,9 @@ class FundingCalculator {
 
         // Load specific project data or initialize defaults
         this.loadState();
+
+        // --- ADMIN CHECK ---
+        this.checkAccessMode();
     }
 
     getProjectIdFromUrl() {
@@ -230,12 +233,13 @@ class FundingCalculator {
         this.updateInitial();
 
         // Populate Default Data from User's Request
-        this.rounds = []; // Clear default handling
-        this.addRoundWithData("الجولة 1 تأسيس pre-seed", 60000, 5);
-        this.addRoundWithData("الجولة 2 الافتتاح SERIES A", 100000, 8);
-        this.addRoundWithData("الجولة 3 التعادل SERIES B", 400000, 12);
-        this.addRoundWithData("الجولة 4 EMI SERIES C", 5000000, 10);
-        this.addRoundWithData("الجولة 5 التوسع الدولي", 20000000, 15);
+        if (this.rounds.length === 0) {
+            this.addRoundWithData("الجولة 1 تأسيس pre-seed", 60000, 5);
+            this.addRoundWithData("الجولة 2 الافتتاح SERIES A", 100000, 8);
+            this.addRoundWithData("الجولة 3 التعادل SERIES B", 400000, 12);
+            this.addRoundWithData("الجولة 4 EMI SERIES C", 5000000, 10);
+            this.addRoundWithData("الجولة 5 التوسع الدولي", 20000000, 15);
+        }
 
         this.saveState(); // Save immediately to create the record
     }
@@ -369,6 +373,11 @@ class FundingCalculator {
 
         container.appendChild(roundCard);
         this.attachRoundListeners(roundCard, roundData);
+
+        // Apply read-mode if necessary
+        if (this.isReadOnly) {
+            this.setReadOnlyMode(true);
+        }
     }
 
     attachRoundListeners(card, roundData) {
@@ -559,8 +568,99 @@ class FundingCalculator {
     formatNumber(value) {
         return new Intl.NumberFormat('en-US').format(Math.round(value));
     }
+
+    // --- Read-Only / Admin Protection Logic ---
+    checkAccessMode() {
+        // Check if user has "admin" access stored
+        const isAdmin = localStorage.getItem('haykal_admin_access') === 'true';
+
+        if (!isAdmin) {
+            this.setReadOnlyMode(true);
+        } else {
+            this.setReadOnlyMode(false); // Enable editing
+        }
+
+        this.setupHiddenAdminTrigger();
+    }
+
+    setReadOnlyMode(isReadOnly) {
+        this.isReadOnly = isReadOnly;
+
+        // 1. Inputs
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            if (isReadOnly) {
+                input.setAttribute('disabled', 'true');
+                input.style.backgroundColor = 'transparent';
+                input.style.border = 'none';
+                input.style.color = '#fff'; // Make it look like text
+            } else {
+                input.removeAttribute('disabled');
+                input.style.backgroundColor = ''; // Reset
+                input.style.border = '';
+            }
+        });
+
+        // 2. Buttons (Add Round, Delete Round, New Project, My Projects)
+        const buttonsToHide = [
+            'addRoundBtn',
+            'newProjectBtn',
+            'saveProjectsMenuBtn'
+        ];
+
+        buttonsToHide.forEach(id => {
+            const btn = document.getElementById(id);
+            if (btn) btn.style.display = isReadOnly ? 'none' : '';
+        });
+
+        // Delete buttons (class based)
+        const deleteBtns = document.querySelectorAll('.btn-delete-round');
+        deleteBtns.forEach(btn => {
+            btn.style.display = isReadOnly ? 'none' : '';
+        });
+
+        // Project Name Input specific styling
+        const projInput = document.getElementById('projectNameInput');
+        if (projInput) {
+            if (isReadOnly) {
+                projInput.style.pointerEvents = 'none';
+                projInput.style.border = 'none';
+            } else {
+                projInput.style.pointerEvents = 'all';
+                projInput.style.border = '';
+            }
+        }
+    }
+
+    setupHiddenAdminTrigger() {
+        // Hidden Trigger: Double Click on the Footer Logo text
+        const footerLogo = document.querySelector('footer');
+        if (footerLogo) {
+            footerLogo.title = ""; // No hint
+
+            footerLogo.addEventListener('dblclick', () => {
+                if (this.isReadOnly) {
+                    const password = prompt("🔐 Admin Access Required\nEnter Password:");
+                    if (password === "admin123") { // Simple password
+                        localStorage.setItem('haykal_admin_access', 'true');
+                        alert("✅ Edit Mode Unlocked!");
+                        location.reload();
+                    } else if (password) {
+                        alert("❌ Wrong Password");
+                    }
+                } else {
+                    // Option to lock it back
+                    if (confirm("Lock Editing Mode?")) {
+                        localStorage.removeItem('haykal_admin_access');
+                        location.reload();
+                    }
+                }
+            });
+        }
+    }
 }
 
+// Initialize calculator when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     window.calculator = new FundingCalculator();
 });
