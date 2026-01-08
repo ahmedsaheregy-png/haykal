@@ -641,7 +641,7 @@ class FundingCalculator {
             footerLogo.addEventListener('dblclick', () => {
                 if (this.isReadOnly) {
                     const password = prompt("🔐 Admin Access Required\nEnter Password:");
-                    if (password === "admin123") { // Simple password
+                    if (password === "123456") { // Updated password
                         localStorage.setItem('haykal_admin_access', 'true');
                         alert("✅ Edit Mode Unlocked!");
                         location.reload();
