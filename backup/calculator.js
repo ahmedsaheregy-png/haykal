@@ -13,11 +13,6 @@ class FundingCalculator {
         this.projectId = this.getProjectIdFromUrl();
         this.projectsListKey = 'funding_app_projects_list';
 
-        // Undo/Redo stacks
-        this.undoStack = [];
-        this.redoStack = [];
-        this.maxHistorySize = 50;
-
         this.init();
     }
 
@@ -35,20 +30,6 @@ class FundingCalculator {
 
         // --- ADMIN CHECK ---
         this.checkAccessMode();
-
-        // --- INVESTOR JOURNEY ---
-        this.initInvestorJourney();
-
-        // --- UNDO/REDO KEYBOARD SHORTCUTS ---
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 'z') {
-                e.preventDefault();
-                this.undo();
-            } else if (e.ctrlKey && e.key === 'y') {
-                e.preventDefault();
-                this.redo();
-            }
-        });
     }
 
     getProjectIdFromUrl() {
@@ -217,89 +198,6 @@ class FundingCalculator {
         localStorage.setItem(this.projectsListKey, JSON.stringify(projects));
     }
 
-    // --- UNDO/REDO METHODS ---
-
-    pushToUndoStack() {
-        // Deep copy of current state
-        const snapshot = JSON.stringify({
-            rounds: this.rounds,
-            roundCounter: this.roundCounter
-        });
-
-        this.undoStack.push(snapshot);
-
-        // Limit stack size
-        if (this.undoStack.length > this.maxHistorySize) {
-            this.undoStack.shift();
-        }
-
-        // Clear redo stack on new action
-        this.redoStack = [];
-    }
-
-    undo() {
-        if (this.undoStack.length === 0) {
-            console.log('Nothing to undo');
-            return;
-        }
-
-        // Save current state to redo stack
-        const currentSnapshot = JSON.stringify({
-            rounds: this.rounds,
-            roundCounter: this.roundCounter
-        });
-        this.redoStack.push(currentSnapshot);
-
-        // Restore previous state
-        const previousSnapshot = JSON.parse(this.undoStack.pop());
-        this.rounds = previousSnapshot.rounds;
-        this.roundCounter = previousSnapshot.roundCounter;
-
-        // Re-render UI
-        this.reRenderAllRounds();
-        this.recalculateAll();
-        this.saveState();
-
-        console.log('Undo performed');
-    }
-
-    redo() {
-        if (this.redoStack.length === 0) {
-            console.log('Nothing to redo');
-            return;
-        }
-
-        // Save current state to undo stack
-        const currentSnapshot = JSON.stringify({
-            rounds: this.rounds,
-            roundCounter: this.roundCounter
-        });
-        this.undoStack.push(currentSnapshot);
-
-        // Restore next state
-        const nextSnapshot = JSON.parse(this.redoStack.pop());
-        this.rounds = nextSnapshot.rounds;
-        this.roundCounter = nextSnapshot.roundCounter;
-
-        // Re-render UI
-        this.reRenderAllRounds();
-        this.recalculateAll();
-        this.saveState();
-
-        console.log('Redo performed');
-    }
-
-    reRenderAllRounds() {
-        // Clear existing round cards
-        const container = document.getElementById('roundsContainer');
-        container.innerHTML = '';
-
-        // Re-render all rounds
-        this.rounds.forEach(roundData => {
-            this.renderRound(roundData);
-        });
-    }
-
     loadState() {
         if (this.projectId) {
             // Try loading specific project
@@ -443,13 +341,6 @@ class FundingCalculator {
                                value="${roundData.soldPercentage}" 
                                min="0.1" max="100" step="0.1">
                     </div>
-                    <div class="input-group">
-                        <label>التوقيت</label>
-                        <input type="text" class="round-timing" 
-                               data-round-id="${roundData.id}"
-                               value="${roundData.timing || ''}" 
-                               placeholder="مثال: الشهر 12">
-                    </div>
                 </div>
                 <div class="round-outputs">
                     <div class="output-item">
@@ -508,12 +399,6 @@ class FundingCalculator {
             this.recalculateAll();
         });
 
-        card.querySelector('.round-timing').addEventListener('input', (e) => {
-            const round = this.rounds.find(r => r.id === roundData.id);
-            if (round) { round.timing = e.target.value; this.saveState(); }
-            this.updateResultsTables();
-        });
-
         card.querySelector('.btn-delete-round').addEventListener('click', () => {
             this.deleteRound(roundData.id);
         });
@@ -524,9 +409,6 @@ class FundingCalculator {
             alert('يجب أن تكون هناك جولة واحدة على الأقل');
             return;
         }
-        // Save state before deletion for undo
-        this.pushToUndoStack();
-
         this.rounds = this.rounds.filter(r => r.id !== id);
         document.getElementById(`round-${id}`).remove();
         this.saveState();
@@ -574,11 +456,6 @@ class FundingCalculator {
         });
 
         this.updateResultsTables();
-
-        // Update investor journey with new data
-        if (this.phases) {
-            this.updateInvestorJourney();
-        }
     }
 
     updateRoundUI(round) {
@@ -586,7 +463,7 @@ class FundingCalculator {
         if (el(`preVal-${round.id}`)) el(`preVal-${round.id}`).textContent = this.formatCurrency(round.preValuation);
         if (el(`postVal-${round.id}`)) el(`postVal-${round.id}`).textContent = this.formatCurrency(round.postValuation);
         if (el(`stockPrice-${round.id}`)) el(`stockPrice-${round.id}`).textContent = this.formatCurrency(round.stockPrice, 4);
-        if (el(`multiplier-${round.id}`)) el(`multiplier-${round.id}`).textContent = round.profitMultiplier.toFixed(2) + 'x';
+        if (el(`multiplier-${round.id}`)) el(`multiplier-${round.id}`).textContent = round.profitMultiplier.toFixed(1) + 'x';
         if (el(`roundShares-${round.id}`)) el(`roundShares-${round.id}`).textContent = this.formatNumber(round.roundShares);
         if (el(`totalShares-${round.id}`)) el(`totalShares-${round.id}`).textContent = this.formatNumber(round.totalShares);
     }
@@ -596,28 +473,16 @@ class FundingCalculator {
         const tbody = document.getElementById('resultsBody');
         tbody.innerHTML = '';
 
-        // توقيت افتراضي لكل جولة
-        const defaultTimings = {
-            0: 'التأسيس',
-            1: 'الشهر 1',
-            2: 'الشهر 11',
-            3: 'الشهر 12',
-            4: 'الشهر 36'
-        };
-
-        this.rounds.forEach((round, index) => {
-            // استخدام التوقيت المُدخل أو الافتراضي
-            const timing = round.timing || defaultTimings[index] || '-';
+        this.rounds.forEach(round => {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><strong>${round.name}</strong></td>
-                <td>${timing}</td>
                 <td>${this.formatCurrency(round.fundingAmount)}</td>
                 <td>${round.soldPercentage.toFixed(2)}%</td>
                 <td>${this.formatCurrency(round.preValuation)}</td>
                 <td>${this.formatCurrency(round.postValuation)}</td>
                 <td>${this.formatCurrency(round.stockPrice, 4)}</td>
-                <td>${round.profitMultiplier.toFixed(2)}x</td>
+                <td>${round.profitMultiplier.toFixed(1)}x</td>
                 <td>${this.formatNumber(round.roundShares)}</td>
                 <td>${this.formatNumber(round.totalShares)}</td>
             `;
@@ -792,292 +657,6 @@ class FundingCalculator {
                 }
             });
         }
-    }
-
-    // ===== INVESTOR JOURNEY METHODS =====
-
-    initInvestorJourney() {
-        // Data for phases - LINKED TO FUNDING ROUNDS from Excel
-        // roundIndex: which round's stock price to use (0-based)
-        // جولة 1 = index 0, جولة 2 = index 1, جولة 3 = index 2, جولة 4 = index 3, جولة 5 = index 4
-        this.phases = {
-            launch: {
-                name: 'الافتتاح',
-                month: 1,
-                members: 0,
-                annualProfit: 0,
-                target: 'الهدف: إطلاق التطبيق',
-                roundIndex: 1  // جولة 2 - الافتتاح Series A ($1.09)
-            },
-            breakeven: {
-                name: 'نقطة التعادل',
-                month: 11,
-                members: 2047,
-                annualProfit: 0,
-                target: 'الهدف: 2,047 عضو نشط',
-                roundIndex: 2  // جولة 3 - التعادل Series B ($2.56)
-            },
-            weak: {
-                name: 'أرباح ضعيفة',
-                month: 12,
-                members: 4095,
-                annualProfit: 124254,
-                target: 'الهدف: 4,095 عضو نشط',
-                roundIndex: 3  // جولة 4 - EMI Series C ($34.61)
-            },
-            normal: {
-                name: 'أرباح عادية',
-                month: 18,
-                members: 8191,
-                annualProfit: 342218,
-                target: 'الهدف: 8,191 عضو نشط',
-                roundIndex: 3  // لا يزال جولة 4 ($34.61)
-            },
-            good: {
-                name: 'أرباح جيدة',
-                month: 24,
-                members: 16383,
-                annualProfit: 949865,
-                target: 'الهدف: 16,383 عضو نشط',
-                roundIndex: 3  // لا يزال جولة 4 ($34.61) - جولة 5 لم تحدث بعد!
-            },
-            veryGood: {
-                name: 'أرباح جيدة جداً',
-                month: 36,
-                members: 32767,
-                annualProfit: 1985341,
-                target: 'الهدف: 32,767 عضو نشط',
-                roundIndex: 4  // جولة 5 - التوسع الدولي ($78.45)
-            },
-            excellent: {
-                name: 'أرباح ممتازة',
-                month: 48,
-                members: 65535,
-                annualProfit: 4498647,
-                target: 'الهدف: 65,535 عضو نشط',
-                roundIndex: 4  // لا يزال جولة 5 ($78.45)
-            }
-        };
-
-        this.currentPhase = 'weak';
-
-        // Setup listeners
-        this.setupInvestorJourneyListeners();
-
-        // Initial calculation
-        this.updateInvestorJourney();
-
-        // Render phases settings table
-        this.renderPhasesSettings();
-
-        // Update round tags on timeline
-        this.updateRoundTags();
-    }
-
-    setupInvestorJourneyListeners() {
-        // Distribution rate input
-        const distInput = document.getElementById('distributionRate');
-        if (distInput) {
-            distInput.addEventListener('input', (e) => {
-                const rate = parseFloat(e.target.value) || 0;
-                document.getElementById('reinvestmentRate').textContent = (100 - rate) + '%';
-                this.updateInvestorJourney();
-                this.saveState();
-            });
-        }
-
-        // Expected profit input
-        const profitInput = document.getElementById('expectedProfit');
-        if (profitInput) {
-            profitInput.addEventListener('input', () => {
-                this.updateInvestorJourney();
-                this.saveState();
-            });
-        }
-
-        // Timeline points click
-        const timelinePoints = document.querySelectorAll('.timeline-point');
-        timelinePoints.forEach(point => {
-            point.addEventListener('click', () => {
-                // Remove active from all
-                timelinePoints.forEach(p => p.classList.remove('active'));
-                // Add to clicked
-                point.classList.add('active');
-                // Update phase
-                this.currentPhase = point.dataset.phase;
-                this.updateInvestorJourney();
-            });
-        });
-
-        // Apply read-only if needed
-        if (this.isReadOnly) {
-            const journeyInputs = document.querySelectorAll('#investorJourneySection input');
-            journeyInputs.forEach(input => {
-                input.setAttribute('disabled', 'true');
-                input.style.backgroundColor = 'transparent';
-                input.style.border = 'none';
-                input.style.color = '#fff';
-            });
-        }
-    }
-
-    updateInvestorJourney() {
-        // Get values from inputs
-        const distributionRate = parseFloat(document.getElementById('distributionRate')?.value) || 30;
-        const reinvestRate = 100 - distributionRate;
-
-        // Get current phase data
-        const phase = this.phases[this.currentPhase];
-        const annualProfit = phase.annualProfit;
-
-        // Update the profit input to show current phase profit
-        const profitInput = document.getElementById('expectedProfit');
-        if (profitInput) {
-            profitInput.value = annualProfit;
-        }
-
-        // Get stock price from the LINKED round (based on roundIndex)
-        const roundIndex = phase.roundIndex;
-        let phaseRound = this.rounds[roundIndex];
-
-        // Fallback to last round if index doesn't exist
-        if (!phaseRound && this.rounds.length > 0) {
-            phaseRound = this.rounds[this.rounds.length - 1];
-        }
-
-        // Get baseline (first round or initial) for comparison
-        const baseStockPrice = this.initialPrice;
-        const phaseStockPrice = phaseRound ? phaseRound.stockPrice : this.initialPrice;
-        const totalShares = phaseRound ? phaseRound.totalShares : this.initialShares;
-
-        // EPS calculation based on shares at that phase
-        const eps = totalShares > 0 ? annualProfit / totalShares : 0;
-
-        // Distribution calculations
-        const cashPerShare = eps * (distributionRate / 100);
-        const reinvestPerShare = eps * (reinvestRate / 100);
-
-        // Growth from initial price
-        const priceGrowth = baseStockPrice > 0 ? ((phaseStockPrice - baseStockPrice) / baseStockPrice) * 100 : 0;
-
-        // Update UI
-        this.updateInvestorJourneyUI({
-            phase,
-            distributionRate,
-            reinvestRate,
-            cashPerShare,
-            reinvestPerShare,
-            eps,
-            baseStockPrice,
-            phaseStockPrice,
-            priceGrowth,
-            annualProfit,
-            roundName: phaseRound ? phaseRound.name : 'التأسيس'
-        });
-    }
-
-    updateInvestorJourneyUI(data) {
-        const el = (id) => document.getElementById(id);
-
-        // Phase info
-        if (el('phaseBadge')) el('phaseBadge').textContent = data.phase.name;
-        if (el('phaseTarget')) el('phaseTarget').textContent = data.phase.target;
-
-        // Percentages
-        if (el('cashPercentage')) el('cashPercentage').textContent = data.distributionRate + '%';
-        if (el('reinvestPercentage')) el('reinvestPercentage').textContent = data.reinvestRate + '%';
-
-        // Card values (formatted)
-        if (el('cashValue')) el('cashValue').textContent = this.formatCurrency(data.cashPerShare, 2);
-        if (el('reinvestValue')) el('reinvestValue').textContent = this.formatCurrency(data.reinvestPerShare, 2);
-        if (el('totalEPS')) el('totalEPS').textContent = this.formatCurrency(data.eps, 2);
-
-        // Stock price - Shows price AT this phase from linked round
-        // Display the phase stock price as the main value
-        if (el('currentStockPrice')) el('currentStockPrice').textContent = '$' + data.phaseStockPrice.toFixed(4);
-        if (el('projectedStockPrice')) el('projectedStockPrice').textContent = '$' + data.phaseStockPrice.toFixed(2);
-
-        if (el('projectedGrowth')) {
-            const growth = data.priceGrowth;
-            if (growth > 0) {
-                el('projectedGrowth').textContent = '+' + growth.toFixed(0) + '%';
-                el('projectedGrowth').style.color = 'var(--success-color)';
-                el('projectedGrowth').style.background = 'rgba(0, 210, 106, 0.1)';
-            } else {
-                el('projectedGrowth').textContent = growth.toFixed(0) + '%';
-                el('projectedGrowth').style.color = 'var(--accent-color)';
-                el('projectedGrowth').style.background = 'rgba(233, 69, 96, 0.1)';
-            }
-        }
-    }
-
-    // Render phases settings table
-    renderPhasesSettings() {
-        const tbody = document.getElementById('phasesSettingsBody');
-        if (!tbody) return;
-
-        tbody.innerHTML = '';
-
-        Object.entries(this.phases).forEach(([key, phase]) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="phase-name">${phase.name}</td>
-                <td><input type="number" class="phase-month" data-phase="${key}" value="${phase.month}" min="1" max="120"></td>
-                <td><input type="number" class="phase-members" data-phase="${key}" value="${phase.members}" min="0" step="100"></td>
-                <td><input type="number" class="phase-profit" data-phase="${key}" value="${phase.annualProfit}" min="0" step="1000"></td>
-            `;
-            tbody.appendChild(row);
-        });
-
-        // Add listeners to phase inputs
-        tbody.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', (e) => {
-                const phaseKey = e.target.dataset.phase;
-                const phase = this.phases[phaseKey];
-
-                if (e.target.classList.contains('phase-month')) {
-                    phase.month = parseInt(e.target.value) || 1;
-                    // Update timeline point label
-                    const point = document.querySelector(`[data-phase="${phaseKey}"] .point-label`);
-                    if (point) point.textContent = 'الشهر ' + phase.month;
-                } else if (e.target.classList.contains('phase-members')) {
-                    phase.members = parseInt(e.target.value) || 0;
-                } else if (e.target.classList.contains('phase-profit')) {
-                    phase.annualProfit = parseInt(e.target.value) || 0;
-                }
-
-                this.updateInvestorJourney();
-                this.updateRoundTags();
-                this.saveState();
-            });
-        });
-    }
-
-    // Update round tags on timeline based on round timings
-    updateRoundTags() {
-        // Remove all existing round tags first
-        document.querySelectorAll('.round-tag').forEach(tag => tag.style.display = 'none');
-
-        // Map round timings to phase months
-        this.rounds.forEach((round, index) => {
-            if (!round.timing) return;
-
-            // Extract month number from timing (e.g., "الشهر 12" -> 12)
-            const monthMatch = round.timing.match(/\d+/);
-            if (!monthMatch) return;
-            const roundMonth = parseInt(monthMatch[0]);
-
-            // Find matching phase by month
-            Object.entries(this.phases).forEach(([key, phase]) => {
-                if (phase.month === roundMonth) {
-                    const point = document.querySelector(`[data-phase="${key}"] .round-tag`);
-                    if (point) {
-                        point.style.display = 'block';
-                        point.textContent = `جولة ${index + 1}`;
-                    }
-                }
-            });
-        });
     }
 }
 
