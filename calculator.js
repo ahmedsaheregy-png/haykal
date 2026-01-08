@@ -228,8 +228,39 @@ class FundingCalculator {
         this.projectName = "هيكل ملكية البنك";
         document.getElementById('projectNameInput').value = this.projectName;
         this.updateInitial();
-        this.addRound(); // Add one empty round
+
+        // Populate Default Data from User's Request
+        this.rounds = []; // Clear default handling
+        this.addRoundWithData("الجولة 1 تأسيس pre-seed", 60000, 5);
+        this.addRoundWithData("الجولة 2 الافتتاح SERIES A", 100000, 8);
+        this.addRoundWithData("الجولة 3 التعادل SERIES B", 400000, 12);
+        this.addRoundWithData("الجولة 4 EMI SERIES C", 5000000, 10);
+        this.addRoundWithData("الجولة 5 التوسع الدولي", 20000000, 15);
+
         this.saveState(); // Save immediately to create the record
+    }
+
+    // Helper to add specific round data
+    addRoundWithData(name, funding, percentage) {
+        this.roundCounter++;
+        const roundId = this.roundCounter;
+
+        const roundData = {
+            id: roundId,
+            name: name,
+            fundingAmount: funding,
+            soldPercentage: percentage,
+            preValuation: 0,
+            postValuation: 0,
+            stockPrice: 0,
+            roundShares: 0,
+            totalShares: 0,
+            profitMultiplier: 0
+        };
+
+        this.rounds.push(roundData);
+        this.renderRound(roundData);
+        this.recalculateAll();
     }
 
     // --- Original Logic Methods (Optimized) ---
