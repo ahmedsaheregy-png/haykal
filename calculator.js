@@ -715,7 +715,7 @@ class FundingCalculator {
             this.setReadOnlyMode(false); // Enable editing
         }
 
-        this.setupHiddenAdminTrigger();
+        this.setupAdminControls();
     }
 
     setReadOnlyMode(isReadOnly) {
@@ -767,31 +767,45 @@ class FundingCalculator {
         }
     }
 
-    setupHiddenAdminTrigger() {
-        // Hidden Trigger: Double Click on the Footer Logo text
-        const footerLogo = document.querySelector('footer');
-        if (footerLogo) {
-            footerLogo.title = ""; // No hint
+    setupAdminControls() {
+        const toggleBtn = document.getElementById('toggleEditBtn');
+        if (!toggleBtn) return;
+        const icon = toggleBtn.querySelector('i');
 
-            footerLogo.addEventListener('dblclick', () => {
-                if (this.isReadOnly) {
-                    const password = prompt("🔐 Admin Access Required\nEnter Password:");
-                    if (password === "123456") { // Updated password
-                        localStorage.setItem('haykal_admin_access', 'true');
-                        alert("✅ Edit Mode Unlocked!");
-                        location.reload();
-                    } else if (password) {
-                        alert("❌ Wrong Password");
-                    }
-                } else {
-                    // Option to lock it back
-                    if (confirm("Lock Editing Mode?")) {
-                        localStorage.removeItem('haykal_admin_access');
-                        location.reload();
-                    }
-                }
-            });
+        // Initial State
+        if (this.isReadOnly) {
+            toggleBtn.classList.add('locked');
+            toggleBtn.classList.remove('unlocked');
+            icon.className = 'fa-solid fa-lock';
+            toggleBtn.title = "اضغط لفتح التعديل";
+        } else {
+            toggleBtn.classList.add('unlocked');
+            toggleBtn.classList.remove('locked');
+            icon.className = 'fa-solid fa-lock-open';
+            toggleBtn.title = "اضغط لقفل التعديل";
         }
+
+        // Click Handler
+        // Remove existing listeners to avoid duplicates (though nice to have, standard add doesn't overwrite)
+        // Cloning node is a quick way to clear listeners if needed, but we'll assume single init.
+
+        toggleBtn.onclick = () => {
+            if (this.isReadOnly) {
+                const password = prompt("🔐 مطلوب كلمة مرور الأدمن\nأدخل كلمة المرور:");
+                if (password === "123456") {
+                    localStorage.setItem('haykal_admin_access', 'true');
+                    alert("✅ تم فتح وضع التعديل!");
+                    location.reload();
+                } else if (password) {
+                    alert("❌ كلمة المرور غير صحيحة");
+                }
+            } else {
+                if (confirm("هل تريد قفل وضع التعديل؟")) {
+                    localStorage.removeItem('haykal_admin_access');
+                    location.reload();
+                }
+            }
+        };
     }
 
     // ===== INVESTOR JOURNEY METHODS =====
