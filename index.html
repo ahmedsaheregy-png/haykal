@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة جولات التمويل - هيكل تمويل وملكية</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>هيكل تمويل وملكية</span>
+        </div>
+        <div class="header-subtitle">SAWYAN BANK</div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Initial Setup Section -->
+        <section class="setup-section">
+            <h2><i class="fa-solid fa-cog"></i> إعدادات التأسيس</h2>
+            <div class="setup-grid">
+                <div class="input-group">
+                    <label for="initialShares">عدد الأسهم الابتدائي</label>
+                    <input type="number" id="initialShares" value="1000000" min="1">
+                </div>
+                <div class="input-group">
+                    <label for="initialPrice">سعر السهم الابتدائي ($)</label>
+                    <input type="number" id="initialPrice" value="0.05" step="0.01" min="0.01">
+                </div>
+                <div class="input-group calculated">
+                    <label>التقييم الابتدائي</label>
+                    <div class="calculated-value" id="initialValuation">$50,000</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rounds Section -->
+        <section class="rounds-section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-layer-group"></i> جولات التمويل</h2>
+                <button class="btn-add-round" id="addRoundBtn">
+                    <i class="fa-solid fa-plus"></i> إضافة جولة
+                </button>
+            </div>
+
+            <div class="rounds-container" id="roundsContainer">
+                <!-- Rounds will be added here dynamically -->
+            </div>
+        </section>
+
+        <!-- Results Summary Section -->
+        <section class="results-section" id="resultsSection" style="display: none;">
+            <h2><i class="fa-solid fa-table"></i> ملخص النتائج</h2>
+            <div class="table-wrapper">
+                <table class="results-table" id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>الجولة</th>
+                            <th>مبلغ التمويل</th>
+                            <th>الحصة المباعة</th>
+                            <th>التقييم قبل</th>
+                            <th>التقييم بعد</th>
+                            <th>سعر السهم</th>
+                            <th>مضاعف الربح</th>
+                            <th>أسهم الجولة</th>
+                            <th>إجمالي الأسهم</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Ownership Table -->
+            <h3 style="margin-top: 2rem;"><i class="fa-solid fa-users"></i> جدول الملكية</h3>
+            <div class="table-wrapper">
+                <table class="results-table ownership-table" id="ownershipTable">
+                    <thead>
+                        <tr>
+                            <th>المستثمر</th>
+                            <th>المدفوع</th>
+                            <th>عدد الأسهم</th>
+                            <th>النسبة الحالية</th>
+                            <th>قيمة الملكية</th>
+                            <th>الربح/الخسارة</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ownershipBody">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>حاسبة جولات التمويل - أداة لتخطيط هيكل الملكية والاستثمار</p>
+    </footer>
+
+    <script src="calculator.js"></script>
+</body>
+
+</html>
