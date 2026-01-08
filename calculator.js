@@ -13,6 +13,11 @@ class FundingCalculator {
         this.projectId = this.getProjectIdFromUrl();
         this.projectsListKey = 'funding_app_projects_list';
 
+        // Undo/Redo stacks
+        this.undoStack = [];
+        this.redoStack = [];
+        this.maxHistorySize = 50;
+
         this.init();
     }
 
@@ -33,6 +38,17 @@ class FundingCalculator {
 
         // --- INVESTOR JOURNEY ---
         this.initInvestorJourney();
+
+        // --- UNDO/REDO KEYBOARD SHORTCUTS ---
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'z') {
+                e.preventDefault();
+                this.undo();
+            } else if (e.ctrlKey && e.key === 'y') {
+                e.preventDefault();
+                this.redo();
+            }
+        });
     }
 
     getProjectIdFromUrl() {
@@ -201,6 +217,89 @@ class FundingCalculator {
         localStorage.setItem(this.projectsListKey, JSON.stringify(projects));
     }
 
+    // --- UNDO/REDO METHODS ---
+
+    pushToUndoStack() {
+        // Deep copy of current state
+        const snapshot = JSON.stringify({
+            rounds: this.rounds,
+            roundCounter: this.roundCounter
+        });
+
+        this.undoStack.push(snapshot);
+
+        // Limit stack size
+        if (this.undoStack.length > this.maxHistorySize) {
+            this.undoStack.shift();
+        }
+
+        // Clear redo stack on new action
+        this.redoStack = [];
+    }
+
+    undo() {
+        if (this.undoStack.length === 0) {
+            console.log('Nothing to undo');
+            return;
+        }
+
+        // Save current state to redo stack
+        const currentSnapshot = JSON.stringify({
+            rounds: this.rounds,
+            roundCounter: this.roundCounter
+        });
+        this.redoStack.push(currentSnapshot);
+
+        // Restore previous state
+        const previousSnapshot = JSON.parse(this.undoStack.pop());
+        this.rounds = previousSnapshot.rounds;
+        this.roundCounter = previousSnapshot.roundCounter;
+
+        // Re-render UI
+        this.reRenderAllRounds();
+        this.recalculateAll();
+        this.saveState();
+
+        console.log('Undo performed');
+    }
+
+    redo() {
+        if (this.redoStack.length === 0) {
+            console.log('Nothing to redo');
+            return;
+        }
+
+        // Save current state to undo stack
+        const currentSnapshot = JSON.stringify({
+            rounds: this.rounds,
+            roundCounter: this.roundCounter
+        });
+        this.undoStack.push(currentSnapshot);
+
+        // Restore next state
+        const nextSnapshot = JSON.parse(this.redoStack.pop());
+        this.rounds = nextSnapshot.rounds;
+        this.roundCounter = nextSnapshot.roundCounter;
+
+        // Re-render UI
+        this.reRenderAllRounds();
+        this.recalculateAll();
+        this.saveState();
+
+        console.log('Redo performed');
+    }
+
+    reRenderAllRounds() {
+        // Clear existing round cards
+        const container = document.getElementById('roundsContainer');
+        container.innerHTML = '';
+
+        // Re-render all rounds
+        this.rounds.forEach(roundData => {
+            this.renderRound(roundData);
+        });
+    }
+
     loadState() {
         if (this.projectId) {
             // Try loading specific project
@@ -344,6 +443,13 @@ class FundingCalculator {
                                value="${roundData.soldPercentage}" 
                                min="0.1" max="100" step="0.1">
                     </div>
+                    <div class="input-group">
+                        <label>التوقيت</label>
+                        <input type="text" class="round-timing" 
+                               data-round-id="${roundData.id}"
+                               value="${roundData.timing || ''}" 
+                               placeholder="مثال: الشهر 12">
+                    </div>
                 </div>
                 <div class="round-outputs">
                     <div class="output-item">
@@ -402,6 +508,12 @@ class FundingCalculator {
             this.recalculateAll();
         });
 
+        card.querySelector('.round-timing').addEventListener('input', (e) => {
+            const round = this.rounds.find(r => r.id === roundData.id);
+            if (round) { round.timing = e.target.value; this.saveState(); }
+            this.updateResultsTables();
+        });
+
         card.querySelector('.btn-delete-round').addEventListener('click', () => {
             this.deleteRound(roundData.id);
         });
@@ -412,6 +524,9 @@ class FundingCalculator {
             alert('يجب أن تكون هناك جولة واحدة على الأقل');
             return;
         }
+        // Save state before deletion for undo
+        this.pushToUndoStack();
+
         this.rounds = this.rounds.filter(r => r.id !== id);
         document.getElementById(`round-${id}`).remove();
         this.saveState();
@@ -481,17 +596,18 @@ class FundingCalculator {
         const tbody = document.getElementById('resultsBody');
         tbody.innerHTML = '';
 
-        // توقيت كل جولة بناءً على خطة التمويل
-        const roundTimings = {
-            0: 'التأسيس',      // جولة 1 - pre-seed
-            1: 'الشهر 1',      // جولة 2 - الافتتاح
-            2: 'الشهر 11',     // جولة 3 - التعادل
-            3: 'الشهر 12',     // جولة 4 - EMI Series C
-            4: 'الشهر 36'      // جولة 5 - التوسع الدولي
+        // توقيت افتراضي لكل جولة
+        const defaultTimings = {
+            0: 'التأسيس',
+            1: 'الشهر 1',
+            2: 'الشهر 11',
+            3: 'الشهر 12',
+            4: 'الشهر 36'
         };
 
         this.rounds.forEach((round, index) => {
-            const timing = roundTimings[index] || '-';
+            // استخدام التوقيت المُدخل أو الافتراضي
+            const timing = round.timing || defaultTimings[index] || '-';
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><strong>${round.name}</strong></td>
