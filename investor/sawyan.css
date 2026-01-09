@@ -1,43 +1,27 @@
 /* ========================================
-   SAWYAN Bank - TERMINAL VELOCITY DESIGN
-   Concept: Cinematic / Bento Grid / High-End Fintech
-   Status: REDESIGNED FROM SCRATCH
+   SAWYAN Investor Portal
+   Theme: Classic Dark Purple (Unified)
+   Matches Calculator Design
 ======================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Tajawal:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap');
 
 :root {
-    /* --- COLOR PALETTE: DEEP SPACE --- */
-    --void-bg: #030712;
-    /* The darkest blue-black */
-    --void-surface: #0f172a;
-    /* Surface color */
+    /* --- UNIFIED PURPLE PALETTE --- */
+    --purple-bg: #131420;
+    --purple-card: #1f2030;
+    --purple-header: #1a1b2e;
 
-    /* --- ACCENTS: NEON HORIZON --- */
-    --neon-blue: #3b82f6;
-    --neon-purple: #8b5cf6;
-    --neon-green: #10b981;
+    --accent-yellow: #f59e0b;
+    --accent-green: #10b981;
+    --accent-blue: #3b82f6;
 
-    /* --- TEXT --- */
-    --text-pure: #ffffff;
-    --text-dim: #94a3b8;
+    --text-white: #ffffff;
+    --text-gray: #9ca3af;
 
-    /* --- GRADIENTS --- */
-    --gradient-hero: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
-    --gradient-accent: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
-    --glass-shimmer: linear-gradient(120deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
-
-    /* --- BORDERS & GLOWS --- */
-    --border-subtle: 1px solid rgba(255, 255, 255, 0.08);
-    --glow-strong: 0 0 30px rgba(59, 130, 246, 0.3);
-
-    /* --- LAYOUT --- */
-    --grid-gap: 24px;
-    --radius-xl: 32px;
-    --radius-l: 24px;
+    --radius-main: 12px;
 }
 
-/* --- RESET & BASE --- */
 * {
     margin: 0;
     padding: 0;
@@ -45,131 +29,62 @@
 }
 
 body {
-    background-color: var(--void-bg);
-    color: var(--text-pure);
+    background-color: var(--purple-bg);
+    color: var(--text-white);
     font-family: 'Tajawal', sans-serif;
     line-height: 1.6;
     overflow-x: hidden;
-    /* NOISE TEXTURE */
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
 }
 
-/* --- TYPOGRAPHY: MASSIVE & BOLD --- */
 h1,
 h2,
 h3,
-.hero-title,
-.section-title {
+h4 {
     font-family: 'Cairo', sans-serif;
-    font-weight: 900;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+    color: #fff;
 }
 
-h1 {
-    font-size: 5rem;
+a {
+    text-decoration: none;
 }
 
-h2 {
-    font-size: 3.5rem;
-}
-
-h3 {
-    font-size: 2rem;
-}
-
-@media (max-width: 768px) {
-    h1 {
-        font-size: 3rem;
-    }
-
-    h2 {
-        font-size: 2.5rem;
-    }
-}
-
-/* --- LAYOUT SYSTEM: BENTO GRID --- */
 .container {
-    max-width: 1400px;
+    max-width: 1280px;
     margin: 0 auto;
     padding: 0 2rem;
 }
 
-.bento-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-auto-rows: minmax(200px, auto);
-    gap: var(--grid-gap);
-    margin: 4rem 0;
-}
-
-/* --- COMPONENT: BENTO CARD --- */
-.bento-card {
-    background: var(--void-surface);
-    border-radius: var(--radius-l);
-    border: var(--border-subtle);
-    padding: 2.5rem;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    /* Glass Backdrop */
-    backdrop-filter: blur(20px);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
-}
-
-.bento-card:hover {
-    transform: scale(1.02);
-    border-color: rgba(255, 255, 255, 0.2);
-    z-index: 10;
-}
-
-/* Internal Card Gradient - "Spotlight" */
-.bento-card::before {
-    content: '';
-    position: absolute;
+/* --- NAVIGATION --- */
+.navbar {
+    background: var(--purple-header);
+    padding: 1rem 2rem;
+    border-bottom: 2px solid #2d2e42;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 200px;
-    background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.07), transparent 70%);
-    pointer-events: none;
+    z-index: 1000;
 }
 
-/* --- NAVIGATION: ISLAND --- */
-.navbar {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 1200px;
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(20px);
-    border-radius: 100px;
-    padding: 1rem 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 9999;
+.nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 1280px;
+    margin: 0 auto;
 }
 
 .logo {
-    font-family: 'Cairo', sans-serif;
-    font-weight: 900;
     font-size: 1.5rem;
-    letter-spacing: -1px;
+    font-weight: 800;
     color: #fff;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.logo span {
-    background: var(--gradient-accent);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.logo-icon {
+    color: var(--accent-yellow);
 }
 
 .nav-links {
@@ -178,10 +93,9 @@ h3 {
 }
 
 .nav-links a {
-    color: var(--text-dim);
-    text-decoration: none;
+    color: var(--text-gray);
     font-weight: 600;
-    transition: color 0.3s;
+    transition: 0.3s;
 }
 
 .nav-links a:hover {
@@ -189,296 +103,48 @@ h3 {
 }
 
 .nav-cta {
-    background: #fff;
-    color: #000 !important;
-    padding: 0.8rem 1.5rem;
-    border-radius: 50px;
-    font-weight: 800 !important;
+    background: var(--accent-blue);
+    color: #fff !important;
+    padding: 8px 20px;
+    border-radius: 6px;
 }
 
-/* --- HERO SECTION: CINEMATIC --- */
+/* --- HERO SECTION --- */
 .hero {
-    min-height: 100vh;
-    padding-top: 180px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 140px 0 80px;
     text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Hero Background Glow */
-.hero::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 1000px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
-    z-index: -1;
-    filter: blur(80px);
+    background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
 }
 
 .hero-badge {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 0.5rem 1.5rem;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
-    color: var(--neon-blue);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 700;
+    display: inline-block;
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--accent-yellow);
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    border: 1px solid rgba(245, 158, 11, 0.2);
 }
 
 .hero-title {
-    max-width: 1000px;
-    margin: 0 auto 2rem;
-    background: linear-gradient(180deg, #fff 0%, #94a3b8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    line-height: 1.2;
 }
 
 .hero-subtitle {
-    font-size: 1.5rem;
-    color: var(--text-dim);
+    font-size: 1.2rem;
+    color: var(--text-gray);
     max-width: 700px;
-    margin: 0 auto 4rem;
+    margin: 0 auto 40px;
 }
 
-/* NEW GRID LAYOUTS (Replaces old Flex/Grid) */
-
-/* 1. Problem Section - Asymmetric Grid */
-.problem-grid .bento-card:nth-child(1) {
-    grid-column: span 12;
-    background: linear-gradient(to right, #1e1b4b, #030712);
-}
-
-@media (min-width: 768px) {
-    .problem-grid .bento-card:nth-child(1) {
-        grid-column: span 8;
-    }
-
-    .problem-grid .bento-card:nth-child(2) {
-        grid-column: span 4;
-    }
-
-    .problem-grid .bento-card:nth-child(3) {
-        grid-column: span 12;
-        height: 300px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-    }
-}
-
-/* 2. Metrics - The "Wall of Numbers" */
-.metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--grid-gap);
-}
-
-.metric-card {
-    background: transparent;
-    border-left: 2px solid rgba(255, 255, 255, 0.1);
-    padding-left: 2rem;
-}
-
-.metric-value {
-    font-size: 3.5rem;
-    font-weight: 900;
-    color: var(--neon-blue);
-    line-height: 1;
-    margin-bottom: 0.5rem;
-}
-
-.metric-label {
-    font-size: 1rem;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-@media (max-width: 900px) {
-    .metrics-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-@media (max-width: 600px) {
-    .metrics-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* 3. Solution - Flow Chart Redesign */
-.solution-section {
-    padding: 8rem 0;
-    position: relative;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.flow-diagram {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-    /* Increased gap for better separation */
-    position: relative;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-/* Connecting Line */
-.flow-diagram::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(to bottom, var(--neon-blue), var(--neon-purple));
-    transform: translateX(-50%);
-    opacity: 0.5;
-    z-index: 1;
-}
-
-.flow-step {
-    background: rgba(15, 23, 42, 0.9);
-    /* Darker glass, NOT blue */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 2.5rem;
-    border-radius: 24px;
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8);
-    transition: transform 0.3s;
-}
-
-.flow-step:hover {
-    transform: translateY(-5px);
-    border-color: var(--neon-blue);
-}
-
-.flow-step.highlight {
-    border-color: var(--neon-blue);
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
-}
-
-/* The circle icon inside the step */
-.step-circle {
-    width: 60px;
-    height: 60px;
-    background: #000;
-    /* Black circle */
-    border: 2px solid var(--neon-blue);
-    /* Neon border */
-    color: var(--neon-blue);
-    font-weight: 900;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-    font-size: 1.4rem;
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-    position: relative;
-    z-index: 3;
-    background-color: var(--void-bg);
-    /* Ensure it covers the line */
-}
-
-/* Fix Hero Spacing */
-.hero-title {
-    font-size: 4.5rem;
-    /* Slightly reduced from 5rem for better grouping */
-    max-width: 1100px;
-    line-height: 1.2;
-    margin-bottom: 2rem;
-}
-
-/* Ensure stats are visible */
 .hero-stats {
     display: flex;
-    gap: 3rem;
     justify-content: center;
-    margin-top: 4rem;
-    flex-wrap: wrap;
-    background: rgba(255, 255, 255, 0.03);
-    /* Subtle container */
-    padding: 2rem;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* --- CALCULATOR / TABLE STYLES --- */
-/* Applied to style.css mostly, but common classes here */
-.setup-section,
-.results-section {
-    background: var(--void-surface);
-    border-radius: var(--radius-l);
-    border: var(--border-subtle);
-    padding: 3rem;
-}
-
-.input-group input,
-.input-group select {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
-    padding: 1rem;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    width: 100%;
-}
-
-.input-group input:focus {
-    border-color: var(--neon-blue);
-    outline: none;
-}
-
-/* --- FOOTER --- */
-footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 5rem 0;
-    margin-top: 5rem;
-    text-align: center;
-    background: #000;
-}
-
-/* --- UTILS --- */
-.section-label {
-    color: var(--neon-blue);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    display: block;
-    margin-bottom: 1rem;
-}
-
-.text-gradient {
-    background: var(--gradient-accent);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* --- FIXING THE MISSING CLASSES FROM PREV FILES --- */
-.hero-stats {
-    display: flex;
-    gap: 4rem;
-    justify-content: center;
-    margin-top: 3rem;
-}
-
-.stat-item {
-    text-align: center;
+    gap: 40px;
+    margin-bottom: 40px;
 }
 
 .stat-value {
@@ -487,86 +153,125 @@ footer {
     color: #fff;
 }
 
-.hero-visual {
-    display: none;
+.stat-label {
+    color: var(--text-gray);
+    font-size: 0.9rem;
 }
 
-/* Removing complex visuals for clean massive typography */
-
-.visual-card,
-.cta-arrow,
-.badge-dot,
-.stat-divider {
-    display: none;
+.btn-primary {
+    background: var(--accent-yellow);
+    color: #000;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
 }
 
-/* Cleanup old elements */
-.card-chart,
-.mini-bar,
-.card-trend {
-    display: none;
+.btn-primary:hover {
+    transform: translateY(-3px);
 }
 
-.cta-section {
-    background: var(--neon-blue);
-    padding: 5rem 0;
-    border-radius: var(--radius-xl);
-    text-align: center;
-    margin: 4rem 2rem;
-    color: #fff;
+/* --- CARDS (Standard) --- */
+section {
+    padding: 80px 0;
 }
 
-.cta-content h2 {
-    margin-bottom: 2rem;
+.section-label {
+    color: var(--accent-blue);
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: block;
 }
 
-.cta-buttons {
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+
+.problem-grid,
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.problem-card,
+.metric-card {
+    background: var(--purple-card);
+    border: 1px solid #2d2e42;
+    padding: 30px;
+    border-radius: var(--radius-main);
+    transition: 0.3s;
+}
+
+.problem-card:hover,
+.metric-card:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-5px);
+}
+
+.problem-icon {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--accent-blue);
+}
+
+/* --- FLOW --- */
+.solution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.flow-step {
+    background: #1a1b2e;
+    border: 1px solid #2d2e42;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
     display: flex;
-    gap: 1rem;
-    justify-content: center;
+    align-items: center;
+    gap: 15px;
 }
 
-.btn-large {
-    padding: 1rem 3rem;
-    background: #000;
+.step-circle {
+    background: var(--accent-blue);
     color: #fff;
-    text-decoration: none;
-    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: bold;
 }
 
-.btn-secondary {
-    background: rgba(255, 255, 255, 0.2);
+/* --- FOOTER --- */
+.footer {
+    background: #000;
+    padding: 50px 0;
+    margin-top: 50px;
+    border-top: 1px solid #2d2e42;
+    text-align: center;
+    color: var(--text-gray);
 }
 
-/* --- RESPONSIVE FIXES --- */
 @media (max-width: 768px) {
-    .container {
-        padding: 0 1.5rem;
+    .hero-title {
+        font-size: 2.5rem;
     }
 
     .hero-stats {
         flex-direction: column;
-        gap: 2rem;
+        gap: 20px;
     }
 
-    .bento-grid {
-        display: flex;
-        flex-direction: column;
+    .solution-grid {
+        grid-template-columns: 1fr;
     }
-
-    .cta-buttons {
-        flex-direction: column;
-    }
-
-    .navbar {
-        width: 95%;
-        padding: 1rem;
-    }
-
-    .nav-links {
-        display: none;
-    }
-
-    /* Mobile Menu TODO */
 }
