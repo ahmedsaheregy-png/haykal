@@ -30,8 +30,32 @@ class FundingCalculator {
         // Project Management UI interaction
         this.setupProjectUI();
 
-        // Load specific project data or initialize defaults
-        this.loadState();
+        // 1. Check URL for project ID
+        const urlParams = new URLSearchParams(window.location.search);
+        this.projectId = urlParams.get('project');
+
+        // 2. If no ID in URL, try to load the LAST edited project
+        if (!this.projectId) {
+            const projects = this.getAllProjects();
+            if (projects.length > 0) {
+                // Sort by lastModified descending to get the most recent one
+                projects.sort((a, b) => (b.lastModified || 0) - (a.lastModified || 0));
+                this.projectId = projects[0].id;
+
+                // Update URL to reflect this project without reloading
+                const newUrl = `${window.location.pathname}?project=${this.projectId}`;
+                window.history.replaceState({ path: newUrl }, '', newUrl);
+            }
+        }
+
+        // 3. Load state or initialize default
+        if (this.projectId) {
+            this.loadState();
+        } else {
+            // New visitor or really no projects
+            this.initializeDefaultData();
+            this.saveState();
+        }
 
         // --- ADMIN CHECK ---
         this.checkAccessMode();
@@ -215,6 +239,51 @@ class FundingCalculator {
             projects.push({ id: this.projectId, name: this.projectName, lastModified: state.lastModified });
         }
         localStorage.setItem(this.projectsListKey, JSON.stringify(projects));
+
+        this.showSaveIndicator();
+        this.updateHeaderProjectName();
+    }
+
+    showSaveIndicator() {
+        let indicator = document.getElementById('saveIndicator');
+        if (!indicator) {
+            indicator = document.createElement('div');
+            indicator.id = 'saveIndicator';
+            indicator.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                background: rgba(46, 204, 113, 0.9);
+                color: white;
+                padding: 8px 16px;
+                border-radius: 20px;
+                font-size: 0.9rem;
+                opacity: 0;
+                transition: opacity 0.3s;
+                z-index: 1000;
+                pointer-events: none;
+            `;
+            indicator.innerHTML = '<i class="fa-solid fa-check"></i> تم الحفظ';
+            document.body.appendChild(indicator);
+        }
+
+        // Flash the indicator
+        indicator.style.opacity = '1';
+        setTimeout(() => {
+            indicator.style.opacity = '0';
+        }, 1500);
+    }
+
+    updateHeaderProjectName() {
+        const badge = document.getElementById('currentProjectNameDisplay');
+        if (badge) {
+            badge.style.opacity = '0';
+            setTimeout(() => {
+                badge.textContent = `| ${this.projectName}`;
+                badge.title = `آخر تعديل: ${new Date().toLocaleTimeString('ar-EG')}`;
+                badge.style.opacity = '1';
+            }, 200);
+        }
     }
 
     // --- UNDO/REDO METHODS ---

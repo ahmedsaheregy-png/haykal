@@ -77,6 +77,14 @@ header {
     padding: 2rem;
 }
 
+.project-name-badge {
+    font-size: 0.9rem;
+    color: var(--accent-gold);
+    margin-right: 10px;
+    font-weight: 300;
+    transition: opacity 0.3s;
+}
+
 /* Section Styles */
 section {
     margin-bottom: 2rem;
@@ -964,10 +972,7 @@ footer {
     border: 1px solid rgba(46, 204, 113, 0.3);
 }
 
-color: var(--text-primary);
-text-align: center;
-font-size: 0.9rem;
-}
+
 
 .phases-table input:focus {
     outline: none;
