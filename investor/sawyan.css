@@ -321,13 +321,15 @@ h3 {
 .solution-section {
     padding: 8rem 0;
     position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .flow-diagram {
     display: flex;
-    /* Kept flex for vertical stack, but styled differently */
     flex-direction: column;
-    gap: 0;
+    gap: 3rem;
+    /* Increased gap for better separation */
     position: relative;
     max-width: 600px;
     margin: 0 auto;
@@ -343,38 +345,77 @@ h3 {
     width: 2px;
     background: linear-gradient(to bottom, var(--neon-blue), var(--neon-purple));
     transform: translateX(-50%);
-    opacity: 0.3;
+    opacity: 0.5;
+    z-index: 1;
 }
 
 .flow-step {
-    background: #000;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 2rem;
-    margin: 1rem 0;
-    border-radius: 20px;
+    background: rgba(15, 23, 42, 0.9);
+    /* Darker glass, NOT blue */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2.5rem;
+    border-radius: 24px;
     position: relative;
     z-index: 2;
     text-align: center;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8);
+    transition: transform 0.3s;
+}
+
+.flow-step:hover {
+    transform: translateY(-5px);
+    border-color: var(--neon-blue);
 }
 
 .flow-step.highlight {
     border-color: var(--neon-blue);
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
 }
 
+/* The circle icon inside the step */
 .step-circle {
-    width: 50px;
-    height: 50px;
-    background: var(--neon-blue);
-    color: #fff;
-    font-weight: bold;
+    width: 60px;
+    height: 60px;
+    background: #000;
+    /* Black circle */
+    border: 2px solid var(--neon-blue);
+    /* Neon border */
+    color: var(--neon-blue);
+    font-weight: 900;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1rem;
-    font-size: 1.2rem;
+    margin: 0 auto 1.5rem;
+    font-size: 1.4rem;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+    position: relative;
+    z-index: 3;
+    background-color: var(--void-bg);
+    /* Ensure it covers the line */
+}
+
+/* Fix Hero Spacing */
+.hero-title {
+    font-size: 4.5rem;
+    /* Slightly reduced from 5rem for better grouping */
+    max-width: 1100px;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+}
+
+/* Ensure stats are visible */
+.hero-stats {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    margin-top: 4rem;
+    flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.03);
+    /* Subtle container */
+    padding: 2rem;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* --- CALCULATOR / TABLE STYLES --- */
