@@ -1170,19 +1170,28 @@ class FundingCalculator {
 
         // Stock prices - Current (from last round) and Expected (from next round)
         if (el('currentStockPrice')) el('currentStockPrice').textContent = '$' + data.currentStockPrice.toFixed(2);
-        if (el('projectedStockPrice')) el('projectedStockPrice').textContent = '$' + data.expectedStockPrice.toFixed(2);
 
-        if (el('projectedGrowth')) {
-            const growth = data.priceGrowth;
-            if (growth > 0) {
+        // إخفاء السعر المتوقع إذا لم تكن هناك جولات مستقبلية
+        const hasNextRound = data.expectedStockPrice !== data.currentStockPrice;
+        const projectedSection = document.querySelector('.projection-item.highlight');
+        const projectedArrow = document.querySelector('.projection-arrow');
+
+        if (hasNextRound) {
+            if (projectedSection) projectedSection.style.display = '';
+            if (projectedArrow) projectedArrow.style.display = '';
+            if (el('projectedStockPrice')) el('projectedStockPrice').textContent = '$' + data.expectedStockPrice.toFixed(2);
+
+            if (el('projectedGrowth')) {
+                const growth = data.priceGrowth;
                 el('projectedGrowth').textContent = '+' + growth.toFixed(0) + '%';
                 el('projectedGrowth').style.color = 'var(--success-color)';
                 el('projectedGrowth').style.background = 'rgba(0, 210, 106, 0.1)';
-            } else {
-                el('projectedGrowth').textContent = growth.toFixed(0) + '%';
-                el('projectedGrowth').style.color = 'var(--accent-color)';
-                el('projectedGrowth').style.background = 'rgba(233, 69, 96, 0.1)';
+                el('projectedGrowth').style.display = '';
             }
+        } else {
+            // إخفاء السعر المتوقع - لا توجد جولات مستقبلية
+            if (projectedSection) projectedSection.style.display = 'none';
+            if (projectedArrow) projectedArrow.style.display = 'none';
         }
     }
 
