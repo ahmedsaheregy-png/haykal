@@ -446,14 +446,21 @@ class FundingCalculator {
                                min="0.1" max="100" step="0.1">
                     </div>
                     <div class="input-group">
-                        <label>التوقيت</label>
-                        <input type="text" class="round-timing" 
-                               data-round-id="${roundData.id}"
-                               value="${roundData.timing || ''}" 
-                               placeholder="مثال: الشهر 12">
-                    </div>
+                    <label>التوقيت (شهر رقم)</label>
+                    <input type="text" class="round-timing" 
+                           data-round-id="${roundData.id}"
+                           value="${roundData.timing || ''}" 
+                           placeholder="مثال: 12">
                 </div>
-                <div class="round-outputs">
+                <div class="input-group">
+                    <label>ملاحظات</label>
+                    <input type="text" class="round-notes" 
+                           data-round-id="${roundData.id}"
+                           value="${roundData.notes || ''}" 
+                           placeholder="مثال: قبل الافتتاح">
+                </div>
+            </div>
+            <div class="round-outputs">
                     <div class="output-item">
                         <div class="output-label">التقييم قبل</div>
                         <div class="output-value" id="preVal-${roundData.id}">-</div>
@@ -512,8 +519,20 @@ class FundingCalculator {
 
         card.querySelector('.round-timing').addEventListener('input', (e) => {
             const round = this.rounds.find(r => r.id === roundData.id);
-            if (round) { round.timing = e.target.value; this.saveState(); }
-            this.updateResultsTables();
+            if (round) {
+                round.timing = e.target.value;
+                this.updateResultsTables();
+                this.updateRoundTags();
+                this.saveState();
+            }
+        });
+
+        card.querySelector('.round-notes').addEventListener('input', (e) => {
+            const round = this.rounds.find(r => r.id === roundData.id);
+            if (round) {
+                round.notes = e.target.value;
+                this.saveState();
+            }
         });
 
         card.querySelector('.btn-delete-round').addEventListener('click', () => {
@@ -530,7 +549,12 @@ class FundingCalculator {
         this.pushToUndoStack();
 
         this.rounds = this.rounds.filter(r => r.id !== id);
-        document.getElementById(`round-${id}`).remove();
+
+        const roundEl = document.getElementById(`round-${id}`);
+        if (roundEl) {
+            roundEl.remove();
+        }
+
         this.saveState();
         this.recalculateAll();
     }
@@ -1071,7 +1095,7 @@ class FundingCalculator {
         this.rounds.forEach((round, index) => {
             if (!round.timing) return;
 
-            // Extract month number from timing (e.g., "الشهر 12" -> 12)
+            // Extract month number from timing (e.g., "12", "Month 12", "شهر 12")
             const monthMatch = round.timing.match(/\d+/);
             if (!monthMatch) return;
             const roundMonth = parseInt(monthMatch[0]);
