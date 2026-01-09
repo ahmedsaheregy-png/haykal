@@ -119,19 +119,18 @@
             <h2><i class="fa-solid fa-chart-line"></i> أرباح التشغيل</h2>
             <p class="section-description">نمو أرباح البنك التشغيلية (السنوية) وتأثيرها على العوائد عبر الزمن</p>
 
-            <!-- Profit Inputs -->
-            <div class="profit-inputs-grid">
-                <div class="input-group">
-                    <label for="expectedProfit">صافي الربح السنوي المتوقع ($)</label>
-                    <input type="number" id="expectedProfit" value="342218" min="0" step="1000">
-                </div>
-                <div class="input-group">
-                    <label for="distributionRate">نسبة التوزيع النقدي (%)</label>
+            <!-- Hidden Profit Input (Auto-calculated from phases) -->
+            <input type="hidden" id="expectedProfit" value="342218">
+
+            <!-- Distribution Control Bar -->
+            <div class="distribution-control-bar">
+                <div class="control-item">
+                    <label>نسبة التوزيع النقدي (%)</label>
                     <input type="number" id="distributionRate" value="30" min="0" max="100" step="5">
                 </div>
-                <div class="input-group calculated">
+                <div class="control-item">
                     <label>إعادة الاستثمار (%)</label>
-                    <div class="calculated-value" id="reinvestmentRate">70%</div>
+                    <div class="calculated-box" id="reinvestmentRate">70%</div>
                 </div>
             </div>
 
