@@ -3,6 +3,28 @@
 // Animations & Interactions
 // ========================================
 
+// ===== SMART NAVIGATION (Hide on Scroll Down, Show on Scroll Up) =====
+let lastScrollTop = 0;
+let scrollThreshold = 100;
+const floatingNav = document.querySelector('.floating-nav');
+
+window.addEventListener('scroll', function () {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop < scrollThreshold) {
+        floatingNav.style.transform = 'translateX(-50%) translateY(0)';
+        return;
+    }
+
+    if (scrollTop > lastScrollTop) {
+        floatingNav.style.transform = 'translateX(-50%) translateY(-120%)';
+    } else {
+        floatingNav.style.transform = 'translateX(-50%) translateY(0)';
+    }
+
+    lastScrollTop = scrollTop;
+}, { passive: true });
+
 document.addEventListener('DOMContentLoaded', () => {
     animateMetrics();
     initScrollAnimations();

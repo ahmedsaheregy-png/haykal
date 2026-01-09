@@ -3,7 +3,7 @@
    Innovative Design from Scratch
 ================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Tajawal:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
     /* Colors: Neon Dark */
@@ -32,7 +32,7 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Tajawal', 'Inter', sans-serif;
     background: var(--void);
     color: #fff;
     line-height: 1.6;
@@ -48,9 +48,9 @@ h4 {
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 clamp(1rem, 5vw, 2rem);
 }
 
 /* ==== FLOATING NAV ==== */
@@ -60,10 +60,11 @@ h4 {
     left: 50%;
     transform: translateX(-50%);
     z-index: 9999;
-    width: 90%;
-    max-width: 1200px;
+    width: 95%;
+    max-width: 1100px;
     -webkit-transform: translateX(-50%);
     will-change: transform;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-content {
@@ -115,7 +116,7 @@ h4 {
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 1rem;
     transition: var(--smooth);
 }
 
@@ -232,7 +233,7 @@ h4 {
 }
 
 .stat-number {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 900;
     background: linear-gradient(135deg, var(--gold), var(--pink));
     -webkit-background-clip: text;
@@ -348,7 +349,7 @@ h4 {
 }
 
 .card-label {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: rgba(255, 255, 255, 0.85);
     margin-bottom: 0.5rem;
     font-weight: 600;
@@ -492,14 +493,15 @@ h4 {
 .revenue-item {
     display: flex;
     justify-content: space-between;
-    padding: 0.8rem;
+    gap: 1rem;
+    padding: 1rem;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
 }
 
 .revenue-label {
     color: rgba(255, 255, 255, 0.95);
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 500;
 }
 
@@ -529,6 +531,7 @@ h4 {
 
 .bento-card.metric {
     text-align: center;
+    padding: 2rem;
 }
 
 .metric-icon {
@@ -537,7 +540,7 @@ h4 {
 }
 
 .metric-value {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 900;
     background: linear-gradient(135deg, var(--cyan), var(--purple));
     -webkit-background-clip: text;
@@ -546,10 +549,11 @@ h4 {
     margin-bottom: 0.5rem;
     direction: ltr;
     display: inline-block;
+    padding: 0 0.5rem;
 }
 
 .metric-label {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     color: rgba(255, 255, 255, 0.9);
     font-weight: 600;
 }
@@ -685,7 +689,7 @@ h4 {
 
 .flow-card p {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 1.05rem;
+    font-size: 1.1rem;
 }
 
 .flow-arrow {
@@ -1009,6 +1013,10 @@ h4 {
         height: 400px;
     }
 
+    .floating-card {
+        display: none;
+    }
+
     .bento-grid {
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
@@ -1040,16 +1048,68 @@ h4 {
         display: none;
     }
 
+    .floating-nav {
+        top: 10px;
+    }
+
+    .nav-content {
+        padding: 0.6rem 1rem;
+    }
+
+    .brand-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1.1rem;
+    }
+
+    .brand-name {
+        font-size: 1.1rem;
+    }
+
+    .hero-split {
+        padding: 100px 1.5rem 40px;
+    }
+
     .hero-title {
-        font-size: 3rem;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
     }
 
     .section-title {
-        font-size: 2.5rem;
+        font-size: 1.9rem;
     }
 
     .cta-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    .bento-card {
+        padding: 1.5rem;
+    }
+
+    .nav-menu a {
+        font-size: 1.1rem;
+    }
+
+    .card-label {
+        font-size: 1.05rem;
+    }
+
+    .revenue-label {
+        font-size: 1.15rem;
+    }
+
+    .metric-label {
+        font-size: 1.25rem;
+    }
+
+    .flow-card p {
+        font-size: 1.2rem;
     }
 
     .bento-grid {
@@ -1061,5 +1121,17 @@ h4 {
             "shares"
             "exit"
             "growth";
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 1200px) {
+    .bento-grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-areas:
+            "revenue revenue revenue"
+            "dashboard dashboard dashboard"
+            "gtv shares exit"
+            "growth growth growth";
     }
 }
