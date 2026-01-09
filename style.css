@@ -1,43 +1,49 @@
 /* ========================================
    SAWYAN Funding Calculator CSS
-   Modern Fintech Design - Vibrant & Soft UI
+   Premium Dark Mode - "Dark Glass Fintech"
    Matches sawyan.css
 ======================================== */
 
 :root {
-    /* Brand Palette - VIBRANT & PREMIUM */
-    --primary-bg: #f8faff;
-    --secondary-bg: #ffffff;
-    --card-bg: rgba(255, 255, 255, 0.9);
+    /* Branding - Dark & Premium */
+    --primary-bg: #0f172a;
+    --secondary-bg: #020617;
+    --card-bg: rgba(30, 41, 59, 0.6);
 
-    /* Colors */
-    --text-primary: #0f172a;
-    --text-secondary: #334155;
-    --text-muted: #64748b;
+    /* Text Colors */
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
 
-    --brand-blue: #2563eb;
-    /* Royal Blue */
-    --brand-dark-blue: #1e3a8a;
-    --brand-light-blue: #dbeafe;
+    /* Accents */
+    --brand-blue: #3b82f6;
+    --brand-dark-blue: #1d4ed8;
+    --brand-light-blue: rgba(59, 130, 246, 0.1);
 
     --brand-green: #10b981;
+    --brand-green-dark: #059669;
+
+    --success: #10b981;
     --danger: #ef4444;
     --warning: #f59e0b;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-    --gradient-success: linear-gradient(135deg, #10b981 0%, #047857 100%);
+    --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    --shadow-blue: 0 0 20px rgba(59, 130, 246, 0.4);
 
-    /* Shadows & Radius */
-    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    --shadow-blue: 0 10px 25px -5px rgba(37, 99, 235, 0.3);
+    /* Shadows */
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
 
     --radius-lg: 24px;
     --radius-md: 16px;
 
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Calculator Specifics */
+    --input-bg: rgba(15, 23, 42, 0.8);
+    --input-border: rgba(255, 255, 255, 0.1);
 }
 
 * {
@@ -53,9 +59,10 @@ body {
     line-height: 1.6;
     direction: rtl;
     min-height: 100vh;
-    /* Subtle Pattern */
-    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-    background-size: 40px 40px;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
 }
 
 /* Typography */
@@ -65,18 +72,19 @@ h3,
 h4 {
     font-family: 'Cairo', sans-serif;
     letter-spacing: -0.02em;
+    color: #ffffff;
 }
 
-/* Header (Matches Investor Page) */
+/* Header */
 header {
-    background: rgba(15, 23, 42, 0.95);
+    background: rgba(15, 23, 42, 0.85);
     padding: 1rem 5%;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(20px);
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .header-content {
@@ -97,7 +105,7 @@ header {
 .logo-icon {
     color: #ffffff;
     font-size: 1.8rem;
-    text-shadow: 0 0 15px rgba(37, 99, 235, 0.6);
+    text-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
 }
 
 .logo-container h1 {
@@ -109,9 +117,9 @@ header {
 }
 
 .header-btn {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 8px 16px;
     border-radius: 12px;
     cursor: pointer;
@@ -125,9 +133,9 @@ header {
 }
 
 .header-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.1);
     border-color: #ffffff;
+    transform: translateY(-2px);
 }
 
 .container {
@@ -138,7 +146,7 @@ header {
 
 .project-name-input {
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: #ffffff;
     font-size: 1.1rem;
     font-family: 'Tajawal', sans-serif;
@@ -151,7 +159,7 @@ header {
 .project-name-input:focus {
     outline: none;
     border-color: var(--brand-blue);
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 /* Sections */
@@ -161,7 +169,7 @@ section {
 
 h2 {
     font-size: 1.8rem;
-    color: var(--text-primary);
+    color: #ffffff;
     margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
@@ -170,21 +178,21 @@ h2 {
 
 h2 i {
     color: var(--brand-blue);
-    background: var(--brand-light-blue);
+    background: rgba(59, 130, 246, 0.1);
     padding: 10px;
     border-radius: 12px;
     font-size: 1.2rem;
+    border: 1px solid rgba(59, 130, 246, 0.2);
 }
 
-/* Setup Section (Glassy & Borderless) */
+/* Setup Section (Dark Glass) */
 .setup-section {
-    background: white;
+    background: var(--card-bg);
     padding: 2.5rem;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
-    border: none;
-    position: relative;
-    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
 }
 
 .setup-grid {
@@ -195,7 +203,7 @@ h2 i {
 
 .input-group label {
     font-size: 0.95rem;
-    color: var(--text-secondary);
+    color: var(--text-muted);
     font-weight: 700;
     margin-bottom: 0.5rem;
     display: block;
@@ -204,10 +212,10 @@ h2 i {
 .input-group input,
 .input-group select {
     padding: 0.9rem 1.2rem;
-    background: #f1f5f9;
-    border: 1px solid transparent;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
     border-radius: 12px;
-    color: var(--text-primary);
+    color: #ffffff;
     font-size: 1.05rem;
     font-family: 'Tajawal', sans-serif;
     transition: var(--transition);
@@ -217,22 +225,23 @@ h2 i {
 .input-group input:focus,
 .input-group select:focus {
     outline: none;
-    background: #ffffff;
+    background: rgba(15, 23, 42, 1);
     border-color: var(--brand-blue);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
 }
 
 .input-group.calculated {
-    background: var(--brand-light-blue);
+    background: rgba(59, 130, 246, 0.05);
     padding: 1.2rem;
     border-radius: 16px;
-    border: none;
+    border: 1px solid rgba(59, 130, 246, 0.2);
 }
 
 .calculated-value {
     font-size: 1.4rem;
     font-weight: 800;
     color: var(--brand-blue);
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
 }
 
 /* Rounds */
@@ -255,32 +264,35 @@ h2 i {
 .btn-add-round:hover {
     transform: translateY(-3px);
     background: var(--brand-dark-blue);
-    box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
 }
 
 .round-card {
-    background: #ffffff;
+    background: rgba(30, 41, 59, 0.6);
     border-radius: var(--radius-lg);
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.05);
     margin-bottom: 2rem;
     box-shadow: var(--shadow-md);
     transition: var(--transition);
     overflow: hidden;
     position: relative;
+    backdrop-filter: blur(10px);
 }
 
 .round-card:where(:hover) {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(30, 41, 59, 0.8);
 }
 
 .round-header {
-    background: linear-gradient(to left, #ffffff, #f8fafc);
+    background: rgba(15, 23, 42, 0.5);
     padding: 1.2rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .round-number {
@@ -294,7 +306,7 @@ h2 i {
     align-items: center;
     font-weight: 800;
     font-size: 1.1rem;
-    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
 }
 
 .round-name-input {
@@ -302,7 +314,7 @@ h2 i {
     border: none;
     font-size: 1.2rem;
     font-weight: 800;
-    color: var(--text-primary);
+    color: #ffffff;
     width: 100%;
 }
 
@@ -320,6 +332,7 @@ h2 i {
 .btn-delete-round:hover {
     background: var(--danger);
     color: white;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
 }
 
 .round-body {
@@ -327,18 +340,18 @@ h2 i {
 }
 
 .round-outputs {
-    background: #f8fafc;
+    background: rgba(15, 23, 42, 0.5);
     border-radius: 16px;
     padding: 1.5rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .output-item {
-    background: white;
+    background: rgba(30, 41, 59, 0.8);
     border-radius: 14px;
     padding: 1rem;
     box-shadow: var(--shadow-sm);
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .output-label {
@@ -349,22 +362,24 @@ h2 i {
 }
 
 .output-value {
-    color: var(--text-primary);
+    color: #ffffff;
     font-weight: 800;
     font-size: 1.2rem;
 }
 
 .output-value.highlight {
     color: var(--brand-blue);
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
 }
 
 /* Results Table */
 .results-section {
-    background: white;
+    background: var(--card-bg);
     padding: 2.5rem;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
 }
 
 .results-table {
@@ -374,27 +389,23 @@ h2 i {
 }
 
 .results-table th {
-    background: #f8fafc;
+    background: rgba(15, 23, 42, 0.8);
     color: var(--text-secondary);
     font-weight: 700;
     padding: 1.2rem;
     font-size: 0.95rem;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.05);
 }
 
 .results-table td {
     padding: 1.2rem;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     color: var(--text-primary);
     font-weight: 600;
 }
 
-.results-table tr:last-child td {
-    border-bottom: none;
-}
-
 .total-row td {
-    background: #eff6ff !important;
+    background: rgba(59, 130, 246, 0.1) !important;
     color: var(--brand-blue) !important;
     font-weight: 800;
     border-top: 2px solid var(--brand-blue);
@@ -402,11 +413,11 @@ h2 i {
 
 /* Footer */
 footer {
-    background: white;
+    background: #000000;
     padding: 2rem;
     text-align: center;
     color: var(--text-muted);
-    border-top: 1px solid #f1f5f9;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     margin-top: 4rem;
 }
 
