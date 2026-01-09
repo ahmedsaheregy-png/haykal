@@ -36,6 +36,22 @@ body {
     overflow-x: hidden;
 }
 
+/* العناوين الفرعية والوصف بخط Tajawal */
+.traction-label,
+.traction-note,
+.card-label,
+.bar-label,
+.summary-label,
+.member-role,
+.member-bio,
+.feature span,
+.balance-label,
+.section-tag,
+.hero-subtitle,
+p {
+    font-family: 'Tajawal', 'Cairo', sans-serif;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
