@@ -69,8 +69,8 @@ h4 {
 
 .nav-content {
     background: rgba(18, 23, 46, 0.85);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     border-radius: 60px;
     padding: 0.8rem 2rem;
@@ -316,7 +316,7 @@ h4 {
 .floating-card {
     position: absolute;
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(8px);
     border: 1px solid var(--glass-border);
     border-radius: 20px;
     padding: 1.5rem;
@@ -435,7 +435,7 @@ h4 {
 
 .bento-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(8px);
     border: 1px solid var(--glass-border);
     border-radius: 24px;
     padding: 2.5rem;
@@ -591,8 +591,8 @@ h4 {
     bottom: 1.5rem;
     left: 1.5rem;
     background: rgba(10, 14, 39, 0.9);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     padding: 0.8rem 1.5rem;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -646,7 +646,7 @@ h4 {
 
 .flow-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(8px);
     border: 1px solid var(--glass-border);
     border-radius: 20px;
     padding: 2rem;
@@ -753,7 +753,7 @@ h4 {
 
 .calculator-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(8px);
     border: 1px solid var(--glass-border);
     border-radius: 24px;
     padding: 2.5rem;
