@@ -206,7 +206,11 @@ class FundingCalculator {
             initialPrice: this.initialPrice,
             rounds: this.rounds,
             roundCounter: this.roundCounter,
-            lastModified: Date.now()
+            lastModified: Date.now(),
+            // حفظ بيانات مراحل النمو
+            phases: this.phases,
+            distributionRate: parseFloat(document.getElementById('distributionRate')?.value) || 30,
+            currentPhase: this.currentPhase
         };
 
         // Save specific Project Data
@@ -385,6 +389,17 @@ class FundingCalculator {
                 this.initialPrice = state.initialPrice;
                 this.rounds = state.rounds || [];
                 this.roundCounter = state.roundCounter || 0;
+
+                // استعادة بيانات مراحل النمو المحفوظة
+                if (state.phases) {
+                    this.savedPhases = state.phases;
+                }
+                if (state.distributionRate !== undefined) {
+                    this.savedDistributionRate = state.distributionRate;
+                }
+                if (state.currentPhase) {
+                    this.savedCurrentPhase = state.currentPhase;
+                }
 
                 // Update UI
                 document.getElementById('projectNameInput').value = this.projectName;
@@ -910,17 +925,15 @@ class FundingCalculator {
     // ===== INVESTOR JOURNEY METHODS =====
 
     initInvestorJourney() {
-        // Data for phases - LINKED TO FUNDING ROUNDS from Excel
-        // roundIndex: which round's stock price to use (0-based)
-        // جولة 1 = index 0, جولة 2 = index 1, جولة 3 = index 2, جولة 4 = index 3, جولة 5 = index 4
-        this.phases = {
+        // القيم الافتراضية للمراحل
+        const defaultPhases = {
             launch: {
                 name: 'الافتتاح',
                 month: 1,
                 members: 0,
                 annualProfit: 0,
                 target: 'الهدف: إطلاق التطبيق',
-                roundIndex: 1  // جولة 2 - الافتتاح Series A ($1.09)
+                roundIndex: 1
             },
             breakeven: {
                 name: 'نقطة التعادل',
@@ -928,7 +941,7 @@ class FundingCalculator {
                 members: 2047,
                 annualProfit: 0,
                 target: 'الهدف: 2,047 عضو نشط',
-                roundIndex: 2  // جولة 3 - التعادل Series B ($2.56)
+                roundIndex: 2
             },
             weak: {
                 name: 'أرباح ضعيفة',
@@ -936,16 +949,15 @@ class FundingCalculator {
                 members: 4095,
                 annualProfit: 124254,
                 target: 'الهدف: 4,095 عضو نشط',
-                roundIndex: 3  // جولة 4 - EMI Series C ($34.61)
+                roundIndex: 3
             },
-
             good: {
                 name: 'أرباح جيدة',
                 month: 24,
                 members: 16383,
                 annualProfit: 949865,
                 target: 'الهدف: 16,383 عضو نشط',
-                roundIndex: 3  // لا يزال جولة 4 ($34.61) - جولة 5 لم تحدث بعد!
+                roundIndex: 3
             },
             veryGood: {
                 name: 'أرباح جيدة جداً',
@@ -953,7 +965,7 @@ class FundingCalculator {
                 members: 32767,
                 annualProfit: 1985341,
                 target: 'الهدف: 32,767 عضو نشط',
-                roundIndex: 4  // جولة 5 - التوسع الدولي ($78.45)
+                roundIndex: 4
             },
             excellent: {
                 name: 'أرباح ممتازة',
@@ -961,11 +973,26 @@ class FundingCalculator {
                 members: 65535,
                 annualProfit: 4498647,
                 target: 'الهدف: 65,535 عضو نشط',
-                roundIndex: 4  // لا يزال جولة 5 ($78.45)
+                roundIndex: 4
             }
         };
 
-        this.currentPhase = 'weak';
+        // استخدام البيانات المحفوظة إن وجدت، وإلا استخدام الافتراضية
+        if (this.savedPhases) {
+            this.phases = this.savedPhases;
+        } else {
+            this.phases = defaultPhases;
+        }
+
+        // استعادة المرحلة المحددة
+        this.currentPhase = this.savedCurrentPhase || 'weak';
+
+        // استعادة نسبة التوزيع
+        const distInput = document.getElementById('distributionRate');
+        if (distInput && this.savedDistributionRate !== undefined) {
+            distInput.value = this.savedDistributionRate;
+            document.getElementById('reinvestmentRate').textContent = (100 - this.savedDistributionRate) + '%';
+        }
 
         // Setup listeners
         this.setupInvestorJourneyListeners();
@@ -978,6 +1005,13 @@ class FundingCalculator {
 
         // Update round tags on timeline
         this.updateRoundTags();
+
+        // تفعيل التاب المحفوظ
+        const activePoint = document.querySelector(`[data-phase="${this.currentPhase}"]`);
+        if (activePoint) {
+            document.querySelectorAll('.timeline-point').forEach(p => p.classList.remove('active'));
+            activePoint.classList.add('active');
+        }
     }
 
     setupInvestorJourneyListeners() {
@@ -1094,6 +1128,7 @@ class FundingCalculator {
         if (el('reinvestPercentage')) el('reinvestPercentage').textContent = data.reinvestRate + '%';
 
         // Card values (formatted)
+        if (el('expectedProfitValue')) el('expectedProfitValue').textContent = this.formatCurrency(data.annualProfit);
         if (el('cashValue')) el('cashValue').textContent = this.formatCurrency(data.cashPerShare, 2);
         if (el('reinvestValue')) el('reinvestValue').textContent = this.formatCurrency(data.reinvestPerShare, 2);
         if (el('totalEPS')) el('totalEPS').textContent = this.formatCurrency(data.eps, 2);

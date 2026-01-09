@@ -127,18 +127,6 @@
             <!-- Hidden Profit Input (Auto-calculated from phases) -->
             <input type="hidden" id="expectedProfit" value="342218">
 
-            <!-- Distribution Control Bar -->
-            <div class="distribution-control-bar">
-                <div class="control-item">
-                    <label>نسبة التوزيع النقدي (%)</label>
-                    <input type="number" id="distributionRate" value="30" min="0" max="100" step="5">
-                </div>
-                <div class="control-item">
-                    <label>إعادة الاستثمار (%)</label>
-                    <div class="calculated-box" id="reinvestmentRate">70%</div>
-                </div>
-            </div>
-
             <!-- Phases Settings Table -->
             <div class="phases-settings">
                 <h3><i class="fa-solid fa-sliders"></i> إعدادات مراحل النمو</h3>
@@ -230,6 +218,14 @@
 
                 <!-- Cards -->
                 <div class="investor-cards">
+                    <div class="investor-card profit-card">
+                        <div class="card-icon">💵</div>
+                        <div class="card-label">الربح السنوي المتوقع</div>
+                        <div class="card-percentage">الإجمالي</div>
+                        <div class="card-value" id="expectedProfitValue">$0</div>
+                        <div class="card-note">أرباح البنك السنوية في هذه المرحلة</div>
+                    </div>
+
                     <div class="investor-card cash-card">
                         <div class="card-icon">💰</div>
                         <div class="card-label">توزيعات نقدية</div>
@@ -248,8 +244,8 @@
 
                     <div class="investor-card total-card">
                         <div class="card-icon">🏆</div>
-                        <div class="card-label">إجمالي العائد</div>
-                        <div class="card-percentage">EPS</div>
+                        <div class="card-label">ربح السهم (EPS)</div>
+                        <div class="card-percentage">للسهم الواحد</div>
                         <div class="card-value" id="totalEPS">$0</div>
                         <div class="card-note">إجمالي ربح سهمك السنوي</div>
                     </div>
@@ -272,13 +268,25 @@
                 </div>
             </div>
 
-            <!-- Strategy Note -->
-            <div class="strategy-note">
-                <div class="note-icon"><i class="fa-solid fa-lightbulb"></i></div>
-                <div class="note-content">
-                    <strong>استراتيجية العائد التراكمي (30/70):</strong>
-                    توزيع 30% كأرباح نقدية فورية، وإعادة ضخ 70% لتطوير أصول البنك.
-                    أنت لا تربح من الدخل فقط، بل يرتفع سهمك من سهم قيمته $1 إلى سهم قيمته $5 في وقت قياسي.
+            <!-- Distribution Control + Strategy Note -->
+            <div class="distribution-strategy-wrapper">
+                <div class="distribution-control-bar">
+                    <div class="control-item">
+                        <label>نسبة التوزيع النقدي (%)</label>
+                        <input type="number" id="distributionRate" value="30" min="0" max="100" step="5">
+                    </div>
+                    <div class="control-item">
+                        <label>إعادة الاستثمار (%)</label>
+                        <div class="calculated-box" id="reinvestmentRate">70%</div>
+                    </div>
+                </div>
+                <div class="strategy-note">
+                    <div class="note-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                    <div class="note-content">
+                        <strong>استراتيجية العائد التراكمي (30/70):</strong>
+                        توزيع 30% كأرباح نقدية فورية، وإعادة ضخ 70% لتطوير أصول البنك.
+                        أنت لا تربح من الدخل فقط، بل يرتفع سهمك من سهم قيمته $1 إلى سهم قيمته $5 في وقت قياسي.
+                    </div>
                 </div>
             </div>
         </section>
