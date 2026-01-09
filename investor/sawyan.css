@@ -544,6 +544,8 @@ h4 {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 0.5rem;
+    direction: ltr;
+    display: inline-block;
 }
 
 .metric-label {
