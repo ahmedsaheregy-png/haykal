@@ -4,450 +4,348 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAWYAN Bank | بوابة المستثمرين</title>
-    <meta name="description"
-        content="بنك SAWYAN - حيث يتحول كل دفع إلى استثمار. نموذج Lean بدون تكاليف تشغيلية، أرباح $4.5M سنوياً">
+    <title>SAWYAN | مستقبل الاستثمار الذكي</title>
+    <meta name="description" content="استثمر في البنك الذي يحول كل دفعة إلى حصة ملكية. $130M تقييم، +4,884% نمو متوقع">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="sawyan.css">
 </head>
 
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <div class="logo-icon">S</div>
-                <span>SAWYAN</span>
+
+    <!-- Floating Nav -->
+    <nav class="floating-nav">
+        <div class="nav-content">
+            <div class="brand">
+                <div class="brand-icon">S</div>
+                <span class="brand-name">SAWYAN</span>
             </div>
-            <div class="nav-links">
-                <a href="#problem">المشكلة</a>
-                <a href="#solution">الحل</a>
+            <div class="nav-menu">
                 <a href="#metrics">الأرقام</a>
-                <a href="#valuation">التقييم</a>
-                <a href="#model">النموذج</a>
-                <a href="#cta" class="nav-cta">استثمر الآن</a>
-            </div>
-            <div class="lang-switch">
-                <button class="active">عربي</button>
-                <button>EN</button>
+                <a href="#how">الآلية</a>
+                <a href="#returns">العوائد</a>
+                <a href="#invest" class="nav-cta">استثمر الآن</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-container">
+    <!-- Hero: Split Screen -->
+    <section class="hero-split">
+        <div class="hero-content">
             <div class="hero-badge">
-                <span class="badge-dot"></span>
-                جولة التمويل مفتوحة | تقييم Exit: $130M
+                <span class="pulse-dot"></span>
+                جولة تمويل مفتوحة
             </div>
 
             <h1 class="hero-title">
-                <span class="title-line">البنك الذي يُحوّل</span>
-                <span class="title-highlight">كل دفعة إلى استثمار</span>
+                <span class="title-main">البنك الذي</span>
+                <span class="title-highlight">يحول الدفع</span>
+                <span class="title-main">إلى استثمار</span>
             </h1>
 
-            <p class="hero-subtitle">
-                نموذج <strong>Lean</strong> بدون مخازن أو لوجستيات.
-                <br>
-                نسيطر على <strong>بوابات الدفع</strong> فقط، ونحصد الأرباح.
+            <p class="hero-description">
+                كل عملية دفع تجعلك مالكاً في البنك. نموذج Lean بدون تكاليف تشغيلية،
+                100% رقمي، أرباح نقية من كل معاملة.
             </p>
 
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <div class="stat-value">$4.5M</div>
-                    <div class="stat-label">أرباح سنوية مستهدفة</div>
+            <div class="hero-stats-inline">
+                <div class="stat-box">
+                    <div class="stat-number">$130M</div>
+                    <div class="stat-label">تقييم Exit</div>
                 </div>
                 <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <div class="stat-value">$130M</div>
-                    <div class="stat-label">تقييم التخارج</div>
+                <div class="stat-box">
+                    <div class="stat-number">+4,884%</div>
+                    <div class="stat-label">نمو السهم</div>
                 </div>
                 <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <div class="stat-value">+4,884%</div>
-                    <div class="stat-label">نمو سعر السهم</div>
+                <div class="stat-box">
+                    <div class="stat-number">$4.5M</div>
+                    <div class="stat-label">أرباح سنوية</div>
                 </div>
             </div>
 
             <div class="hero-actions">
-                <a href="#metrics" class="btn btn-primary">
+                <a href="../index.html" class="btn btn-primary">
+                    <span>احسب عوائدك</span>
+                    <i class="fa-solid fa-calculator"></i>
+                </a>
+                <a href="#metrics" class="btn btn-ghost">
                     <span>اكتشف الأرقام</span>
                     <i class="fa-solid fa-arrow-down"></i>
-                </a>
-                <a href="../index.html" class="btn btn-ghost">
-                    <i class="fa-solid fa-calculator"></i>
-                    <span>حاسبة التمويل</span>
                 </a>
             </div>
         </div>
 
         <div class="hero-visual">
-            <div class="visual-card card-1">
-                <div class="card-header">GTV الشهري</div>
-                <div class="card-value">$10.9M</div>
-                <div class="card-chart">
-                    <div class="mini-bar" style="height: 30%"></div>
-                    <div class="mini-bar" style="height: 45%"></div>
-                    <div class="mini-bar" style="height: 60%"></div>
-                    <div class="mini-bar" style="height: 75%"></div>
-                    <div class="mini-bar" style="height: 100%"></div>
+            <div class="visual-container">
+                <img src="../../../brain/9dab3a08-c2fd-4c8c-954b-c6ffaf5cb0bd/hero_abstract_tech_1767947841263.png"
+                    alt="Tech Background" class="bg-image">
+                <div class="floating-card card-1">
+                    <div class="card-label">GTV الشهري</div>
+                    <div class="card-value">$10.9M</div>
+                    <div class="card-trend">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                        <span>+127%</span>
+                    </div>
                 </div>
-            </div>
-            <div class="visual-card card-2">
-                <div class="card-header">سعر السهم</div>
-                <div class="card-value">$56.84</div>
-                <div class="card-trend">
-                    <i class="fa-solid fa-arrow-trend-up"></i>
-                    <span>من $1.14</span>
+                <div class="floating-card card-2">
+                    <div class="card-label">سعر السهم</div>
+                    <div class="card-value">$56.84</div>
+                    <div class="mini-chart">
+                        <div class="bar" style="height: 40%"></div>
+                        <div class="bar" style="height: 55%"></div>
+                        <div class="bar" style="height: 70%"></div>
+                        <div class="bar" style="height: 65%"></div>
+                        <div class="bar" style="height: 100%"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Problem Section -->
-    <section class="problem-section" id="problem">
+    <!-- Metrics Bento Grid -->
+    <section class="metrics-bento" id="metrics">
         <div class="container">
-            <div class="section-label">المشكلة</div>
-            <h2 class="section-title">لماذا يكره الناس الدفع؟</h2>
-
-            <div class="problem-grid">
-                <div class="problem-card">
-                    <div class="problem-icon">💸</div>
-                    <h3>الأموال تُستنزف</h3>
-                    <p>كل عملية شراء = خسارة. المستهلك يدفع ولا يحصل على شيء سوى المنتج.</p>
-                </div>
-                <div class="problem-card">
-                    <div class="problem-icon">📉</div>
-                    <h3>لا عوائد</h3>
-                    <p>البنوك التقليدية تأخذ رسوماً. لا يوجد حافز للمستهلك سوى "الراحة".</p>
-                </div>
-                <div class="problem-card">
-                    <div class="problem-icon">🔒</div>
-                    <h3>انفصال عن الاستثمار</h3>
-                    <p>الادخار والاستثمار "شيء منفصل" يتطلب جهداً ومعرفة.</p>
-                </div>
+            <div class="section-header">
+                <span class="section-label">الأرقام الحقيقية</span>
+                <h2 class="section-title">لماذا SAWYAN فرصة استثنائية</h2>
             </div>
 
-            <div class="problem-quote">
-                <blockquote>
-                    "ماذا لو تحولت كل عملية دفع إلى فرصة استثمارية تلقائية؟"
-                </blockquote>
+            <div class="bento-grid">
+                <!-- Large Card: Revenue Model -->
+                <div class="bento-card large" style="grid-area: revenue;">
+                    <div class="card-icon-large">💰</div>
+                    <h3>نموذج الإيرادات</h3>
+                    <div class="revenue-breakdown">
+                        <div class="revenue-item">
+                            <span class="revenue-label">رسوم المعاملات (1.5%)</span>
+                            <span class="revenue-value">$2.0M</span>
+                        </div>
+                        <div class="revenue-item">
+                            <span class="revenue-label">اشتراكات التجار</span>
+                            <span class="revenue-value">$1.2M</span>
+                        </div>
+                        <div class="revenue-item">
+                            <span class="revenue-label">فوائد التمويل</span>
+                            <span class="revenue-value">$1.3M</span>
+                        </div>
+                        <div class="revenue-total">
+                            <span>إجمالي الأرباح السنوية</span>
+                            <span class="total-value">$4.5M</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metric Cards -->
+                <div class="bento-card metric" style="grid-area: gtv;">
+                    <div class="metric-icon">📊</div>
+                    <div class="metric-value">$130.7M</div>
+                    <div class="metric-label">GTV السنوي</div>
+                    <div class="metric-badge positive">+4,884%</div>
+                </div>
+
+                <div class="bento-card metric" style="grid-area: shares;">
+                    <div class="metric-icon">📈</div>
+                    <div class="metric-value">$56.84</div>
+                    <div class="metric-label">سعر السهم الحالي</div>
+                    <div class="metric-badge">من $1.14</div>
+                </div>
+
+                <div class="bento-card metric" style="grid-area: exit;">
+                    <div class="metric-icon">🎯</div>
+                    <div class="metric-value">$130M</div>
+                    <div class="metric-label">تقييم Exit</div>
+                    <div class="metric-badge positive">Year 4</div>
+                </div>
+
+                <!-- Image Card -->
+                <div class="bento-card image-card" style="grid-area: dashboard;">
+                    <img src="../../../brain/9dab3a08-c2fd-4c8c-954b-c6ffaf5cb0bd/dashboard_visualization_1767947861475.png"
+                        alt="Dashboard">
+                    <div class="image-overlay">
+                        <span class="overlay-label">Live Dashboard</span>
+                    </div>
+                </div>
+
+                <!-- Growth Card -->
+                <div class="bento-card growth" style="grid-area: growth;">
+                    <img src="../../../brain/9dab3a08-c2fd-4c8c-954b-c6ffaf5cb0bd/investment_growth_concept_1767947877694.png"
+                        alt="Growth" class="growth-bg">
+                    <div class="growth-content">
+                        <h4>نمو تراكمي</h4>
+                        <p>كل استخدام يزيد حصتك</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Solution Section -->
-    <section class="solution-section" id="solution">
+    <!-- How It Works: Timeline -->
+    <section class="how-it-works" id="how">
         <div class="container">
-            <div class="solution-grid">
-                <div class="solution-content">
-                    <div class="section-label">الحل</div>
-                    <h2 class="section-title">SAWYAN: الاستهلاك الاستثماري</h2>
+            <div class="section-header centered">
+                <span class="section-label">الآلية</span>
+                <h2 class="section-title">رحلة تحويل الدفع لاستثمار</h2>
+            </div>
 
-                    <p class="solution-intro">
-                        نقلب المعادلة كلياً. بدلاً من أن يخسر المستهلك عند كل دفعة،
-                        <strong>يربح جزءاً من كل عملية</strong> كحصة استثمارية في البنك نفسه.
+            <div class="timeline-flow">
+                <div class="flow-card">
+                    <div class="flow-number">01</div>
+                    <div class="flow-icon">💳</div>
+                    <h4>المستخدم يدفع</h4>
+                    <p>عند أي عملية شراء عبر SAWYAN</p>
+                </div>
+
+                <div class="flow-arrow">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </div>
+
+                <div class="flow-card highlight">
+                    <div class="flow-number">02</div>
+                    <div class="flow-icon">🎁</div>
+                    <h4>يحصل على أسهم</h4>
+                    <p>نسبة من الرسوم تتحول لحصة ملكية</p>
+                </div>
+
+                <div class="flow-arrow">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </div>
+
+                <div class="flow-card">
+                    <div class="flow-number">03</div>
+                    <div class="flow-icon">📊</div>
+                    <h4>الأسهم تنمو</h4>
+                    <p>مع نمو البنك، ترتفع قيمة أسهمك</p>
+                </div>
+
+                <div class="flow-arrow">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </div>
+
+                <div class="flow-card">
+                    <div class="flow-number">04</div>
+                    <div class="flow-icon">💰</div>
+                    <h4>توزيعات نقدية</h4>
+                    <p>أرباح سنوية من كل معاملة</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Returns Breakdown -->
+    <section class="returns-section" id="returns">
+        <div class="container">
+            <div class="returns-split">
+                <div class="returns-content">
+                    <span class="section-label">العوائد المتوقعة</span>
+                    <h2>من $1,000 إلى $50,000+</h2>
+                    <p class="returns-intro">
+                        استثمار بقيمة $1,000 اليوم يتحول عبر 4 سنوات إلى قيمة $50,000+
+                        من خلال نمو سعر السهم + التوزيعات النقدية السنوية.
                     </p>
 
-                    <div class="solution-features">
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fa-solid fa-arrow-right-arrow-left"></i>
-                            </div>
-                            <div class="feature-text">
-                                <h4>كل دفعة = استثمار</h4>
-                                <p>نسبة من كل عملية تتحول لحصة ملكية</p>
+                    <div class="returns-list">
+                        <div class="return-item">
+                            <i class="fa-solid fa-check-circle"></i>
+                            <div>
+                                <strong>توزيعات نقدية سنوية</strong>
+                                <span>30% من الأرباح النقدية</span>
                             </div>
                         </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fa-solid fa-chart-line"></i>
-                            </div>
-                            <div class="feature-text">
-                                <h4>نمو تراكمي</h4>
-                                <p>كلما استخدمت أكثر، امتلكت أكثر</p>
+                        <div class="return-item">
+                            <i class="fa-solid fa-check-circle"></i>
+                            <div>
+                                <strong>نمو رأس المال</strong>
+                                <span>70% يُعاد استثماره لزيادة القيمة</span>
                             </div>
                         </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fa-solid fa-hand-holding-dollar"></i>
-                            </div>
-                            <div class="feature-text">
-                                <h4>أرباح حقيقية</h4>
-                                <p>توزيعات نقدية سنوية + نمو سعر السهم</p>
+                        <div class="return-item">
+                            <i class="fa-solid fa-check-circle"></i>
+                            <div>
+                                <strong>Exit بـ $130M</strong>
+                                <span>تقييم متوقع بعد 4 سنوات</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="solution-visual">
-                    <div class="flow-diagram">
-                        <div class="flow-step">
-                            <div class="step-circle">1</div>
-                            <div class="step-text">المستخدم يدفع</div>
+                <div class="returns-calculator-preview">
+                    <div class="calculator-card">
+                        <div class="calc-header">
+                            <i class="fa-solid fa-calculator"></i>
+                            <span>حاسبة العوائد</span>
                         </div>
-                        <div class="flow-arrow">
-                            <i class="fa-solid fa-arrow-down"></i>
+                        <div class="calc-input-group">
+                            <label>مبلغ الاستثمار</label>
+                            <input type="text" value="$1,000" readonly>
                         </div>
-                        <div class="flow-step highlight">
-                            <div class="step-circle">2</div>
-                            <div class="step-text">SAWYAN يحتفظ بالعمولة</div>
+                        <div class="calc-timeline">
+                            <div class="timeline-year">
+                                <span class="year-label">السنة 1</span>
+                                <span class="year-value">$1,400</span>
+                            </div>
+                            <div class="timeline-year">
+                                <span class="year-label">السنة 2</span>
+                                <span class="year-value">$5,200</span>
+                            </div>
+                            <div class="timeline-year">
+                                <span class="year-label">السنة 3</span>
+                                <span class="year-value">$18,300</span>
+                            </div>
+                            <div class="timeline-year highlight">
+                                <span class="year-label">السنة 4</span>
+                                <span class="year-value">$50,000+</span>
+                            </div>
                         </div>
-                        <div class="flow-arrow">
-                            <i class="fa-solid fa-arrow-down"></i>
-                        </div>
-                        <div class="flow-step">
-                            <div class="step-circle">3</div>
-                            <div class="step-text">جزء يعود كحصة ملكية</div>
-                        </div>
-                        <div class="flow-arrow">
-                            <i class="fa-solid fa-arrow-down"></i>
-                        </div>
-                        <div class="flow-step success">
-                            <div class="step-circle">💰</div>
-                            <div class="step-text">المستخدم = مستثمر</div>
-                        </div>
+                        <a href="../index.html" class="calc-cta">
+                            افتح الحاسبة الكاملة
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Metrics Section -->
-    <section class="metrics-section" id="metrics">
-        <div class="container">
-            <div class="section-label">الأرقام الحية</div>
-            <h2 class="section-title">أداء مالي مُثبت بالتحقق</h2>
-            <p class="section-subtitle">*الأرقام التالية مبنية على نموذج Validation ناجح وتوقعات محافظة</p>
-
-            <div class="metrics-grid">
-                <div class="metric-card primary">
-                    <div class="metric-icon">
-                        <i class="fa-solid fa-money-bill-transfer"></i>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value" data-target="10911411" data-prefix="$">$0</div>
-                        <div class="metric-label">GTV شهرياً</div>
-                        <div class="metric-note">حجم العمليات الإجمالي</div>
-                    </div>
-                </div>
-
-                <div class="metric-card">
-                    <div class="metric-icon">
-                        <i class="fa-solid fa-users"></i>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value" data-target="65535" data-prefix="">0</div>
-                        <div class="metric-label">عضو نشط</div>
-                        <div class="metric-note">عند الشهر 48</div>
-                    </div>
-                </div>
-
-                <div class="metric-card">
-                    <div class="metric-icon">
-                        <i class="fa-solid fa-sack-dollar"></i>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value" data-target="4498647" data-prefix="$">$0</div>
-                        <div class="metric-label">أرباح سنوية</div>
-                        <div class="metric-note">صافي - السنة الرابعة</div>
-                    </div>
-                </div>
-
-                <div class="metric-card">
-                    <div class="metric-icon">
-                        <i class="fa-solid fa-building-columns"></i>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value" data-target="130" data-prefix="$" data-suffix="M">$0M</div>
-                        <div class="metric-label">تقييم التخارج</div>
-                        <div class="metric-note">Exit Valuation</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Valuation Bridge -->
-    <section class="valuation-section" id="valuation">
-        <div class="container">
-            <div class="section-label">جسر التقييم</div>
-            <h2 class="section-title">رحلة سعر السهم عبر الجولات</h2>
-
-            <div class="valuation-bridge">
-                <div class="bridge-track">
-                    <div class="bridge-line"></div>
-
-                    <div class="bridge-point" data-round="1">
-                        <div class="point-marker">
-                            <div class="marker-inner"></div>
-                        </div>
-                        <div class="point-content">
-                            <div class="point-stage">التأسيس</div>
-                            <div class="point-price">$1.14</div>
-                            <div class="point-label">Pre-Seed</div>
-                        </div>
-                    </div>
-
-                    <div class="bridge-point" data-round="2">
-                        <div class="point-marker">
-                            <div class="marker-inner"></div>
-                        </div>
-                        <div class="point-content">
-                            <div class="point-stage">الشهر 1</div>
-                            <div class="point-price">$2.78</div>
-                            <div class="point-label">Series A</div>
-                        </div>
-                    </div>
-
-                    <div class="bridge-point" data-round="3">
-                        <div class="point-marker">
-                            <div class="marker-inner"></div>
-                        </div>
-                        <div class="point-content">
-                            <div class="point-stage">الشهر 11</div>
-                            <div class="point-price">$6.47</div>
-                            <div class="point-label">Series B</div>
-                        </div>
-                    </div>
-
-                    <div class="bridge-point highlight" data-round="4">
-                        <div class="point-marker emi">
-                            <div class="marker-inner">EMI</div>
-                        </div>
-                        <div class="point-content">
-                            <div class="point-stage">الشهر 12</div>
-                            <div class="point-price">$37.62</div>
-                            <div class="point-label">رخصة EMI</div>
-                            <div class="point-tag">🚀 قفزة كبرى</div>
-                        </div>
-                    </div>
-
-                    <div class="bridge-point final" data-round="5">
-                        <div class="point-marker super">
-                            <div class="marker-inner">🏆</div>
-                        </div>
-                        <div class="point-content">
-                            <div class="point-stage">الشهر 36</div>
-                            <div class="point-price">$85.27</div>
-                            <div class="point-label">Super App</div>
-                            <div class="point-tag success">الهدف النهائي</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="valuation-summary">
-                <div class="summary-box">
-                    <div class="summary-icon">📈</div>
-                    <div class="summary-text">
-                        <strong>+4,884%</strong> نمو في سعر السهم
-                    </div>
-                </div>
-                <div class="summary-box">
-                    <div class="summary-icon">💎</div>
-                    <div class="summary-text">
-                        من <strong>$1.14</strong> إلى <strong>$56.84</strong>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Lean Model Section -->
-    <section class="lean-section" id="model">
-        <div class="container">
-            <div class="section-label">النموذج الرشيق</div>
-            <h2 class="section-title">كيف نحقق أرباحاً هائلة بدون تكاليف؟</h2>
-
-            <div class="lean-comparison">
-                <div class="lean-column traditional">
-                    <div class="column-header">
-                        <i class="fa-solid fa-xmark"></i>
-                        <h3>البنوك التقليدية</h3>
-                    </div>
-                    <ul class="column-list">
-                        <li><i class="fa-solid fa-building"></i> فروع مكلفة</li>
-                        <li><i class="fa-solid fa-users"></i> آلاف الموظفين</li>
-                        <li><i class="fa-solid fa-server"></i> بنية تحتية ضخمة</li>
-                        <li><i class="fa-solid fa-file-contract"></i> بيروقراطية معقدة</li>
-                    </ul>
-                    <div class="column-result negative">
-                        <span>هامش ربح منخفض</span>
-                    </div>
-                </div>
-
-                <div class="lean-vs">VS</div>
-
-                <div class="lean-column sawyan">
-                    <div class="column-header">
-                        <i class="fa-solid fa-check"></i>
-                        <h3>SAWYAN</h3>
-                    </div>
-                    <ul class="column-list">
-                        <li><i class="fa-solid fa-mobile-screen"></i> تطبيق رقمي فقط</li>
-                        <li><i class="fa-solid fa-robot"></i> أتمتة كاملة</li>
-                        <li><i class="fa-solid fa-cloud"></i> بنية سحابية مرنة</li>
-                        <li><i class="fa-solid fa-credit-card"></i> رخصة EMI فقط</li>
-                    </ul>
-                    <div class="column-result positive">
-                        <span>هامش ربح استثنائي</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="lean-highlight">
-                <div class="highlight-icon">🎯</div>
-                <div class="highlight-text">
-                    <h4>نسيطر على بوابات الدفع فقط</h4>
-                    <p>لا مخازن، لا لوجستيات، لا تكاليف تشغيلية فيزيائية. كل دولار يدخل = هامش ربح أعلى.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section" id="cta">
+    <!-- CTA: Immersive -->
+    <section class="cta-immersive" id="invest">
+        <div class="cta-background"></div>
         <div class="container">
             <div class="cta-content">
-                <h2>كن شريكاً في مستقبل البنوك</h2>
-                <p>نحن في طور إغلاق جولة التمويل الحالية. الفرصة محدودة.</p>
+                <h2 class="cta-title">ابدأ رحلتك الاستثمارية</h2>
+                <p class="cta-subtitle">انضم لمستثمرين يبنون مستقبل الدفع والاستثمار في العالم العربي</p>
 
-                <div class="cta-stats">
-                    <div class="cta-stat">
-                        <div class="stat-value">$1.14</div>
-                        <div class="stat-label">سعر السهم اليوم</div>
-                    </div>
-                    <div class="cta-arrow">
-                        <i class="fa-solid fa-arrow-left"></i>
-                    </div>
-                    <div class="cta-stat highlight">
-                        <div class="stat-value">$56.84</div>
-                        <div class="stat-label">السعر المستهدف</div>
-                    </div>
-                </div>
-
-                <div class="cta-buttons">
-                    <a href="#" class="btn btn-primary btn-large">
-                        <i class="fa-solid fa-file-pdf"></i>
-                        <span>تحميل Pitch Deck</span>
+                <div class="cta-options">
+                    <a href="mailto:invest@sawyanbank.com" class="cta-option">
+                        <div class="option-icon">📧</div>
+                        <div class="option-content">
+                            <strong>تواصل عبر البريد</strong>
+                            <span>invest@sawyanbank.com</span>
+                        </div>
                     </a>
-                    <a href="#" class="btn btn-secondary btn-large">
-                        <i class="fa-solid fa-calendar"></i>
-                        <span>جدولة اجتماع</span>
+
+                    <a href="https://wa.me/1234567890" class="cta-option">
+                        <div class="option-icon">💬</div>
+                        <div class="option-content">
+                            <strong>واتساب مباشر</strong>
+                            <span>رد فوري خلال دقائق</span>
+                        </div>
+                    </a>
+
+                    <a href="../index.html" class="cta-option highlight">
+                        <div class="option-icon">🧮</div>
+                        <div class="option-content">
+                            <strong>احسب عوائدك</strong>
+                            <span>استخدم الحاسبة التفاعلية</span>
+                        </div>
                     </a>
                 </div>
-
-                <p class="cta-disclaimer">
-                    * الأرقام المذكورة هي توقعات مبنية على نموذج تحقق (Validation) ناجح وليست ضماناً للعوائد.
-                </p>
             </div>
         </div>
     </section>
@@ -455,37 +353,24 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-main">
+            <div class="footer-content">
                 <div class="footer-brand">
-                    <div class="logo">
-                        <div class="logo-icon">S</div>
-                        <span>SAWYAN</span>
-                    </div>
-                    <p>البنك الذي يُحوّل كل دفعة إلى استثمار</p>
+                    <div class="brand-icon-large">S</div>
+                    <p>SAWYAN Bank - مستقبل الاستثمار الذكي</p>
                 </div>
-
                 <div class="footer-links">
-                    <a href="../index.html">حاسبة التمويل</a>
                     <a href="#metrics">الأرقام</a>
-                    <a href="#valuation">التقييم</a>
-                    <a href="#model">النموذج</a>
-                </div>
-
-                <div class="footer-contact">
-                    <a href="mailto:invest@sawyan.bank">
-                        <i class="fa-solid fa-envelope"></i>
-                        invest@sawyan.bank
-                    </a>
+                    <a href="#how">الآلية</a>
+                    <a href="#returns">العوائد</a>
+                    <a href="../index.html">الحاسبة</a>
                 </div>
             </div>
-
             <div class="footer-bottom">
-                <p>© 2026 SAWYAN Bank. جميع الحقوق محفوظة.</p>
+                <p>&copy; 2024 SAWYAN Bank. جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </footer>
 
-    <script src="sawyan.js"></script>
 </body>
 
 </html>
