@@ -33,9 +33,10 @@
     /* Blue Gradient */
     --gradient-success: linear-gradient(135deg, #00b894 0%, #008f72 100%);
 
-    --card-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-    /* Soft Shadow */
-    --transition: all 0.3s ease;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    /* Stronger shadow */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Smoother transition */
 }
 
 * {
@@ -75,14 +76,14 @@ td {
 
 /* Header */
 header {
-    background: rgba(255, 255, 255, 0.95);
+    background: #050510;
+    /* Dark Premium Header */
     padding: 1rem 5%;
-    border-bottom: 1px solid var(--border-color);
-    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .header-content {
@@ -99,19 +100,19 @@ header {
 }
 
 .logo-icon {
-    color: var(--primary-color);
+    color: #ffffff;
     font-size: 1.8rem;
+    text-shadow: 0 0 10px rgba(0, 86, 179, 0.8);
 }
 
 .logo-container h1 {
     font-size: 1.5rem;
     font-weight: 800;
-    color: var(--primary-color);
+    color: #ffffff;
     margin: 0;
     display: flex;
     align-items: center;
     font-family: 'Cairo', sans-serif;
-    /* Keep Brand font for Logo */
 }
 
 .header-actions {
@@ -121,9 +122,9 @@ header {
 }
 
 .header-btn {
-    background: transparent;
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 8px 16px;
     border-radius: 8px;
     cursor: pointer;
@@ -137,13 +138,14 @@ header {
 }
 
 .header-btn:hover {
-    background: rgba(0, 86, 179, 0.05);
-    color: var(--primary-color);
-    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-color: #ffffff;
+    transform: translateY(-2px);
 }
 
 .toggle-edit-btn {
-    background: rgba(214, 48, 49, 0.1);
+    background: rgba(233, 69, 96, 0.2);
     color: var(--accent-color);
     border: 1px solid transparent;
     width: 40px;
@@ -169,8 +171,8 @@ header {
 
 .project-name-input {
     background: transparent;
-    border: 1px solid transparent;
-    color: var(--primary-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
     font-size: 1.1rem;
     font-family: 'Tajawal', sans-serif;
     width: 200px;
@@ -183,11 +185,11 @@ header {
 .project-name-input:focus {
     border-color: var(--primary-color);
     outline: none;
-    background: rgba(0, 86, 179, 0.05);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .project-name-input::placeholder {
-    color: rgba(0, 0, 0, 0.3);
+    color: rgba(255, 255, 255, 0.3);
 }
 
 /* Section Styles */

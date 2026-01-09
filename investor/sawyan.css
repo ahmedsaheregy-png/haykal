@@ -41,12 +41,12 @@
     --gradient-gold: var(--gradient-primary);
     /* Mapping old var to new blue gradient */
 
-    /* Effects */
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    /* Soft shadow for light theme */
-    --glow: 0 0 20px rgba(0, 86, 179, 0.15);
-    /* Blue glow */
-    --border-light: rgba(0, 0, 0, 0.08);
+    /* Effects - Premium Polish */
+    --shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    /* Stronger, smoother shadow */
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --glow: 0 0 25px rgba(0, 86, 179, 0.25);
+    --border-light: rgba(0, 0, 0, 0.06);
 }
 
 * {
@@ -111,11 +111,11 @@ h3.hero-title {
     left: 0;
     right: 0;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-light);
+    background: #050510;
+    /* Dark Premium Header */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 1rem 2rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .nav-container {
@@ -132,7 +132,8 @@ h3.hero-title {
     gap: 0.8rem;
     font-size: 1.5rem;
     font-weight: 800;
-    color: var(--brand-blue);
+    color: #ffffff;
+    /* White Logo Text */
     font-family: 'Cairo', sans-serif;
 }
 
@@ -146,6 +147,8 @@ h3.hero-title {
     justify-content: center;
     font-weight: 900;
     color: #ffffff;
+    box-shadow: 0 0 15px rgba(0, 86, 179, 0.4);
+    /* Icon Glow */
 }
 
 .nav-links {
@@ -155,16 +158,18 @@ h3.hero-title {
 }
 
 .nav-links a {
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.85);
+    /* Clearly visible white-ish text */
     text-decoration: none;
     font-weight: 600;
     /* Bolder for visibility */
     font-size: 0.95rem;
-    transition: color 0.3s;
+    transition: all 0.3s;
 }
 
 .nav-links a:hover {
-    color: var(--brand-blue);
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .nav-cta {
@@ -173,7 +178,12 @@ h3.hero-title {
     padding: 0.6rem 1.5rem;
     border-radius: 8px;
     font-weight: 700 !important;
-    box-shadow: 0 4px 15px rgba(0, 86, 179, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 86, 179, 0.3);
+}
+
+.nav-cta:hover {
+    box-shadow: 0 0 20px rgba(0, 86, 179, 0.6);
+    transform: translateY(-2px);
 }
 
 .lang-switch {
@@ -183,8 +193,8 @@ h3.hero-title {
 
 .lang-switch button {
     background: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.7);
     padding: 0.4rem 1rem;
     border-radius: 6px;
     cursor: pointer;
@@ -193,10 +203,15 @@ h3.hero-title {
     font-weight: 600;
 }
 
+.lang-switch button:hover {
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
 .lang-switch button.active {
-    background: rgba(0, 86, 179, 0.05);
+    background: rgba(255, 255, 255, 0.1);
     border-color: var(--brand-blue);
-    color: var(--brand-blue);
+    color: #ffffff;
 }
 
 /* ========================================
