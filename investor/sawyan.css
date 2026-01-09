@@ -493,6 +493,17 @@ section {
     height: 56px;
     border-radius: 16px;
     font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flow-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
 }
 
 .flow-step {
@@ -503,6 +514,17 @@ section {
     font-weight: 700;
     color: var(--text-primary);
     border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 400px;
+    /* Limit width */
+    transition: transform 0.3s ease;
+}
+
+.flow-step:hover {
+    transform: translateY(-5px);
 }
 
 .step-circle {
@@ -510,6 +532,15 @@ section {
     width: 40px;
     height: 40px;
     font-size: 1rem;
+    border-radius: 50%;
+    /* Fix Square Circle */
+    display: flex;
+    /* Fix Centering */
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
 }
 
 /* ========================================
