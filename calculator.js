@@ -762,11 +762,10 @@ class FundingCalculator {
             }
         });
 
-        // 2. Buttons (Add Round, Delete Round, New Project, My Projects)
+        // 2. Buttons (Add Round, Delete Round, New Project)
         const buttonsToHide = [
             'addRoundBtn',
-            'newProjectBtn',
-            'saveProjectsMenuBtn'
+            'newProjectBtn'
         ];
 
         buttonsToHide.forEach(id => {
