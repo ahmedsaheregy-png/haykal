@@ -40,34 +40,84 @@ body {
 /* Header */
 header {
     background: var(--card-bg);
-    padding: 1.5rem 5%;
+    padding: 1rem 5%;
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--border-color);
-    backdrop-filter: blur(10px);
+    width: 100%;
 }
 
-.logo {
+.logo-container {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--text-primary);
+    gap: 15px;
 }
 
-.logo i {
+.logo-icon {
     color: var(--accent-color);
     font-size: 1.8rem;
 }
 
-.header-subtitle {
+.logo-container h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
     font-family: 'Tajawal', sans-serif;
     font-size: 0.9rem;
-    color: var(--accent-gold);
-    font-weight: 600;
-    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.header-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.toggle-edit-btn {
+    background: rgba(233, 69, 96, 0.2);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.header-subtitle {
+    display: none;
+    /* Hide subtitle to save space */
 }
 
 /* Main Container */
