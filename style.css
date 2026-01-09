@@ -938,49 +938,91 @@ footer {
 
 /* Phases Settings Table */
 .phases-settings {
-    background: rgba(255, 255, 255, 0.02);
-    border-radius: 12px;
-    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 2rem;
     margin: 2rem 0;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
 }
 
 .phases-settings h3 {
     color: var(--text-primary);
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
 }
 
 .phases-settings h3 i {
-    color: var(--primary-color);
+    color: var(--accent-gold);
     margin-left: 0.5rem;
+}
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
 }
 
 .phases-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
 .phases-table th,
 .phases-table td {
-    padding: 0.75rem;
+    padding: 1rem 0.75rem;
     text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.phases-table th {
-    background: rgba(244, 196, 48, 0.1);
-    color: var(--primary-color);
-    font-weight: 600;
-    font-size: 0.85rem;
+.phases-table thead th {
+    background: var(--secondary-color);
+    color: var(--accent-gold);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--accent-gold);
+    white-space: nowrap;
+}
+
+.phases-table tbody td {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.phases-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.phases-table .phase-name {
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: right;
+    padding-right: 1rem;
 }
 
 .phases-table input {
     width: 100%;
-    padding: 0.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.05);
+    max-width: 120px;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.phases-table input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px rgba(244, 196, 48, 0.15);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 /* --- Distribution Control Bar --- */
