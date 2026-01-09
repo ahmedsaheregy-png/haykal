@@ -1108,10 +1108,22 @@ class FundingCalculator {
             }) || this.rounds[this.rounds.length - 1]; // fallback للجولة الأخيرة
         }
 
-        // Get baseline (first round or initial) for comparison
-        const baseStockPrice = this.initialPrice;
-        const phaseStockPrice = phaseRound ? phaseRound.stockPrice : this.initialPrice;
+        // السعر الحالي = سعر آخر جولة قبل أو عند شهر المرحلة
+        const currentStockPrice = phaseRound ? phaseRound.stockPrice : this.initialPrice;
         const totalShares = phaseRound ? phaseRound.totalShares : this.initialShares;
+
+        // السعر المتوقع = سعر أقرب جولة بعد شهر المرحلة
+        let expectedStockPrice = currentStockPrice; // افتراضياً نفس السعر
+        const nextRound = this.rounds
+            .filter(r => r.timing)
+            .find(r => {
+                const rMonth = parseInt(r.timing.match(/\d+/)?.[0] || 0);
+                return rMonth > phaseMonth;
+            });
+
+        if (nextRound) {
+            expectedStockPrice = nextRound.stockPrice;
+        }
 
         // EPS calculation based on shares at that phase
         const eps = totalShares > 0 ? annualProfit / totalShares : 0;
@@ -1120,8 +1132,8 @@ class FundingCalculator {
         const cashPerShare = eps * (distributionRate / 100);
         const reinvestPerShare = eps * (reinvestRate / 100);
 
-        // Growth from initial price
-        const priceGrowth = baseStockPrice > 0 ? ((phaseStockPrice - baseStockPrice) / baseStockPrice) * 100 : 0;
+        // Growth from current to expected
+        const priceGrowth = currentStockPrice > 0 ? ((expectedStockPrice - currentStockPrice) / currentStockPrice) * 100 : 0;
 
         // Update UI
         this.updateInvestorJourneyUI({
@@ -1131,8 +1143,8 @@ class FundingCalculator {
             cashPerShare,
             reinvestPerShare,
             eps,
-            baseStockPrice,
-            phaseStockPrice,
+            currentStockPrice,
+            expectedStockPrice,
             priceGrowth,
             annualProfit,
             roundName: phaseRound ? phaseRound.name : 'التأسيس'
@@ -1156,10 +1168,9 @@ class FundingCalculator {
         if (el('reinvestValue')) el('reinvestValue').textContent = this.formatCurrency(data.reinvestPerShare, 2);
         if (el('totalEPS')) el('totalEPS').textContent = this.formatCurrency(data.eps, 2);
 
-        // Stock price - Shows price AT this phase from linked round
-        // Display the phase stock price as the main value
-        if (el('currentStockPrice')) el('currentStockPrice').textContent = '$' + data.phaseStockPrice.toFixed(4);
-        if (el('projectedStockPrice')) el('projectedStockPrice').textContent = '$' + data.phaseStockPrice.toFixed(2);
+        // Stock prices - Current (from last round) and Expected (from next round)
+        if (el('currentStockPrice')) el('currentStockPrice').textContent = '$' + data.currentStockPrice.toFixed(2);
+        if (el('projectedStockPrice')) el('projectedStockPrice').textContent = '$' + data.expectedStockPrice.toFixed(2);
 
         if (el('projectedGrowth')) {
             const growth = data.priceGrowth;
