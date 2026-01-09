@@ -81,51 +81,16 @@ class FundingCalculator {
     }
 
     setupProjectUI() {
-        // Create Project Controls if they don't exist
-        if (!document.getElementById('projectControls')) {
-            const header = document.querySelector('header');
-            const controls = document.createElement('div');
-            controls.id = 'projectControls';
-            controls.className = 'project-controls';
-            controls.innerHTML = `
-                <div class="project-info">
-                    <input type="text" id="projectNameInput" class="project-name-input" value="${this.projectName}" placeholder="اسم المشروع">
-                    <button id="saveProjectsMenuBtn" class="btn-secondary"><i class="fa-solid fa-folder-open"></i> مشاريعي</button>
-                    <button id="newProjectBtn" class="btn-primary"><i class="fa-solid fa-plus"></i> مشروع جديد</button>
-                </div>
-                <div id="projectsDropdown" class="projects-dropdown" style="display: none;">
-                    <h4>المشاريع المحفوظة</h4>
-                    <ul id="projectsList"></ul>
-                </div>
-            `;
-            header.appendChild(controls);
-
-            // Add Styles for controls dynamically
-            const style = document.createElement('style');
-            style.textContent = `
-                .project-controls { display: flex; align-items: center; gap: 1rem; position: relative; }
-                .project-name-input { background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.5rem; border-radius: 8px; font-family: 'Tajawal'; width: 200px; }
-                .project-name-input:focus { border-color: var(--accent-gold); outline: none; }
-                .btn-primary, .btn-secondary { padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-family: 'Tajawal'; font-weight: 600; border: none; display: flex; align-items: center; gap: 5px; }
-                .btn-primary { background: var(--accent-gold); color: #000; }
-                .btn-secondary { background: var(--card-bg); color: var(--text-primary); border: 1px solid var(--border-color); }
-                .projects-dropdown { position: absolute; top: 100%; right: 0; background: var(--card-bg); border: 1px solid var(--border-color); padding: 1rem; border-radius: 12px; width: 300px; z-index: 1000; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-                .projects-dropdown h4 { margin-bottom: 0.5rem; color: var(--text-secondary); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
-                .projects-dropdown ul { list-style: none; padding: 0; max-height: 300px; overflow-y: auto; }
-                .projects-dropdown li { padding: 0.8rem; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; }
-                .projects-dropdown li:hover { background: rgba(255,255,255,0.05); }
-                .projects-dropdown li a { color: var(--text-primary); text-decoration: none; flex: 1; }
-                .delete-project { color: var(--accent-color); cursor: pointer; padding: 5px; }
-            `;
-            document.head.appendChild(style);
+        // Listeners for existing controls
+        const nameInput = document.getElementById('projectNameInput');
+        if (nameInput) {
+            nameInput.value = this.projectName || '';
+            nameInput.addEventListener('input', (e) => {
+                this.projectName = e.target.value;
+                document.title = this.projectName || 'حاسبة جولات التمويل';
+                this.saveState();
+            });
         }
-
-        // Listeners for new controls
-        document.getElementById('projectNameInput').addEventListener('input', (e) => {
-            this.projectName = e.target.value;
-            document.title = this.projectName;
-            this.saveState();
-        });
 
         document.getElementById('newProjectBtn').addEventListener('click', () => {
             this.createNewProject();
@@ -138,8 +103,9 @@ class FundingCalculator {
 
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('#projectControls')) {
-                document.getElementById('projectsDropdown').style.display = 'none';
+            if (!e.target.closest('#projectsDropdown') && !e.target.closest('#saveProjectsMenuBtn')) {
+                const dropdown = document.getElementById('projectsDropdown');
+                if (dropdown) dropdown.style.display = 'none';
             }
         });
     }
@@ -292,14 +258,10 @@ class FundingCalculator {
     }
 
     updateHeaderProjectName() {
-        const badge = document.getElementById('currentProjectNameDisplay');
-        if (badge) {
-            badge.style.opacity = '0';
-            setTimeout(() => {
-                badge.textContent = `| ${this.projectName}`;
-                badge.title = `آخر تعديل: ${new Date().toLocaleTimeString('ar-EG')}`;
-                badge.style.opacity = '1';
-            }, 200);
+        const input = document.getElementById('projectNameInput');
+        if (input) {
+            input.value = this.projectName || '';
+            document.title = this.projectName || 'حاسبة جولات التمويل';
         }
     }
 

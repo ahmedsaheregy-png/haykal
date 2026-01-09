@@ -21,12 +21,18 @@
         <div class="header-content">
             <div class="logo-container">
                 <i class="fa-solid fa-chart-line logo-icon"></i>
-                <h1>حاسبة جولات التمويل <span id="currentProjectNameDisplay" class="project-name-badge"></span></h1>
+                <h1>حاسبة جولات التمويل <input type="text" id="projectNameInput" class="project-name-input"
+                        placeholder="اسم المشروع"></h1>
             </div>
             <div class="header-actions">
                 <button id="newProjectBtn" class="header-btn"><i class="fa-solid fa-plus"></i> مشروع جديد</button>
                 <button id="saveProjectsMenuBtn" class="header-btn"><i class="fa-solid fa-folder-open"></i>
                     مشاريعي</button>
+                <!-- Projects Dropdown -->
+                <div id="projectsDropdown" class="projects-dropdown" style="display: none;">
+                    <h4>المشاريع المحفوظة</h4>
+                    <ul id="projectsList"></ul>
+                </div>
                 <button id="toggleEditBtn" class="toggle-edit-btn" title="وضع التعديل">
                     <i class="fa-solid fa-lock"></i>
                 </button>

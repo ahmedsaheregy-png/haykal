@@ -127,12 +127,26 @@ header {
     padding: 2rem;
 }
 
-.project-name-badge {
-    font-size: 0.9rem;
+.project-name-input {
+    background: transparent;
+    border: 1px solid transparent;
     color: var(--accent-gold);
-    margin-right: 10px;
-    font-weight: 300;
-    transition: opacity 0.3s;
+    font-size: 1.1rem;
+    font-family: 'Tajawal', sans-serif;
+    width: 200px;
+    padding: 0 10px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.project-name-input:focus {
+    border-color: var(--accent-gold);
+    outline: none;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.project-name-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
 }
 
 /* Section Styles */
