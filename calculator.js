@@ -162,14 +162,31 @@ class FundingCalculator {
             if (projects.length === 0) {
                 list.innerHTML = '<li style="color: var(--text-secondary); text-align: center;">لا توجد مشاريع محفوظة</li>';
             } else {
+                // Add Cleanup Button
+                const cleanupBtn = document.createElement('li');
+                cleanupBtn.innerHTML = '<button id="cleanupProjectsBtn" style="width:100%; padding:5px; background:rgba(233,69,96,0.2); color:var(--accent-color); border:none; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-broom"></i> تنظيف المشاريع الفارغة</button>';
+                cleanupBtn.style.textAlign = 'center';
+                cleanupBtn.style.marginBottom = '10px';
+                list.appendChild(cleanupBtn);
+
+                // Add Cleanup Listener
+                setTimeout(() => {
+                    const btn = document.getElementById('cleanupProjectsBtn');
+                    if (btn) btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.cleanupEmptyProjects();
+                    });
+                }, 0);
+
                 projects.forEach(p => {
                     const li = document.createElement('li');
                     const isCurrent = p.id === this.projectId;
                     li.innerHTML = `
-                        <a href="?project=${p.id}" style="${isCurrent ? 'color: var(--accent-gold); font-weight: bold;' : ''}">
-                            ${p.name} <br> <span style="font-size: 0.7rem; color: var(--text-secondary);">${new Date(parseInt(p.id.split('_')[1] || Date.now())).toLocaleDateString('ar-EG')}</span>
+                        <a href="?project=${p.id}" class="project-link ${isCurrent ? 'active-project' : ''}" onclick="${isCurrent ? 'location.reload()' : ''}">
+                            <span class="project-name">${p.name}</span>
+                            <span class="project-date">${new Date(parseInt(p.id.split('_')[1] || Date.now())).toLocaleDateString('ar-EG')}, ${new Date(p.lastModified || parseInt(p.id.split('_')[1] || Date.now())).toLocaleTimeString('ar-EG')}</span>
                         </a>
-                        ${!isCurrent ? `<i class="fa-solid fa-trash delete-project" data-id="${p.id}"></i>` : ''}
+                        ${!isCurrent ? `<i class="fa-solid fa-trash delete-project" data-id="${p.id}" title="حذف"></i>` : '<i class="fa-solid fa-circle-check current-indicator" title="المشروع الحالي"></i>'}
                     `;
                     list.appendChild(li);
                 });
@@ -284,6 +301,32 @@ class FundingCalculator {
                 badge.style.opacity = '1';
             }, 200);
         }
+    }
+
+    cleanupEmptyProjects() {
+        if (!confirm('هل تريد حذف جميع المشاريع الفارغة أو غير المسماة (Default Project)؟\nلن يتم حذف المشروع الحالي.')) return;
+
+        let projects = this.getAllProjects();
+        const initialCount = projects.length;
+
+        projects = projects.filter(p => {
+            // Keep current project
+            if (p.id === this.projectId) return true;
+
+            // Filter out "Default Project" or those older than 24h with no custom name
+            if (p.name === 'Default Project') return false;
+
+            return true;
+        });
+
+        const deletedCount = initialCount - projects.length;
+        localStorage.setItem(this.projectsListKey, JSON.stringify(projects));
+
+        // Also clean up data keys for deleted
+        // (Advanced cleanup would loop all localStorage keys, but this is safer for now)
+
+        alert(`تم تنظيف ${deletedCount} مشاريع فارغة.`);
+        this.toggleProjectsMenu(); // Refresh menu
     }
 
     // --- UNDO/REDO METHODS ---

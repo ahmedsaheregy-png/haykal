@@ -989,6 +989,38 @@ footer {
     gap: 0.5rem;
 }
 
+/* Improved Project Menu Items */
+.project-link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--text-primary);
+    width: 100%;
+    padding: 4px 0;
+}
+
+.active-project {
+    color: var(--accent-gold) !important;
+    font-weight: bold;
+    border-right: 3px solid var(--accent-gold);
+    padding-right: 8px;
+}
+
+.project-name {
+    font-size: 0.95rem;
+}
+
+.project-date {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.current-indicator {
+    color: var(--accent-gold);
+    margin-right: auto;
+    font-size: 0.9rem;
+}
+
 .control-item label {
     color: var(--text-gray);
     font-size: 0.9rem;
