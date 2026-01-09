@@ -59,21 +59,24 @@ h4 {
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1000;
+    z-index: 9999;
     width: 90%;
     max-width: 1200px;
+    -webkit-transform: translateX(-50%);
+    will-change: transform;
 }
 
 .nav-content {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
+    background: rgba(18, 23, 46, 0.85);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     border: 1px solid var(--glass-border);
     border-radius: 60px;
     padding: 0.8rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 .brand {
