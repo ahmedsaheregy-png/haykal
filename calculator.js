@@ -841,14 +841,7 @@ class FundingCalculator {
                 target: 'الهدف: 4,095 عضو نشط',
                 roundIndex: 3  // جولة 4 - EMI Series C ($34.61)
             },
-            normal: {
-                name: 'أرباح عادية',
-                month: 18,
-                members: 8191,
-                annualProfit: 342218,
-                target: 'الهدف: 8,191 عضو نشط',
-                roundIndex: 3  // لا يزال جولة 4 ($34.61)
-            },
+
             good: {
                 name: 'أرباح جيدة',
                 month: 24,
