@@ -639,10 +639,14 @@ class FundingCalculator {
 
         this.rounds = this.rounds.filter(r => r.id !== id);
 
-        const roundEl = document.getElementById(`round-${id}`);
-        if (roundEl) {
-            roundEl.remove();
-        }
+        // إعادة ترقيم الجولات بشكل تسلسلي
+        this.rounds.forEach((round, index) => {
+            round.id = index + 1;
+        });
+        this.roundCounter = this.rounds.length;
+
+        // إعادة رندر جميع الجولات مع الأرقام الجديدة
+        this.reRenderAllRounds();
 
         this.saveState();
         this.recalculateAll();
@@ -1076,13 +1080,32 @@ class FundingCalculator {
             profitInput.value = annualProfit;
         }
 
-        // Get stock price from the LINKED round (based on roundIndex)
-        const roundIndex = phase.roundIndex;
-        let phaseRound = this.rounds[roundIndex];
+        // Get stock price from the round that matches the phase MONTH (not fixed index)
+        const phaseMonth = phase.month;
 
-        // Fallback to last round if index doesn't exist
+        // البحث عن الجولة التي توقيتها يتطابق مع شهر المرحلة
+        let phaseRound = this.rounds.find(r => {
+            if (!r.timing) return false;
+            const roundMonth = parseInt(r.timing.match(/\d+/)?.[0] || 0);
+            return roundMonth === phaseMonth;
+        });
+
+        // إذا لم تجد جولة بنفس الشهر، ابحث عن أقرب جولة سابقة
         if (!phaseRound && this.rounds.length > 0) {
-            phaseRound = this.rounds[this.rounds.length - 1];
+            // ترتيب الجولات بالتوقيت وأخذ أقرب واحدة
+            const sortedRounds = [...this.rounds]
+                .filter(r => r.timing)
+                .sort((a, b) => {
+                    const aMonth = parseInt(a.timing.match(/\d+/)?.[0] || 0);
+                    const bMonth = parseInt(b.timing.match(/\d+/)?.[0] || 0);
+                    return bMonth - aMonth; // ترتيب تنازلي
+                });
+
+            // أخذ أقرب جولة لها توقيت أقل من أو يساوي شهر المرحلة
+            phaseRound = sortedRounds.find(r => {
+                const rMonth = parseInt(r.timing.match(/\d+/)?.[0] || 0);
+                return rMonth <= phaseMonth;
+            }) || this.rounds[this.rounds.length - 1]; // fallback للجولة الأخيرة
         }
 
         // Get baseline (first round or initial) for comparison
