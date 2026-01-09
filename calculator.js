@@ -336,18 +336,18 @@ class FundingCalculator {
 
         // Populate Default Data from User's Request
         if (this.rounds.length === 0) {
-            this.addRoundWithData("الجولة 1 تأسيس pre-seed", 60000, 5);
-            this.addRoundWithData("الجولة 2 الافتتاح SERIES A", 100000, 8);
-            this.addRoundWithData("الجولة 3 التعادل SERIES B", 400000, 12);
-            this.addRoundWithData("الجولة 4 EMI SERIES C", 5000000, 10);
-            this.addRoundWithData("الجولة 5 التوسع الدولي", 20000000, 15);
+            this.addRoundWithData("الجولة 1 تأسيس pre-seed", 60000, 5, "");
+            this.addRoundWithData("الجولة 2 الافتتاح SERIES A", 100000, 8, "الشهر 1");
+            this.addRoundWithData("الجولة 3 التعادل SERIES B", 400000, 12, "الشهر 11");
+            this.addRoundWithData("الجولة 4 EMI SERIES C", 5000000, 10, "الشهر 12");
+            this.addRoundWithData("الجولة 5 التوسع الدولي", 20000000, 15, "الشهر 36");
         }
 
         this.saveState(); // Save immediately to create the record
     }
 
     // Helper to add specific round data
-    addRoundWithData(name, funding, percentage) {
+    addRoundWithData(name, funding, percentage, timing = '') {
         this.roundCounter++;
         const roundId = this.roundCounter;
 
@@ -356,6 +356,7 @@ class FundingCalculator {
             name: name,
             fundingAmount: funding,
             soldPercentage: percentage,
+            timing: timing,
             preValuation: 0,
             postValuation: 0,
             stockPrice: 0,
@@ -390,6 +391,7 @@ class FundingCalculator {
             name: this.getDefaultRoundName(roundId),
             fundingAmount: 100000,
             soldPercentage: 10,
+            timing: '',
             preValuation: 0,
             postValuation: 0,
             stockPrice: 0,
