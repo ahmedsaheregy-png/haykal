@@ -370,9 +370,9 @@ class FundingCalculator {
         const container = document.getElementById('roundsContainer');
         container.innerHTML = '';
 
-        // Re-render all rounds
-        this.rounds.forEach(roundData => {
-            this.renderRound(roundData);
+        // Re-render all rounds with sequential visual numbers
+        this.rounds.forEach((roundData, index) => {
+            this.renderRound(roundData, index + 1);
         });
     }
 
@@ -413,8 +413,7 @@ class FundingCalculator {
             document.getElementById('initialPrice').value = this.initialPrice;
 
             // Clear and Re-render
-            document.getElementById('roundsContainer').innerHTML = '';
-            this.rounds.forEach(round => this.renderRound(round));
+            this.reRenderAllRounds();
 
             // Recalc
             this.updateInitial();
@@ -484,7 +483,7 @@ class FundingCalculator {
         };
 
         this.rounds.push(roundData);
-        this.renderRound(roundData);
+        this.renderRound(roundData, this.rounds.length);
         this.recalculateAll();
     }
 
@@ -519,7 +518,7 @@ class FundingCalculator {
         };
 
         this.rounds.push(roundData);
-        this.renderRound(roundData);
+        this.renderRound(roundData, this.rounds.length);
         this.recalculateAll();
     }
 
@@ -528,17 +527,20 @@ class FundingCalculator {
         return names[id - 1] || `جولة ${id}`;
     }
 
-    renderRound(roundData) {
+    renderRound(roundData, visualIndex = null) {
         try {
             const container = document.getElementById('roundsContainer');
             const roundCard = document.createElement('div');
             roundCard.className = 'round-card';
             roundCard.id = `round-${roundData.id}`;
 
+            // Calculate visual index if not provided
+            const displayIndex = visualIndex || (this.rounds.findIndex(r => r.id === roundData.id) + 1);
+
             roundCard.innerHTML = `
                 <div class="round-header">
                     <div class="round-title">
-                        <div class="round-number">${roundData.id}</div>
+                        <div class="round-number">${displayIndex}</div>
                         <input type="text" class="round-name-input" 
                                value="${roundData.name}" 
                                data-round-id="${roundData.id}"
@@ -675,13 +677,15 @@ class FundingCalculator {
 
         this.rounds = this.rounds.filter(r => r.id !== id);
 
-        // إعادة ترقيم الجولات بشكل تسلسلي
-        this.rounds.forEach((round, index) => {
-            round.id = index + 1;
-        });
-        this.roundCounter = this.rounds.length;
+        // DO NOT renumber IDs internally. Keep data integrity.
+        // We will handle sequential numbering visually in the render phase.
 
-        // إعادة رندر جميع الجولات مع الأرقام الجديدة
+        // Ensure roundCounter doesn't conflict if we add new rounds later
+        // It should always be higher than the highest existing ID
+        const maxId = this.rounds.reduce((max, r) => Math.max(max, r.id), 0);
+        this.roundCounter = Math.max(this.roundCounter, maxId);
+
+        // Re-render all rounds to update visual numbers (1, 2, 3...)
         this.reRenderAllRounds();
 
         this.saveState();
