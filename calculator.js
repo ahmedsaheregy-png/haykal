@@ -49,13 +49,8 @@ class FundingCalculator {
         }
 
         // 3. Load state or initialize default
-        if (this.projectId) {
-            this.loadState();
-        } else {
-            // New visitor or really no projects
-            this.initializeDefaultData();
-            this.saveState();
-        }
+        // loadState now handles both loading and creating defaults if missing
+        this.loadState();
 
         // --- ADMIN CHECK ---
         this.checkAccessMode();
