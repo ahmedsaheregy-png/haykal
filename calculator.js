@@ -426,8 +426,7 @@ class FundingCalculator {
         // Populate Default Data from User's Request
         if (this.rounds.length === 0) {
             this.addRoundWithData("الجولة 1 تأسيس pre-seed", 60000, 5, "");
-            // Skip Round 2 - removed as requested
-            this.roundCounter++; // Skip Round 2 ID to maintain numbering 1->3
+            this.addRoundWithData("الجولة 2 الافتتاح SERIES A", 100000, 8, "الشهر 1");
             this.addRoundWithData("الجولة 3 التعادل SERIES B", 400000, 12, "الشهر 11");
             this.addRoundWithData("الجولة 4 EMI SERIES C", 5000000, 10, "الشهر 12");
             this.addRoundWithData("الجولة 5 التوسع الدولي", 20000000, 15, "الشهر 36");
@@ -1252,9 +1251,9 @@ class FundingCalculator {
             if (!monthMatch) return;
             const roundMonth = parseInt(monthMatch[0]);
 
-            // Find matching phase by month, but skip the last phase (excellent)
+            // Find matching phase by month
             Object.entries(this.phases).forEach(([key, phase]) => {
-                if (phase.month === roundMonth && key !== 'excellent') {
+                if (phase.month === roundMonth) {
                     const point = document.querySelector(`[data-phase="${key}"] .round-tag`);
                     if (point) {
                         point.style.display = 'block';
