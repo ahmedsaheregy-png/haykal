@@ -13,11 +13,6 @@ class FundingCalculator {
         this.projectId = this.getProjectIdFromUrl();
         this.projectsListKey = 'funding_app_projects_list';
 
-        // Undo/Redo stacks
-        this.undoStack = [];
-        this.redoStack = [];
-        this.maxHistorySize = 50;
-
         this.init();
     }
 
@@ -30,49 +25,11 @@ class FundingCalculator {
         // Project Management UI interaction
         this.setupProjectUI();
 
-        // 1. Check URL for project ID
-        const urlParams = new URLSearchParams(window.location.search);
-        this.projectId = urlParams.get('project');
-
-        // 2. If no ID in URL, try to load the LAST edited project
-        if (!this.projectId) {
-            const projects = this.getAllProjects();
-            if (projects.length > 0) {
-                // Sort by lastModified descending to get the most recent one
-                projects.sort((a, b) => (b.lastModified || 0) - (a.lastModified || 0));
-                this.projectId = projects[0].id;
-
-                // Update URL to reflect this project without reloading
-                const newUrl = `${window.location.pathname}?project=${this.projectId}`;
-                window.history.replaceState({ path: newUrl }, '', newUrl);
-            }
-        }
-
-        // 3. Load state or initialize default
-        if (this.projectId) {
-            this.loadState();
-        } else {
-            // New visitor or really no projects
-            this.initializeDefaultData();
-            this.saveState();
-        }
+        // Load specific project data or initialize defaults
+        this.loadState();
 
         // --- ADMIN CHECK ---
         this.checkAccessMode();
-
-        // --- INVESTOR JOURNEY ---
-        this.initInvestorJourney();
-
-        // --- UNDO/REDO KEYBOARD SHORTCUTS ---
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 'z') {
-                e.preventDefault();
-                this.undo();
-            } else if (e.ctrlKey && e.key === 'y') {
-                e.preventDefault();
-                this.redo();
-            }
-        });
     }
 
     getProjectIdFromUrl() {
@@ -81,16 +38,51 @@ class FundingCalculator {
     }
 
     setupProjectUI() {
-        // Listeners for existing controls
-        const nameInput = document.getElementById('projectNameInput');
-        if (nameInput) {
-            nameInput.value = this.projectName || '';
-            nameInput.addEventListener('input', (e) => {
-                this.projectName = e.target.value;
-                document.title = this.projectName || 'حاسبة جولات التمويل';
-                this.saveState();
-            });
+        // Create Project Controls if they don't exist
+        if (!document.getElementById('projectControls')) {
+            const header = document.querySelector('header');
+            const controls = document.createElement('div');
+            controls.id = 'projectControls';
+            controls.className = 'project-controls';
+            controls.innerHTML = `
+                <div class="project-info">
+                    <input type="text" id="projectNameInput" class="project-name-input" value="${this.projectName}" placeholder="اسم المشروع">
+                    <button id="saveProjectsMenuBtn" class="btn-secondary"><i class="fa-solid fa-folder-open"></i> مشاريعي</button>
+                    <button id="newProjectBtn" class="btn-primary"><i class="fa-solid fa-plus"></i> مشروع جديد</button>
+                </div>
+                <div id="projectsDropdown" class="projects-dropdown" style="display: none;">
+                    <h4>المشاريع المحفوظة</h4>
+                    <ul id="projectsList"></ul>
+                </div>
+            `;
+            header.appendChild(controls);
+
+            // Add Styles for controls dynamically
+            const style = document.createElement('style');
+            style.textContent = `
+                .project-controls { display: flex; align-items: center; gap: 1rem; position: relative; }
+                .project-name-input { background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.5rem; border-radius: 8px; font-family: 'Tajawal'; width: 200px; }
+                .project-name-input:focus { border-color: var(--accent-gold); outline: none; }
+                .btn-primary, .btn-secondary { padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-family: 'Tajawal'; font-weight: 600; border: none; display: flex; align-items: center; gap: 5px; }
+                .btn-primary { background: var(--accent-gold); color: #000; }
+                .btn-secondary { background: var(--card-bg); color: var(--text-primary); border: 1px solid var(--border-color); }
+                .projects-dropdown { position: absolute; top: 100%; right: 0; background: var(--card-bg); border: 1px solid var(--border-color); padding: 1rem; border-radius: 12px; width: 300px; z-index: 1000; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+                .projects-dropdown h4 { margin-bottom: 0.5rem; color: var(--text-secondary); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
+                .projects-dropdown ul { list-style: none; padding: 0; max-height: 300px; overflow-y: auto; }
+                .projects-dropdown li { padding: 0.8rem; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; }
+                .projects-dropdown li:hover { background: rgba(255,255,255,0.05); }
+                .projects-dropdown li a { color: var(--text-primary); text-decoration: none; flex: 1; }
+                .delete-project { color: var(--accent-color); cursor: pointer; padding: 5px; }
+            `;
+            document.head.appendChild(style);
         }
+
+        // Listeners for new controls
+        document.getElementById('projectNameInput').addEventListener('input', (e) => {
+            this.projectName = e.target.value;
+            document.title = this.projectName;
+            this.saveState();
+        });
 
         document.getElementById('newProjectBtn').addEventListener('click', () => {
             this.createNewProject();
@@ -103,9 +95,8 @@ class FundingCalculator {
 
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('#projectsDropdown') && !e.target.closest('#saveProjectsMenuBtn')) {
-                const dropdown = document.getElementById('projectsDropdown');
-                if (dropdown) dropdown.style.display = 'none';
+            if (!e.target.closest('#projectControls')) {
+                document.getElementById('projectsDropdown').style.display = 'none';
             }
         });
     }
@@ -128,31 +119,14 @@ class FundingCalculator {
             if (projects.length === 0) {
                 list.innerHTML = '<li style="color: var(--text-secondary); text-align: center;">لا توجد مشاريع محفوظة</li>';
             } else {
-                // Add Cleanup Button
-                const cleanupBtn = document.createElement('li');
-                cleanupBtn.innerHTML = '<button id="cleanupProjectsBtn" style="width:100%; padding:5px; background:rgba(233,69,96,0.2); color:var(--accent-color); border:none; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-broom"></i> تنظيف المشاريع الفارغة</button>';
-                cleanupBtn.style.textAlign = 'center';
-                cleanupBtn.style.marginBottom = '10px';
-                list.appendChild(cleanupBtn);
-
-                // Add Cleanup Listener
-                setTimeout(() => {
-                    const btn = document.getElementById('cleanupProjectsBtn');
-                    if (btn) btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        this.cleanupEmptyProjects();
-                    });
-                }, 0);
-
                 projects.forEach(p => {
                     const li = document.createElement('li');
                     const isCurrent = p.id === this.projectId;
                     li.innerHTML = `
-                        <a href="?project=${p.id}" class="project-link ${isCurrent ? 'active-project' : ''}" onclick="${isCurrent ? 'location.reload()' : ''}">
-                            <span class="project-name">${p.name}</span>
-                            <span class="project-date">${new Date(parseInt(p.id.split('_')[1] || Date.now())).toLocaleDateString('ar-EG')}, ${new Date(p.lastModified || parseInt(p.id.split('_')[1] || Date.now())).toLocaleTimeString('ar-EG')}</span>
+                        <a href="?project=${p.id}" style="${isCurrent ? 'color: var(--accent-gold); font-weight: bold;' : ''}">
+                            ${p.name} <br> <span style="font-size: 0.7rem; color: var(--text-secondary);">${new Date(parseInt(p.id.split('_')[1] || Date.now())).toLocaleDateString('ar-EG')}</span>
                         </a>
-                        ${!isCurrent ? `<i class="fa-solid fa-trash delete-project" data-id="${p.id}" title="حذف"></i>` : '<i class="fa-solid fa-circle-check current-indicator" title="المشروع الحالي"></i>'}
+                        ${!isCurrent ? `<i class="fa-solid fa-trash delete-project" data-id="${p.id}"></i>` : ''}
                     `;
                     list.appendChild(li);
                 });
@@ -206,11 +180,7 @@ class FundingCalculator {
             initialPrice: this.initialPrice,
             rounds: this.rounds,
             roundCounter: this.roundCounter,
-            lastModified: Date.now(),
-            // حفظ بيانات مراحل النمو
-            phases: this.phases,
-            distributionRate: parseFloat(document.getElementById('distributionRate')?.value) || 30,
-            currentPhase: this.currentPhase
+            lastModified: Date.now()
         };
 
         // Save specific Project Data
@@ -226,156 +196,6 @@ class FundingCalculator {
             projects.push({ id: this.projectId, name: this.projectName, lastModified: state.lastModified });
         }
         localStorage.setItem(this.projectsListKey, JSON.stringify(projects));
-
-        this.showSaveIndicator();
-        this.updateHeaderProjectName();
-    }
-
-    showSaveIndicator() {
-        let indicator = document.getElementById('saveIndicator');
-        if (!indicator) {
-            indicator = document.createElement('div');
-            indicator.id = 'saveIndicator';
-            indicator.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                left: 20px;
-                background: rgba(46, 204, 113, 0.9);
-                color: white;
-                padding: 8px 16px;
-                border-radius: 20px;
-                font-size: 0.9rem;
-                opacity: 0;
-                transition: opacity 0.3s;
-                z-index: 1000;
-                pointer-events: none;
-            `;
-            indicator.innerHTML = '<i class="fa-solid fa-check"></i> تم الحفظ';
-            document.body.appendChild(indicator);
-        }
-
-        // Flash the indicator
-        indicator.style.opacity = '1';
-        setTimeout(() => {
-            indicator.style.opacity = '0';
-        }, 1500);
-    }
-
-    updateHeaderProjectName() {
-        const input = document.getElementById('projectNameInput');
-        if (input) {
-            input.value = this.projectName || '';
-            document.title = this.projectName || 'حاسبة جولات التمويل';
-        }
-    }
-
-    cleanupEmptyProjects() {
-        if (!confirm('هل تريد حذف جميع المشاريع الفارغة أو غير المسماة (Default Project)؟\nلن يتم حذف المشروع الحالي.')) return;
-
-        let projects = this.getAllProjects();
-        const initialCount = projects.length;
-
-        projects = projects.filter(p => {
-            // Keep current project
-            if (p.id === this.projectId) return true;
-
-            // Filter out "Default Project" or those older than 24h with no custom name
-            if (p.name === 'Default Project') return false;
-
-            return true;
-        });
-
-        const deletedCount = initialCount - projects.length;
-        localStorage.setItem(this.projectsListKey, JSON.stringify(projects));
-
-        // Also clean up data keys for deleted
-        // (Advanced cleanup would loop all localStorage keys, but this is safer for now)
-
-        alert(`تم تنظيف ${deletedCount} مشاريع فارغة.`);
-        this.toggleProjectsMenu(); // Refresh menu
-    }
-
-    // --- UNDO/REDO METHODS ---
-
-    pushToUndoStack() {
-        // Deep copy of current state
-        const snapshot = JSON.stringify({
-            rounds: this.rounds,
-            roundCounter: this.roundCounter
-        });
-
-        this.undoStack.push(snapshot);
-
-        // Limit stack size
-        if (this.undoStack.length > this.maxHistorySize) {
-            this.undoStack.shift();
-        }
-
-        // Clear redo stack on new action
-        this.redoStack = [];
-    }
-
-    undo() {
-        if (this.undoStack.length === 0) {
-            console.log('Nothing to undo');
-            return;
-        }
-
-        // Save current state to redo stack
-        const currentSnapshot = JSON.stringify({
-            rounds: this.rounds,
-            roundCounter: this.roundCounter
-        });
-        this.redoStack.push(currentSnapshot);
-
-        // Restore previous state
-        const previousSnapshot = JSON.parse(this.undoStack.pop());
-        this.rounds = previousSnapshot.rounds;
-        this.roundCounter = previousSnapshot.roundCounter;
-
-        // Re-render UI
-        this.reRenderAllRounds();
-        this.recalculateAll();
-        this.saveState();
-
-        console.log('Undo performed');
-    }
-
-    redo() {
-        if (this.redoStack.length === 0) {
-            console.log('Nothing to redo');
-            return;
-        }
-
-        // Save current state to undo stack
-        const currentSnapshot = JSON.stringify({
-            rounds: this.rounds,
-            roundCounter: this.roundCounter
-        });
-        this.undoStack.push(currentSnapshot);
-
-        // Restore next state
-        const nextSnapshot = JSON.parse(this.redoStack.pop());
-        this.rounds = nextSnapshot.rounds;
-        this.roundCounter = nextSnapshot.roundCounter;
-
-        // Re-render UI
-        this.reRenderAllRounds();
-        this.recalculateAll();
-        this.saveState();
-
-        console.log('Redo performed');
-    }
-
-    reRenderAllRounds() {
-        // Clear existing round cards
-        const container = document.getElementById('roundsContainer');
-        container.innerHTML = '';
-
-        // Re-render all rounds
-        this.rounds.forEach(roundData => {
-            this.renderRound(roundData);
-        });
     }
 
     loadState() {
@@ -389,17 +209,6 @@ class FundingCalculator {
                 this.initialPrice = state.initialPrice;
                 this.rounds = state.rounds || [];
                 this.roundCounter = state.roundCounter || 0;
-
-                // استعادة بيانات مراحل النمو المحفوظة
-                if (state.phases) {
-                    this.savedPhases = state.phases;
-                }
-                if (state.distributionRate !== undefined) {
-                    this.savedDistributionRate = state.distributionRate;
-                }
-                if (state.currentPhase) {
-                    this.savedCurrentPhase = state.currentPhase;
-                }
 
                 // Update UI
                 document.getElementById('projectNameInput').value = this.projectName;
@@ -425,18 +234,19 @@ class FundingCalculator {
 
         // Populate Default Data from User's Request
         if (this.rounds.length === 0) {
-            this.addRoundWithData("الجولة 1 تأسيس pre-seed", 60000, 5, "");
-            this.addRoundWithData("الجولة 2 الافتتاح SERIES A", 100000, 8, "الشهر 1");
-            this.addRoundWithData("الجولة 3 التعادل SERIES B", 400000, 12, "الشهر 11");
-            this.addRoundWithData("الجولة 4 EMI SERIES C", 5000000, 10, "الشهر 12");
-            this.addRoundWithData("الجولة 5 التوسع الدولي", 20000000, 15, "الشهر 36");
+            this.addRoundWithData("الجولة 1 تأسيس pre-seed", 60000, 5);
+            // this.addRoundWithData("الجولة 2 الافتتاح SERIES A", 100000, 8);
+            this.roundCounter++; // Skip Round 2 (ID 2) to replicate numbering jump
+            this.addRoundWithData("الجولة 3 التعادل SERIES B", 400000, 12);
+            this.addRoundWithData("الجولة 4 EMI SERIES C", 5000000, 10);
+            this.addRoundWithData("الجولة 5 التوسع الدولي", 20000000, 15);
         }
 
         this.saveState(); // Save immediately to create the record
     }
 
     // Helper to add specific round data
-    addRoundWithData(name, funding, percentage, timing = '') {
+    addRoundWithData(name, funding, percentage) {
         this.roundCounter++;
         const roundId = this.roundCounter;
 
@@ -445,7 +255,6 @@ class FundingCalculator {
             name: name,
             fundingAmount: funding,
             soldPercentage: percentage,
-            timing: timing,
             preValuation: 0,
             postValuation: 0,
             stockPrice: 0,
@@ -480,7 +289,6 @@ class FundingCalculator {
             name: this.getDefaultRoundName(roundId),
             fundingAmount: 100000,
             soldPercentage: 10,
-            timing: '',
             preValuation: 0,
             postValuation: 0,
             stockPrice: 0,
@@ -534,22 +342,8 @@ class FundingCalculator {
                                value="${roundData.soldPercentage}" 
                                min="0.1" max="100" step="0.1">
                     </div>
-                    <div class="input-group">
-                    <label>التوقيت (شهر رقم)</label>
-                    <input type="text" class="round-timing" 
-                           data-round-id="${roundData.id}"
-                           value="${roundData.timing || ''}" 
-                           placeholder="مثال: 12">
                 </div>
-                <div class="input-group">
-                    <label>ملاحظات</label>
-                    <input type="text" class="round-notes" 
-                           data-round-id="${roundData.id}"
-                           value="${roundData.notes || ''}" 
-                           placeholder="مثال: قبل الافتتاح">
-                </div>
-            </div>
-            <div class="round-outputs">
+                <div class="round-outputs">
                     <div class="output-item">
                         <div class="output-label">التقييم قبل</div>
                         <div class="output-value" id="preVal-${roundData.id}">-</div>
@@ -606,24 +400,6 @@ class FundingCalculator {
             this.recalculateAll();
         });
 
-        card.querySelector('.round-timing').addEventListener('input', (e) => {
-            const round = this.rounds.find(r => r.id === roundData.id);
-            if (round) {
-                round.timing = e.target.value;
-                this.updateResultsTables();
-                this.updateRoundTags();
-                this.saveState();
-            }
-        });
-
-        card.querySelector('.round-notes').addEventListener('input', (e) => {
-            const round = this.rounds.find(r => r.id === roundData.id);
-            if (round) {
-                round.notes = e.target.value;
-                this.saveState();
-            }
-        });
-
         card.querySelector('.btn-delete-round').addEventListener('click', () => {
             this.deleteRound(roundData.id);
         });
@@ -634,20 +410,8 @@ class FundingCalculator {
             alert('يجب أن تكون هناك جولة واحدة على الأقل');
             return;
         }
-        // Save state before deletion for undo
-        this.pushToUndoStack();
-
         this.rounds = this.rounds.filter(r => r.id !== id);
-
-        // إعادة ترقيم الجولات بشكل تسلسلي
-        this.rounds.forEach((round, index) => {
-            round.id = index + 1;
-        });
-        this.roundCounter = this.rounds.length;
-
-        // إعادة رندر جميع الجولات مع الأرقام الجديدة
-        this.reRenderAllRounds();
-
+        document.getElementById(`round-${id}`).remove();
         this.saveState();
         this.recalculateAll();
     }
@@ -693,11 +457,6 @@ class FundingCalculator {
         });
 
         this.updateResultsTables();
-
-        // Update investor journey with new data
-        if (this.phases) {
-            this.updateInvestorJourney();
-        }
     }
 
     updateRoundUI(round) {
@@ -705,7 +464,7 @@ class FundingCalculator {
         if (el(`preVal-${round.id}`)) el(`preVal-${round.id}`).textContent = this.formatCurrency(round.preValuation);
         if (el(`postVal-${round.id}`)) el(`postVal-${round.id}`).textContent = this.formatCurrency(round.postValuation);
         if (el(`stockPrice-${round.id}`)) el(`stockPrice-${round.id}`).textContent = this.formatCurrency(round.stockPrice, 4);
-        if (el(`multiplier-${round.id}`)) el(`multiplier-${round.id}`).textContent = round.profitMultiplier.toFixed(2) + 'x';
+        if (el(`multiplier-${round.id}`)) el(`multiplier-${round.id}`).textContent = round.profitMultiplier.toFixed(1) + 'x';
         if (el(`roundShares-${round.id}`)) el(`roundShares-${round.id}`).textContent = this.formatNumber(round.roundShares);
         if (el(`totalShares-${round.id}`)) el(`totalShares-${round.id}`).textContent = this.formatNumber(round.totalShares);
     }
@@ -715,28 +474,16 @@ class FundingCalculator {
         const tbody = document.getElementById('resultsBody');
         tbody.innerHTML = '';
 
-        // توقيت افتراضي لكل جولة
-        const defaultTimings = {
-            0: 'التأسيس',
-            1: 'الشهر 1',
-            2: 'الشهر 11',
-            3: 'الشهر 12',
-            4: 'الشهر 36'
-        };
-
-        this.rounds.forEach((round, index) => {
-            // استخدام التوقيت المُدخل أو الافتراضي
-            const timing = round.timing || defaultTimings[index] || '-';
+        this.rounds.forEach(round => {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><strong>${round.name}</strong></td>
-                <td>${timing}</td>
                 <td>${this.formatCurrency(round.fundingAmount)}</td>
                 <td>${round.soldPercentage.toFixed(2)}%</td>
                 <td>${this.formatCurrency(round.preValuation)}</td>
                 <td>${this.formatCurrency(round.postValuation)}</td>
                 <td>${this.formatCurrency(round.stockPrice, 4)}</td>
-                <td>${round.profitMultiplier.toFixed(2)}x</td>
+                <td>${round.profitMultiplier.toFixed(1)}x</td>
                 <td>${this.formatNumber(round.roundShares)}</td>
                 <td>${this.formatNumber(round.totalShares)}</td>
             `;
@@ -834,7 +581,7 @@ class FundingCalculator {
             this.setReadOnlyMode(false); // Enable editing
         }
 
-        this.setupAdminControls();
+        this.setupHiddenAdminTrigger();
     }
 
     setReadOnlyMode(isReadOnly) {
@@ -855,10 +602,11 @@ class FundingCalculator {
             }
         });
 
-        // 2. Buttons (Add Round, Delete Round, New Project)
+        // 2. Buttons (Add Round, Delete Round, New Project, My Projects)
         const buttonsToHide = [
             'addRoundBtn',
-            'newProjectBtn'
+            'newProjectBtn',
+            'saveProjectsMenuBtn'
         ];
 
         buttonsToHide.forEach(id => {
@@ -885,383 +633,31 @@ class FundingCalculator {
         }
     }
 
-    setupAdminControls() {
-        const toggleBtn = document.getElementById('toggleEditBtn');
-        if (!toggleBtn) return;
-        const icon = toggleBtn.querySelector('i');
+    setupHiddenAdminTrigger() {
+        // Hidden Trigger: Double Click on the Footer Logo text
+        const footerLogo = document.querySelector('footer');
+        if (footerLogo) {
+            footerLogo.title = ""; // No hint
 
-        // Initial State
-        if (this.isReadOnly) {
-            toggleBtn.classList.add('locked');
-            toggleBtn.classList.remove('unlocked');
-            icon.className = 'fa-solid fa-lock';
-            toggleBtn.title = "اضغط لفتح التعديل";
-        } else {
-            toggleBtn.classList.add('unlocked');
-            toggleBtn.classList.remove('locked');
-            icon.className = 'fa-solid fa-lock-open';
-            toggleBtn.title = "اضغط لقفل التعديل";
-        }
-
-        // Click Handler
-        // Remove existing listeners to avoid duplicates (though nice to have, standard add doesn't overwrite)
-        // Cloning node is a quick way to clear listeners if needed, but we'll assume single init.
-
-        toggleBtn.onclick = () => {
-            if (this.isReadOnly) {
-                const password = prompt("🔐 مطلوب كلمة مرور الأدمن\nأدخل كلمة المرور:");
-                if (password === "123456") {
-                    localStorage.setItem('haykal_admin_access', 'true');
-                    alert("✅ تم فتح وضع التعديل!");
-                    location.reload();
-                } else if (password) {
-                    alert("❌ كلمة المرور غير صحيحة");
-                }
-            } else {
-                if (confirm("هل تريد قفل وضع التعديل؟")) {
-                    localStorage.removeItem('haykal_admin_access');
-                    location.reload();
-                }
-            }
-        };
-    }
-
-    // ===== INVESTOR JOURNEY METHODS =====
-
-    initInvestorJourney() {
-        // القيم الافتراضية للمراحل
-        const defaultPhases = {
-            launch: {
-                name: 'الافتتاح',
-                month: 1,
-                members: 0,
-                annualProfit: 0,
-                target: 'الهدف: إطلاق التطبيق',
-                roundIndex: 1
-            },
-            breakeven: {
-                name: 'نقطة التعادل',
-                month: 11,
-                members: 2047,
-                annualProfit: 0,
-                target: 'الهدف: 2,047 عضو نشط',
-                roundIndex: 2
-            },
-            weak: {
-                name: 'أرباح ضعيفة',
-                month: 12,
-                members: 4095,
-                annualProfit: 124254,
-                target: 'الهدف: 4,095 عضو نشط',
-                roundIndex: 3
-            },
-            good: {
-                name: 'أرباح جيدة',
-                month: 24,
-                members: 16383,
-                annualProfit: 949865,
-                target: 'الهدف: 16,383 عضو نشط',
-                roundIndex: 3
-            },
-            veryGood: {
-                name: 'أرباح جيدة جداً',
-                month: 36,
-                members: 32767,
-                annualProfit: 1985341,
-                target: 'الهدف: 32,767 عضو نشط',
-                roundIndex: 4
-            },
-            excellent: {
-                name: 'أرباح ممتازة',
-                month: 48,
-                members: 65535,
-                annualProfit: 4498647,
-                target: 'الهدف: 65,535 عضو نشط',
-                roundIndex: 4
-            }
-        };
-
-        // استخدام البيانات المحفوظة إن وجدت، وإلا استخدام الافتراضية
-        if (this.savedPhases) {
-            this.phases = this.savedPhases;
-        } else {
-            this.phases = defaultPhases;
-        }
-
-        // استعادة المرحلة المحددة
-        this.currentPhase = this.savedCurrentPhase || 'weak';
-
-        // استعادة نسبة التوزيع
-        const distInput = document.getElementById('distributionRate');
-        if (distInput && this.savedDistributionRate !== undefined) {
-            distInput.value = this.savedDistributionRate;
-            document.getElementById('reinvestmentRate').textContent = (100 - this.savedDistributionRate) + '%';
-        }
-
-        // Setup listeners
-        this.setupInvestorJourneyListeners();
-
-        // Initial calculation
-        this.updateInvestorJourney();
-
-        // Render phases settings table
-        this.renderPhasesSettings();
-
-        // Update round tags on timeline
-        this.updateRoundTags();
-
-        // تفعيل التاب المحفوظ
-        const activePoint = document.querySelector(`[data-phase="${this.currentPhase}"]`);
-        if (activePoint) {
-            document.querySelectorAll('.timeline-point').forEach(p => p.classList.remove('active'));
-            activePoint.classList.add('active');
-        }
-    }
-
-    setupInvestorJourneyListeners() {
-        // Distribution rate input
-        const distInput = document.getElementById('distributionRate');
-        if (distInput) {
-            distInput.addEventListener('input', (e) => {
-                const rate = parseFloat(e.target.value) || 0;
-                document.getElementById('reinvestmentRate').textContent = (100 - rate) + '%';
-                this.updateInvestorJourney();
-                this.saveState();
-            });
-        }
-
-        // Expected profit input
-        const profitInput = document.getElementById('expectedProfit');
-        if (profitInput) {
-            profitInput.addEventListener('input', () => {
-                this.updateInvestorJourney();
-                this.saveState();
-            });
-        }
-
-        // Timeline points click
-        const timelinePoints = document.querySelectorAll('.timeline-point');
-        timelinePoints.forEach(point => {
-            point.addEventListener('click', () => {
-                // Remove active from all
-                timelinePoints.forEach(p => p.classList.remove('active'));
-                // Add to clicked
-                point.classList.add('active');
-                // Update phase
-                this.currentPhase = point.dataset.phase;
-                this.updateInvestorJourney();
-            });
-        });
-
-        // Apply read-only if needed
-        if (this.isReadOnly) {
-            const journeyInputs = document.querySelectorAll('#investorJourneySection input');
-            journeyInputs.forEach(input => {
-                input.setAttribute('disabled', 'true');
-                input.style.backgroundColor = 'transparent';
-                input.style.border = 'none';
-                input.style.color = '#fff';
-            });
-        }
-    }
-
-    updateInvestorJourney() {
-        // Get values from inputs
-        const distributionRate = parseFloat(document.getElementById('distributionRate')?.value) || 30;
-        const reinvestRate = 100 - distributionRate;
-
-        // Get current phase data
-        const phase = this.phases[this.currentPhase];
-        const annualProfit = phase.annualProfit;
-
-        // Update the profit input to show current phase profit
-        const profitInput = document.getElementById('expectedProfit');
-        if (profitInput) {
-            profitInput.value = annualProfit;
-        }
-
-        // Get stock price from the round that matches the phase MONTH (not fixed index)
-        const phaseMonth = phase.month;
-
-        // البحث عن الجولة التي توقيتها يتطابق مع شهر المرحلة
-        let phaseRound = this.rounds.find(r => {
-            if (!r.timing) return false;
-            const roundMonth = parseInt(r.timing.match(/\d+/)?.[0] || 0);
-            return roundMonth === phaseMonth;
-        });
-
-        // إذا لم تجد جولة بنفس الشهر، ابحث عن أقرب جولة سابقة
-        if (!phaseRound && this.rounds.length > 0) {
-            // ترتيب الجولات بالتوقيت وأخذ أقرب واحدة
-            const sortedRounds = [...this.rounds]
-                .filter(r => r.timing)
-                .sort((a, b) => {
-                    const aMonth = parseInt(a.timing.match(/\d+/)?.[0] || 0);
-                    const bMonth = parseInt(b.timing.match(/\d+/)?.[0] || 0);
-                    return bMonth - aMonth; // ترتيب تنازلي
-                });
-
-            // أخذ أقرب جولة لها توقيت أقل من أو يساوي شهر المرحلة
-            phaseRound = sortedRounds.find(r => {
-                const rMonth = parseInt(r.timing.match(/\d+/)?.[0] || 0);
-                return rMonth <= phaseMonth;
-            }) || this.rounds[this.rounds.length - 1]; // fallback للجولة الأخيرة
-        }
-
-        // السعر الحالي = سعر آخر جولة قبل أو عند شهر المرحلة
-        const currentStockPrice = phaseRound ? phaseRound.stockPrice : this.initialPrice;
-        const totalShares = phaseRound ? phaseRound.totalShares : this.initialShares;
-
-        // السعر المتوقع = سعر أقرب جولة بعد شهر المرحلة
-        let expectedStockPrice = currentStockPrice; // افتراضياً نفس السعر
-        const nextRound = this.rounds
-            .filter(r => r.timing)
-            .find(r => {
-                const rMonth = parseInt(r.timing.match(/\d+/)?.[0] || 0);
-                return rMonth > phaseMonth;
-            });
-
-        if (nextRound) {
-            expectedStockPrice = nextRound.stockPrice;
-        }
-
-        // EPS calculation based on shares at that phase
-        const eps = totalShares > 0 ? annualProfit / totalShares : 0;
-
-        // Distribution calculations
-        const cashPerShare = eps * (distributionRate / 100);
-        const reinvestPerShare = eps * (reinvestRate / 100);
-
-        // Growth from current to expected
-        const priceGrowth = currentStockPrice > 0 ? ((expectedStockPrice - currentStockPrice) / currentStockPrice) * 100 : 0;
-
-        // Update UI
-        this.updateInvestorJourneyUI({
-            phase,
-            distributionRate,
-            reinvestRate,
-            cashPerShare,
-            reinvestPerShare,
-            eps,
-            currentStockPrice,
-            expectedStockPrice,
-            priceGrowth,
-            annualProfit,
-            roundName: phaseRound ? phaseRound.name : 'التأسيس'
-        });
-    }
-
-    updateInvestorJourneyUI(data) {
-        const el = (id) => document.getElementById(id);
-
-        // Phase info
-        if (el('phaseBadge')) el('phaseBadge').textContent = data.phase.name;
-        if (el('phaseTarget')) el('phaseTarget').textContent = data.phase.target;
-
-        // Percentages
-        if (el('cashPercentage')) el('cashPercentage').textContent = data.distributionRate + '%';
-        if (el('reinvestPercentage')) el('reinvestPercentage').textContent = data.reinvestRate + '%';
-
-        // Card values (formatted)
-        if (el('expectedProfitValue')) el('expectedProfitValue').textContent = this.formatCurrency(data.annualProfit);
-        if (el('cashValue')) el('cashValue').textContent = this.formatCurrency(data.cashPerShare, 2);
-        if (el('reinvestValue')) el('reinvestValue').textContent = this.formatCurrency(data.reinvestPerShare, 2);
-        if (el('totalEPS')) el('totalEPS').textContent = this.formatCurrency(data.eps, 2);
-
-        // Stock prices - Current (from last round) and Expected (from next round)
-        if (el('currentStockPrice')) el('currentStockPrice').textContent = '$' + data.currentStockPrice.toFixed(2);
-
-        // إخفاء السعر المتوقع إذا لم تكن هناك جولات مستقبلية
-        const hasNextRound = data.expectedStockPrice !== data.currentStockPrice;
-        const projectedSection = document.querySelector('.projection-item.highlight');
-        const projectedArrow = document.querySelector('.projection-arrow');
-
-        if (hasNextRound) {
-            if (projectedSection) projectedSection.style.display = '';
-            if (projectedArrow) projectedArrow.style.display = '';
-            if (el('projectedStockPrice')) el('projectedStockPrice').textContent = '$' + data.expectedStockPrice.toFixed(2);
-
-            if (el('projectedGrowth')) {
-                const growth = data.priceGrowth;
-                el('projectedGrowth').textContent = '+' + growth.toFixed(0) + '%';
-                el('projectedGrowth').style.color = 'var(--success-color)';
-                el('projectedGrowth').style.background = 'rgba(0, 210, 106, 0.1)';
-                el('projectedGrowth').style.display = '';
-            }
-        } else {
-            // إخفاء السعر المتوقع - لا توجد جولات مستقبلية
-            if (projectedSection) projectedSection.style.display = 'none';
-            if (projectedArrow) projectedArrow.style.display = 'none';
-        }
-    }
-
-    // Render phases settings table
-    renderPhasesSettings() {
-        const tbody = document.getElementById('phasesSettingsBody');
-        if (!tbody) return;
-
-        tbody.innerHTML = '';
-
-        Object.entries(this.phases).forEach(([key, phase]) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="phase-name">${phase.name}</td>
-                <td><input type="number" class="phase-month" data-phase="${key}" value="${phase.month}" min="1" max="120"></td>
-                <td><input type="number" class="phase-members" data-phase="${key}" value="${phase.members}" min="0" step="100"></td>
-                <td><input type="number" class="phase-profit" data-phase="${key}" value="${phase.annualProfit}" min="0" step="1000"></td>
-            `;
-            tbody.appendChild(row);
-        });
-
-        // Add listeners to phase inputs
-        tbody.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', (e) => {
-                const phaseKey = e.target.dataset.phase;
-                const phase = this.phases[phaseKey];
-
-                if (e.target.classList.contains('phase-month')) {
-                    phase.month = parseInt(e.target.value) || 1;
-                    // Update timeline point label
-                    const point = document.querySelector(`[data-phase="${phaseKey}"] .point-label`);
-                    if (point) point.textContent = 'الشهر ' + phase.month;
-                } else if (e.target.classList.contains('phase-members')) {
-                    phase.members = parseInt(e.target.value) || 0;
-                } else if (e.target.classList.contains('phase-profit')) {
-                    phase.annualProfit = parseInt(e.target.value) || 0;
-                }
-
-                this.updateInvestorJourney();
-                this.updateRoundTags();
-                this.saveState();
-            });
-        });
-    }
-
-    // Update round tags on timeline based on round timings
-    updateRoundTags() {
-        // Remove all existing round tags first
-        document.querySelectorAll('.round-tag').forEach(tag => tag.style.display = 'none');
-
-        // Map round timings to phase months
-        this.rounds.forEach((round, index) => {
-            if (!round.timing) return;
-
-            // Extract month number from timing (e.g., "12", "Month 12", "شهر 12")
-            const monthMatch = round.timing.match(/\d+/);
-            if (!monthMatch) return;
-            const roundMonth = parseInt(monthMatch[0]);
-
-            // Find matching phase by month
-            Object.entries(this.phases).forEach(([key, phase]) => {
-                if (phase.month === roundMonth) {
-                    const point = document.querySelector(`[data-phase="${key}"] .round-tag`);
-                    if (point) {
-                        point.style.display = 'block';
-                        point.textContent = `جولة ${index + 1}`;
+            footerLogo.addEventListener('dblclick', () => {
+                if (this.isReadOnly) {
+                    const password = prompt("🔐 Admin Access Required\nEnter Password:");
+                    if (password === "123456") { // Updated password
+                        localStorage.setItem('haykal_admin_access', 'true');
+                        alert("✅ Edit Mode Unlocked!");
+                        location.reload();
+                    } else if (password) {
+                        alert("❌ Wrong Password");
+                    }
+                } else {
+                    // Option to lock it back
+                    if (confirm("Lock Editing Mode?")) {
+                        localStorage.removeItem('haykal_admin_access');
+                        location.reload();
                     }
                 }
             });
-        });
+        }
     }
 }
 
