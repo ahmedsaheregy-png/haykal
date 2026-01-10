@@ -43,8 +43,12 @@ function loadDynamicData() {
         }
 
         // Calculations
-        const growthPercentage = initialPrice > 0
-            ? ((finalPrice - initialPrice) / initialPrice) * 100
+        // Growth: Use Round 1 Price (Start of Funding) vs Final Round Price
+        const firstRound = data.rounds.length > 0 ? data.rounds[0] : null;
+        const startPrice = firstRound ? firstRound.stockPrice : initialPrice;
+
+        const growthPercentage = startPrice > 0
+            ? ((finalPrice - startPrice) / startPrice) * 100
             : 0;
 
         // Helpers
@@ -102,7 +106,7 @@ function loadDynamicData() {
         updateText('hero-annual-profit', formatCurrency(annualProfit));
 
         // Floating Card
-        const priceRange = `من ${formatCurrencyPrecise(initialPrice)} إلى ${formatCurrencyPrecise(finalPrice)}`;
+        const priceRange = `من ${formatCurrencyPrecise(startPrice)} إلى ${formatCurrencyPrecise(finalPrice)}`;
         updateText('hero-floating-price-range', priceRange);
         // Duration is generally fixed to "4 years" in this context unless phases change heavily, keeping hardcoded or mapped if needed.
 
