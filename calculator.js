@@ -73,6 +73,9 @@ class FundingCalculator {
                 this.redo();
             }
         });
+
+        // Final UI Check
+        this.checkUIIntegrity();
     }
 
     getProjectIdFromUrl() {
@@ -1270,6 +1273,18 @@ class FundingCalculator {
                 }
             });
         });
+    }
+
+    // Safety fallback: Check if rounds display correctly
+    checkUIIntegrity() {
+        setTimeout(() => {
+            const container = document.getElementById('roundsContainer');
+            if (this.rounds.length > 0 && container.children.length === 0) {
+                console.warn('UI Integrity Check Failed: Rounds missing. Forcing re-render.');
+                this.reRenderAllRounds();
+                this.updateResultsTables();
+            }
+        }, 500); // Check half a second after init
     }
 }
 
