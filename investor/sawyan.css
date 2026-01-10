@@ -1331,7 +1331,7 @@ h4 {
 }
 
 /* Metric Badge - Dynamic & Prominent */
-#bento-metric-badge {
+.metric-badge-highlight {
     font-size: 1.1rem !important;
     /* Increased from default */
     font-weight: 700;
