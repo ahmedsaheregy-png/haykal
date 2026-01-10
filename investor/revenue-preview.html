@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معاينة قسم نموذج الإيرادات</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a14;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-light: #ffffff;
+            --text-gray: rgba(255, 255, 255, 0.7);
+            --cyan: #00d9ff;
+            --gold: #ffd700;
+            --accent-phase1: #f39c12;
+            --accent-phase2: #00d9ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #0a0a14 0%, #1a1a2e 50%, #0a0a14 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .preview-notice {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--gold);
+        }
+
+        /* Revenue Section Styles */
+        .revenue-evolution-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-light) 0%, var(--cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .evolution-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: stretch;
+        }
+
+        @media (max-width: 900px) {
+            .evolution-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        .phase-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .phase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .phase1 .phase-card::before {
+            background: linear-gradient(90deg, var(--accent-phase1), transparent);
+        }
+
+        .phase2 .phase-card::before {
+            background: linear-gradient(90deg, var(--accent-phase2), transparent);
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .phase-icon {
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+        }
+
+        .phase1 .phase-icon {
+            background: rgba(243, 156, 18, 0.15);
+        }
+
+        .phase2 .phase-icon {
+            background: rgba(0, 217, 255, 0.15);
+        }
+
+        .phase-title h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .phase-title span {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .phase1 .phase-title span {
+            color: var(--accent-phase1);
+        }
+
+        .phase2 .phase-title span {
+            color: var(--accent-phase2);
+        }
+
+        .revenue-list {
+            list-style: none;
+        }
+
+        .revenue-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .revenue-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-icon {
+            font-size: 1.5rem;
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        .phase1 .item-icon {
+            background: rgba(243, 156, 18, 0.1);
+        }
+
+        .phase2 .item-icon {
+            background: rgba(0, 217, 255, 0.1);
+        }
+
+        .item-content h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .item-content p {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* Arrow Connector */
+        .evolution-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 900px) {
+            .evolution-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        /* License Badge */
+        .license-badge {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(0, 217, 255, 0.05));
+            border: 1px solid var(--cyan);
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            color: var(--cyan);
+            display: inline-block;
+            margin-top: 1.5rem;
+        }
+
+        .license-badge i {
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="preview-notice">
+        ⚠️ هذه معاينة محلية فقط - لن تُنشر حتى توافق عليها
+    </div>
+
+    <section class="revenue-evolution-section">
+        <div class="section-header">
+            <h2>🏗️ هندسة الربحية</h2>
+            <p>نموذج دخل هجين يجمع بين قوة النمو الفيروسي وكفاءة الأنظمة البنكية الرقمية</p>
+        </div>
+
+        <div class="evolution-container">
+            <!-- Phase 1: Network Driven -->
+            <div class="phase1">
+                <div class="phase-card">
+                    <div class="phase-header">
+                        <div class="phase-icon">🚀</div>
+                        <div class="phase-title">
+                            <h3>المرحلة الأولى: محرك النمو</h3>
+                            <span>(Network Driven)</span>
+                        </div>
+                    </div>
+                    <ul class="revenue-list">
+                        <li class="revenue-item">
+                            <div class="item-icon">🤝</div>
+                            <div class="item-content">
+                                <h4>عمولات الشبكة الذكية</h4>
+                                <p>حصة الشركة من صفقات البيع المباشر عبر أقوى محرك تسويق شبكي في المنطقة.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Arrow -->
+            <div class="evolution-arrow">➝</div>
+
+            <!-- Phase 2: License Driven -->
+            <div class="phase2">
+                <div class="phase-card">
+                    <div class="phase-header">
+                        <div class="phase-icon">🏛️</div>
+                        <div class="phase-title">
+                            <h3>المرحلة الثانية: النظام البنكي</h3>
+                            <span>(License Driven)</span>
+                        </div>
+                    </div>
+                    <ul class="revenue-list">
+                        <li class="revenue-item">
+                            <div class="item-icon">💸</div>
+                            <div class="item-content">
+                                <h4>رسوم الدفع الذكي (Pay-out Fees)</h4>
+                                <p>عوائد ثابتة من معالجة عمليات سحب العمولات وتحويل الأموال داخل المنظومة.</p>
+                            </div>
+                        </li>
+                        <li class="revenue-item">
+                            <div class="item-icon">💳</div>
+                            <div class="item-content">
+                                <h4>عائد البطاقات والمشتريات</h4>
+                                <p>عمولات تبادل (Interchange) من كل عملية شراء تتم عبر بطاقات "صويان بنك".</p>
+                            </div>
+                        </li>
+                        <li class="revenue-item">
+                            <div class="item-icon">🌍</div>
+                            <div class="item-content">
+                                <h4>هوامش الصرف الدولية (FX Margins)</h4>
+                                <p>الربح من فروق صرف العملات في العمليات العابرة للحدود.</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="license-badge">
+                        🔐 يُفعّل بعد الحصول على رخصة EMI
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>
