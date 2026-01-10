@@ -195,8 +195,17 @@ h4 {
     font-size: 5rem;
     font-weight: 900;
     line-height: 1.1;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     letter-spacing: -2px;
+}
+
+.hero-subtitle {
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 2rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Tajawal', sans-serif;
 }
 
 .title-main {
@@ -386,6 +395,39 @@ h4 {
     background: linear-gradient(180deg, var(--cyan), var(--purple));
     border-radius: 4px 4px 0 0;
     min-width: 6px;
+}
+
+/* ==== VISION VIDEO SECTION ==== */
+.vision-section {
+    padding: 8rem 0;
+    background: var(--void);
+}
+
+.video-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 30px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), var(--glow-cyan);
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
 }
 
 /* ==== METRICS BENTO ==== */
@@ -692,22 +734,86 @@ h4 {
     font-size: 1.1rem;
 }
 
+.milestone-price {
+    margin-top: 1rem;
+    font-size: 2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
 .flow-arrow {
     color: var(--gold);
     font-size: 2rem;
 }
 
-/* ==== RETURNS ==== */
+/* ==== STRATEGIC PILLARS ==== */
 .returns-section {
     padding: 8rem 0;
     background: var(--surface);
 }
 
-.returns-split {
+.section-intro {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.pillars-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+.pillar-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: var(--smooth);
+}
+
+.pillar-card.highlight {
+    background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(131, 56, 236, 0.1));
+    border-color: var(--cyan);
+    box-shadow: var(--glow-cyan);
+}
+
+.pillar-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(0, 245, 255, 0.3);
+}
+
+.pillar-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+}
+
+.pillar-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    font-weight: 800;
+}
+
+.pillar-subtitle {
+    font-size: 1rem;
+    color: var(--cyan);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.pillar-card p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .returns-content h2 {
