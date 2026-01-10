@@ -379,6 +379,8 @@ class FundingCalculator {
     }
 
     loadState() {
+        let loaded = false;
+
         if (this.projectId) {
             // Try loading specific project
             const savedData = localStorage.getItem(`funding_data_${this.projectId}`);
@@ -401,23 +403,27 @@ class FundingCalculator {
                     this.savedCurrentPhase = state.currentPhase;
                 }
 
-                // Update UI
-                document.getElementById('projectNameInput').value = this.projectName;
-                document.title = this.projectName;
-                document.getElementById('initialShares').value = this.initialShares;
-                document.getElementById('initialPrice').value = this.initialPrice;
-
-                // Clear and Re-render
-                document.getElementById('roundsContainer').innerHTML = '';
-                this.rounds.forEach(round => this.renderRound(round)); // Just render, don't re-add to array
-
-                // Recalc
-                this.updateInitial(); // triggers recalculateAll
-                return;
+                loaded = true;
             }
         }
 
-        // Fallback: New Project / No Data found
+        if (loaded) {
+            // Update UI
+            document.getElementById('projectNameInput').value = this.projectName;
+            document.title = this.projectName;
+            document.getElementById('initialShares').value = this.initialShares;
+            document.getElementById('initialPrice').value = this.initialPrice;
+
+            // Clear and Re-render
+            document.getElementById('roundsContainer').innerHTML = '';
+            this.rounds.forEach(round => this.renderRound(round));
+
+            // Recalc
+            this.updateInitial();
+            return;
+        }
+
+        // Fallback: New Project / No Data found / Invalid Project ID
         // Use Defaults or user's requested "Bank Structure" title
         this.projectName = "هيكل ملكية البنك";
         document.getElementById('projectNameInput').value = this.projectName;
@@ -426,7 +432,8 @@ class FundingCalculator {
         // Populate Default Data from User's Request
         if (this.rounds.length === 0) {
             this.addRoundWithData("الجولة 1 تأسيس pre-seed", 60000, 5, "");
-            this.addRoundWithData("الجولة 2 الافتتاح SERIES A", 100000, 8, "الشهر 1");
+            // Skip Round 2 (Series A) as requested
+            this.roundCounter++; // Skip ID 2
             this.addRoundWithData("الجولة 3 التعادل SERIES B", 400000, 12, "الشهر 11");
             this.addRoundWithData("الجولة 4 EMI SERIES C", 5000000, 10, "الشهر 12");
             this.addRoundWithData("الجولة 5 التوسع الدولي", 20000000, 15, "الشهر 36");
@@ -1253,7 +1260,8 @@ class FundingCalculator {
 
             // Find matching phase by month
             Object.entries(this.phases).forEach(([key, phase]) => {
-                if (phase.month === roundMonth) {
+                // Skip displaying tag on the last phase
+                if (phase.month === roundMonth && key !== 'excellent') {
                     const point = document.querySelector(`[data-phase="${key}"] .round-tag`);
                     if (point) {
                         point.style.display = 'block';
