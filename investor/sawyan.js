@@ -106,7 +106,7 @@ function loadDynamicData() {
         updateText('hero-annual-profit', formatCurrency(annualProfit));
 
         // Floating Card
-        const priceRange = `من ${formatCurrencyPrecise(startPrice)} إلى ${formatCurrencyPrecise(finalPrice)}`;
+        const priceRange = `سعر السهم: <span style="color:var(--cyan)">من</span> ${formatCurrencyPrecise(startPrice)} <span style="color:var(--cyan)">إلى</span> ${formatCurrencyPrecise(finalPrice)}`;
         updateText('hero-floating-price-range', priceRange);
         // Duration is generally fixed to "4 years" in this context unless phases change heavily, keeping hardcoded or mapped if needed.
 
@@ -126,7 +126,7 @@ function loadDynamicData() {
 function updateText(id, text) {
     const el = document.getElementById(id);
     if (el) {
-        el.textContent = text;
+        el.innerHTML = text; // Changed to innerHTML to support styling
         // Re-trigger animation if it exists
         el.removeAttribute('data-target'); // Remove old animation triggers to avoid conflict
     }
