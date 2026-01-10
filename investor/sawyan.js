@@ -106,7 +106,13 @@ function loadDynamicData() {
         updateText('hero-annual-profit', formatCurrency(annualProfit));
 
         // Floating Card
-        const priceRange = `سعر السهم: <span style="color:var(--cyan)">من</span> ${formatCurrencyPrecise(startPrice)} <span style="color:var(--cyan)">إلى</span> ${formatCurrencyPrecise(finalPrice)}`;
+        const priceRange = `
+            <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-bottom: 4px;">سعر السهم</div>
+            <div style="font-size: 1.1rem; font-weight: 700;">
+                <span style="color:var(--cyan)">من</span> ${formatCurrencyPrecise(startPrice)} 
+                <span style="color:var(--cyan)">إلى</span> ${formatCurrencyPrecise(finalPrice)}
+            </div>
+        `;
         updateText('hero-floating-price-range', priceRange);
         // Duration is generally fixed to "4 years" in this context unless phases change heavily, keeping hardcoded or mapped if needed.
 
