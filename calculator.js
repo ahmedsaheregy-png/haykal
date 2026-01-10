@@ -440,6 +440,22 @@ class FundingCalculator {
         this.saveState(); // Save immediately to create the record
     }
 
+    // Deprecated: Kept for backward compatibility with cached versions
+    initializeDefaultData() {
+        console.warn('initializeDefaultData is deprecated. Redirecting to loadState.');
+        this.projectName = "هيكل ملكية البنك";
+        document.getElementById('projectNameInput').value = this.projectName;
+        this.updateInitial();
+        if (this.rounds.length === 0) {
+            this.addRoundWithData("الجولة 1 تأسيس pre-seed", 60000, 5, "");
+            this.roundCounter++;
+            this.addRoundWithData("الجولة 3 التعادل SERIES B", 400000, 12, "الشهر 11");
+            this.addRoundWithData("الجولة 4 EMI SERIES C", 5000000, 10, "الشهر 12");
+            this.addRoundWithData("الجولة 5 التوسع الدولي", 20000000, 15, "الشهر 36");
+        }
+        this.saveState();
+    }
+
     // Helper to add specific round data
     addRoundWithData(name, funding, percentage, timing = '') {
         this.roundCounter++;
