@@ -1108,7 +1108,7 @@ h4 {
 }
 
 /* ==== RESPONSIVE ==== */
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
     .hero-split {
         grid-template-columns: 1fr;
         padding: 100px 2rem 40px;
@@ -1140,7 +1140,7 @@ h4 {
         transform: rotate(90deg);
     }
 
-    .returns-split {
+    .pillars-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1231,7 +1231,7 @@ h4 {
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
     .bento-grid {
         grid-template-columns: repeat(3, 1fr);
         grid-template-areas:
@@ -1239,5 +1239,10 @@ h4 {
             "dashboard dashboard dashboard"
             "gtv shares exit"
             "growth growth growth";
+    }
+
+    .pillars-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 }
