@@ -251,8 +251,8 @@ h4 {
 }
 
 .stat-label {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.15rem;
+    color: #ffffff;
     margin-top: 0.3rem;
     font-weight: 600;
 }
@@ -358,8 +358,8 @@ h4 {
 }
 
 .card-label {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.15rem;
+    color: #ffffff;
     margin-bottom: 0.5rem;
     font-weight: 600;
 }
@@ -542,9 +542,9 @@ h4 {
 }
 
 .revenue-label {
-    color: rgba(255, 255, 255, 0.95);
-    font-size: 1.05rem;
-    font-weight: 500;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 600;
 }
 
 .revenue-value {
@@ -595,8 +595,8 @@ h4 {
 }
 
 .metric-label {
-    font-size: 1.15rem;
-    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.35rem;
+    color: #ffffff;
     font-weight: 600;
 }
 
@@ -671,7 +671,9 @@ h4 {
 }
 
 .growth-content p {
-    color: rgba(255, 255, 255, 0.8);
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 500;
 }
 
 /* ==== HOW IT WORKS ==== */
@@ -730,8 +732,9 @@ h4 {
 }
 
 .flow-card p {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.1rem;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 500;
 }
 
 .milestone-price {
