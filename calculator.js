@@ -437,7 +437,15 @@ class FundingCalculator {
             this.addRoundWithData("الجولة 5 التوسع الدولي", 20000000, 15, "الشهر 36");
         }
 
-        this.saveState(); // Save immediately to create the record
+        // Explicitly render immediately for new users
+        this.reRenderAllRounds();
+        this.updateResultsTables();
+
+        try {
+            this.saveState(); // Save immediately to create the record
+        } catch (e) {
+            console.error("Save state failed, but continuing UI render:", e);
+        }
     }
 
     // Deprecated: Kept for backward compatibility with cached versions
