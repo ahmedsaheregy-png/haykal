@@ -1252,9 +1252,9 @@ class FundingCalculator {
             if (!monthMatch) return;
             const roundMonth = parseInt(monthMatch[0]);
 
-            // Find matching phase by month
+            // Find matching phase by month, but skip the last phase (excellent)
             Object.entries(this.phases).forEach(([key, phase]) => {
-                if (phase.month === roundMonth) {
+                if (phase.month === roundMonth && key !== 'excellent') {
                     const point = document.querySelector(`[data-phase="${key}"] .round-tag`);
                     if (point) {
                         point.style.display = 'block';
