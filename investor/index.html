@@ -39,7 +39,7 @@
         <div class="hero-content">
             <div class="hero-badge">
                 <span class="pulse-dot"></span>
-                جولة تمويل مفتوحة
+                جولة تمويل تبدأ قريبا بإذن الله
             </div>
 
             <h1 class="hero-title">
@@ -58,17 +58,17 @@
 
             <div class="hero-stats-inline">
                 <div class="stat-box">
-                    <div class="stat-number">$130M</div>
+                    <div class="stat-number" id="hero-exit-valuation">$130M</div>
                     <div class="stat-label">تقييم Exit</div>
                 </div>
                 <div class="stat-divider"></div>
                 <div class="stat-box">
-                    <div class="stat-number">+4,884%</div>
+                    <div class="stat-number" id="hero-stock-growth">+4,884%</div>
                     <div class="stat-label">نمو السهم</div>
                 </div>
                 <div class="stat-divider"></div>
                 <div class="stat-box">
-                    <div class="stat-number">$4.5M</div>
+                    <div class="stat-number" id="hero-annual-profit">$4.5M</div>
                     <div class="stat-label">أرباح سنوية</div>
                 </div>
             </div>
@@ -90,15 +90,15 @@
                 <img src="hero_background.png" alt="Tech Background" class="bg-image">
                 <div class="floating-card card-1">
                     <div class="card-label">GTV الشهري</div>
-                    <div class="card-value">$10.9M</div>
+                    <div class="card-value" id="hero-floating-gtv">$10.9M</div>
                     <div class="card-trend">
                         <i class="fa-solid fa-arrow-trend-up"></i>
                         <span>+127%</span>
                     </div>
                 </div>
                 <div class="floating-card card-2">
-                    <div class="card-label">سعر السهم</div>
-                    <div class="card-value">$56.84</div>
+                    <div class="card-label" id="hero-floating-price-range">من $0.05 إلى $56.84</div>
+                    <div class="card-value" style="font-size: 1.8rem;" id="hero-floating-duration">خلال 4 سنوات</div>
                     <div class="mini-chart">
                         <div class="bar" style="height: 40%"></div>
                         <div class="bar" style="height: 55%"></div>
@@ -147,19 +147,19 @@
                     <div class="revenue-breakdown">
                         <div class="revenue-item">
                             <span class="revenue-label">رسوم المعاملات (1.5%)</span>
-                            <span class="revenue-value">$2.0M</span>
+                            <span class="revenue-value" id="rev-fees">$2.0M</span>
                         </div>
                         <div class="revenue-item">
                             <span class="revenue-label">اشتراكات التجار</span>
-                            <span class="revenue-value">$1.2M</span>
+                            <span class="revenue-value" id="rev-subs">$1.2M</span>
                         </div>
                         <div class="revenue-item">
                             <span class="revenue-label">فوائد التمويل</span>
-                            <span class="revenue-value">$1.3M</span>
+                            <span class="revenue-value" id="rev-interest">$1.3M</span>
                         </div>
                         <div class="revenue-total">
                             <span>إجمالي الأرباح السنوية</span>
-                            <span class="total-value">$4.5M</span>
+                            <span class="total-value" id="bento-annual-profit">$4.5M</span>
                         </div>
                     </div>
                 </div>
@@ -167,20 +167,20 @@
                 <!-- Metric Cards -->
                 <div class="bento-card metric" style="grid-area: gtv;">
                     <div class="metric-icon">📊</div>
-                    <div class="metric-value">$10.9M</div>
+                    <div class="metric-value" id="bento-gtv">$10.9M</div>
                     <div class="metric-label">حجم العمليات المستهدف (Monthly GTV)</div>
                     <div class="metric-badge">عند الوصول للشهر 48</div>
                 </div>
 
                 <div class="bento-card metric" style="grid-area: shares;">
                     <div class="metric-icon">💰</div>
-                    <div class="metric-value">$4,498,647</div>
+                    <div class="metric-value" id="bento-net-profit">$4,498,647</div>
                     <div class="metric-label">صافي الربح المستهدف بالسنة الرابعة (Net Profit)</div>
                 </div>
 
                 <div class="bento-card metric" style="grid-area: exit;">
                     <div class="metric-icon">📈</div>
-                    <div class="metric-value">$56.84</div>
+                    <div class="metric-value" id="bento-stock-price">$56.84</div>
                     <div class="metric-label">سعر السهم المستهدف (Target Stock Price)</div>
                     <div class="metric-badge positive">Start: $1.14 ➔ Exit: $56.84</div>
                 </div>
@@ -188,7 +188,7 @@
                 <!-- Exit Valuation Card -->
                 <div class="bento-card metric" style="grid-area: dashboard;">
                     <div class="metric-icon">🎯</div>
-                    <div class="metric-value">$130M</div>
+                    <div class="metric-value" id="bento-exit-valuation">$130M</div>
                     <div class="metric-label">التقييم المتوقع (Exit Valuation)</div>
                     <div class="metric-badge positive">Year 4 Target</div>
                 </div>
@@ -218,7 +218,7 @@
                     <div class="flow-number">01</div>
                     <div class="flow-icon">🚀</div>
                     <h4>مرحلة التأسيس</h4>
-                    <div class="milestone-price">$0.05</div>
+                    <div class="milestone-price" id="timeline-price-1">$0.05</div>
                 </div>
 
                 <div class="flow-arrow">
@@ -230,7 +230,7 @@
                     <div class="flow-icon">🎬</div>
                     <h4>مرحلة البدء</h4>
                     <p>Launch</p>
-                    <div class="milestone-price">$0.58</div>
+                    <div class="milestone-price" id="timeline-price-2">$0.58</div>
                 </div>
 
                 <div class="flow-arrow">
@@ -242,7 +242,7 @@
                     <div class="flow-icon">🏦</div>
                     <h4>رخصة البنك</h4>
                     <p>EMI License</p>
-                    <div class="milestone-price">$18.22</div>
+                    <div class="milestone-price" id="timeline-price-3">$18.22</div>
                 </div>
 
                 <div class="flow-arrow">
@@ -254,7 +254,7 @@
                     <div class="flow-icon">📱</div>
                     <h4>التوسع الدولي</h4>
                     <p>Super App</p>
-                    <div class="milestone-price">$41.29</div>
+                    <div class="milestone-price" id="timeline-price-4">$41.29</div>
                 </div>
             </div>
         </div>

@@ -138,8 +138,8 @@ h4 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    gap: 60px;
-    padding: 120px 4rem 60px;
+    gap: 4rem;
+    padding: clamp(8rem, 15vh, 10rem) clamp(1rem, 5vw, 4rem) 4rem;
     position: relative;
     overflow: hidden;
 }
@@ -192,7 +192,7 @@ h4 {
 }
 
 .hero-title {
-    font-size: 5rem;
+    font-size: clamp(3rem, 5vw + 1rem, 5rem);
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 1.5rem;
@@ -307,7 +307,7 @@ h4 {
 /* Hero Visual */
 .hero-visual {
     position: relative;
-    height: 600px;
+    height: clamp(400px, 60vh, 700px);
 }
 
 .visual-container {
@@ -434,7 +434,7 @@ h4 {
 
 /* ==== METRICS BENTO ==== */
 .metrics-bento {
-    padding: 8rem 0;
+    padding: clamp(4rem, 8vh, 8rem) 0;
     background: linear-gradient(180deg, var(--void), var(--surface));
 }
 
@@ -460,7 +460,7 @@ h4 {
 }
 
 .section-title {
-    font-size: 3.5rem;
+    font-size: clamp(2rem, 4vw, 3.5rem);
     font-weight: 900;
     max-width: 800px;
     margin: 0 auto;
@@ -1000,7 +1000,7 @@ h4 {
 }
 
 .cta-title {
-    font-size: 4rem;
+    font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 900;
     margin-bottom: 1.5rem;
 }
@@ -1155,6 +1155,7 @@ h4 {
             "dashboard dashboard"
             "gtv shares"
             "exit growth";
+        gap: 1rem;
     }
 
     .timeline-flow {
@@ -1162,7 +1163,7 @@ h4 {
     }
 
     .flow-arrow {
-        transform: rotate(90deg);
+        transform: rotate(-90deg);
         margin: 1rem 0;
     }
 
