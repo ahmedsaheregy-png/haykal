@@ -510,90 +510,97 @@ class FundingCalculator {
     }
 
     renderRound(roundData) {
-        const container = document.getElementById('roundsContainer');
-        const roundCard = document.createElement('div');
-        roundCard.className = 'round-card';
-        roundCard.id = `round-${roundData.id}`;
+        try {
+            const container = document.getElementById('roundsContainer');
+            const roundCard = document.createElement('div');
+            roundCard.className = 'round-card';
+            roundCard.id = `round-${roundData.id}`;
 
-        roundCard.innerHTML = `
-            <div class="round-header">
-                <div class="round-title">
-                    <div class="round-number">${roundData.id}</div>
-                    <input type="text" class="round-name-input" 
-                           value="${roundData.name}" 
-                           data-round-id="${roundData.id}"
-                           placeholder="اسم الجولة">
-                </div>
-                <button class="btn-delete-round" data-round-id="${roundData.id}" title="حذف الجولة">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </div>
-            <div class="round-body">
-                <div class="round-inputs">
-                    <div class="input-group">
-                        <label>مبلغ التمويل ($)</label>
-                        <input type="number" class="funding-amount" 
+            roundCard.innerHTML = `
+                <div class="round-header">
+                    <div class="round-title">
+                        <div class="round-number">${roundData.id}</div>
+                        <input type="text" class="round-name-input" 
+                               value="${roundData.name}" 
                                data-round-id="${roundData.id}"
-                               value="${roundData.fundingAmount}" 
-                               min="0" step="1000">
+                               placeholder="اسم الجولة">
                     </div>
-                    <div class="input-group">
-                        <label>الحصة المباعة (%)</label>
-                        <input type="number" class="sold-percentage" 
+                    <button class="btn-delete-round" data-round-id="${roundData.id}" title="حذف الجولة">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+                <div class="round-body">
+                    <div class="round-inputs">
+                        <div class="input-group">
+                            <label>مبلغ التمويل ($)</label>
+                            <input type="number" class="funding-amount" 
+                                   data-round-id="${roundData.id}"
+                                   value="${roundData.fundingAmount}" 
+                                   min="0" step="1000">
+                        </div>
+                        <div class="input-group">
+                            <label>الحصة المباعة (%)</label>
+                            <input type="number" class="sold-percentage" 
+                                   data-round-id="${roundData.id}"
+                                   value="${roundData.soldPercentage}" 
+                                   min="0.1" max="100" step="0.1">
+                        </div>
+                        <div class="input-group">
+                        <label>التوقيت (شهر رقم)</label>
+                        <input type="text" class="round-timing" 
                                data-round-id="${roundData.id}"
-                               value="${roundData.soldPercentage}" 
-                               min="0.1" max="100" step="0.1">
+                               value="${roundData.timing || ''}" 
+                               placeholder="مثال: 12">
                     </div>
                     <div class="input-group">
-                    <label>التوقيت (شهر رقم)</label>
-                    <input type="text" class="round-timing" 
-                           data-round-id="${roundData.id}"
-                           value="${roundData.timing || ''}" 
-                           placeholder="مثال: 12">
-                </div>
-                <div class="input-group">
-                    <label>ملاحظات</label>
-                    <input type="text" class="round-notes" 
-                           data-round-id="${roundData.id}"
-                           value="${roundData.notes || ''}" 
-                           placeholder="مثال: قبل الافتتاح">
-                </div>
-            </div>
-            <div class="round-outputs">
-                    <div class="output-item">
-                        <div class="output-label">التقييم قبل</div>
-                        <div class="output-value" id="preVal-${roundData.id}">-</div>
-                    </div>
-                    <div class="output-item">
-                        <div class="output-label">التقييم بعد</div>
-                        <div class="output-value highlight" id="postVal-${roundData.id}">-</div>
-                    </div>
-                    <div class="output-item">
-                        <div class="output-label">سعر السهم</div>
-                        <div class="output-value" id="stockPrice-${roundData.id}">-</div>
-                    </div>
-                    <div class="output-item">
-                        <div class="output-label">مضاعف الربح</div>
-                        <div class="output-value multiplier" id="multiplier-${roundData.id}">-</div>
-                    </div>
-                    <div class="output-item">
-                        <div class="output-label">أسهم الجولة</div>
-                        <div class="output-value" id="roundShares-${roundData.id}">-</div>
-                    </div>
-                    <div class="output-item">
-                        <div class="output-label">إجمالي الأسهم</div>
-                        <div class="output-value highlight" id="totalShares-${roundData.id}">-</div>
+                        <label>ملاحظات</label>
+                        <input type="text" class="round-notes" 
+                               data-round-id="${roundData.id}"
+                               value="${roundData.notes || ''}" 
+                               placeholder="مثال: قبل الافتتاح">
                     </div>
                 </div>
-            </div>
-        `;
+                <div class="round-outputs">
+                        <div class="output-item">
+                            <div class="output-label">التقييم قبل</div>
+                            <div class="output-value" id="preVal-${roundData.id}">-</div>
+                        </div>
+                        <div class="output-item">
+                            <div class="output-label">التقييم بعد</div>
+                            <div class="output-value highlight" id="postVal-${roundData.id}">-</div>
+                        </div>
+                        <div class="output-item">
+                            <div class="output-label">سعر السهم</div>
+                            <div class="output-value" id="stockPrice-${roundData.id}">-</div>
+                        </div>
+                        <div class="output-item">
+                            <div class="output-label">مضاعف الربح</div>
+                            <div class="output-value multiplier" id="multiplier-${roundData.id}">-</div>
+                        </div>
+                        <div class="output-item">
+                            <div class="output-label">أسهم الجولة</div>
+                            <div class="output-value" id="roundShares-${roundData.id}">-</div>
+                        </div>
+                        <div class="output-item">
+                            <div class="output-label">إجمالي الأسهم</div>
+                            <div class="output-value highlight" id="totalShares-${roundData.id}">-</div>
+                        </div>
+                    </div>
+                </div>
+            `;
 
-        container.appendChild(roundCard);
-        this.attachRoundListeners(roundCard, roundData);
+            container.appendChild(roundCard);
+            this.attachRoundListeners(roundCard, roundData);
 
-        // Apply read-mode if necessary
-        if (this.isReadOnly) {
-            this.setReadOnlyMode(true);
+            // Apply read-mode if necessary
+            if (this.isReadOnly) {
+                this.setReadOnlyMode(true);
+            }
+        } catch (error) {
+            console.error('Error rendering round:', error);
+            // Fallback: Try to render simlified card without icons if main render fails
+            const container = document.getElementById('roundsContainer');
+            if (container) container.insertAdjacentHTML('beforeend', `<div style="color:red; p:10px">فشل عرض الجولة: ${error.message}</div>`);
         }
     }
 
