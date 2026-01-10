@@ -115,6 +115,8 @@ function loadDynamicData() {
         updateText('bento-net-profit', '$' + annualProfit.toLocaleString()); // Net profit here refers to annual profit in year 4
         updateText('bento-stock-price', formatCurrencyPrecise(finalPrice));
         updateText('bento-exit-valuation', formatCurrency(exitValuation));
+        // Bento Dynamic Badge
+        updateText('bento-metric-badge', `Start: ${formatCurrencyPrecise(startPrice)} ➔ Exit: ${formatCurrencyPrecise(finalPrice)}`);
 
     } catch (e) {
         console.error('Error loading dynamic data:', e);

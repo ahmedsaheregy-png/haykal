@@ -1329,3 +1329,18 @@ h4 {
         gap: 1.5rem;
     }
 }
+
+/* Metric Badge - Dynamic & Prominent */
+#bento-metric-badge {
+    font-size: 1.1rem !important;
+    /* Increased from default */
+    font-weight: 700;
+    color: #fff;
+    background: rgba(0, 255, 136, 0.15);
+    /* Subtle green tint */
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    display: inline-block;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
