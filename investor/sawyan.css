@@ -1532,3 +1532,303 @@ h4 {
     margin-top: 1.5rem;
     font-weight: 600;
 }
+
+/* ===== COMPREHENSIVE MOBILE RESPONSIVE FIXES ===== */
+
+/* Tablet Breakpoint */
+@media (max-width: 1024px) {
+    .hero-content {
+        padding-top: 100px;
+    }
+
+    .pillars-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .bento-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    .bento-card {
+        width: 100% !important;
+        min-width: unset !important;
+    }
+}
+
+/* Mobile Breakpoint - Main Fixes */
+@media (max-width: 768px) {
+
+    /* Global spacing reduction */
+    section {
+        padding: 3rem 0 !important;
+    }
+
+    .container {
+        padding: 0 1rem !important;
+    }
+
+    /* Navigation */
+    .nav-content {
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    /* Hero Section */
+    .hero-content {
+        padding-top: 80px;
+        gap: 1.5rem;
+    }
+
+    .hero-visual {
+        height: clamp(200px, 40vh, 350px);
+    }
+
+    /* Floating cards - smaller */
+    .floating-card {
+        padding: 0.8rem !important;
+        border-radius: 12px !important;
+    }
+
+    .floating-card.card-1 {
+        right: 5% !important;
+        top: 5% !important;
+    }
+
+    .floating-card.card-2 {
+        left: 5% !important;
+        bottom: 10% !important;
+    }
+
+    /* Quick Metrics Row */
+    .metrics-row {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    .metric-item {
+        width: 100% !important;
+        padding: 1rem !important;
+    }
+
+    /* Bento Grid - CRITICAL FIX: Stack vertically */
+    .bento-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    .bento-card {
+        width: 100% !important;
+        min-width: unset !important;
+        padding: 1.5rem !important;
+    }
+
+    .bento-card .metric-value {
+        font-size: 1.8rem !important;
+    }
+
+    .bento-card .metric-label {
+        font-size: 0.95rem !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    .metric-badge-highlight {
+        font-size: 0.85rem !important;
+        padding: 0.5rem 0.8rem !important;
+    }
+
+    /* Revenue Engineering Section */
+    .rev-evo-grid {
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+    }
+
+    .rev-evo-card {
+        width: 100% !important;
+        padding: 1.5rem !important;
+    }
+
+    .rev-evo-arrow {
+        transform: rotate(90deg);
+        margin: 0 auto;
+    }
+
+    /* Timeline - reduce spacing */
+    .timeline-flow {
+        gap: 1rem !important;
+    }
+
+    .flow-card {
+        padding: 1.5rem !important;
+    }
+
+    .flow-arrow {
+        font-size: 1.5rem !important;
+    }
+
+    /* Strategic Pillars */
+    .pillar-card {
+        padding: 1.5rem !important;
+    }
+
+    /* CTA Section */
+    .cta-section {
+        padding: 3rem 1rem !important;
+    }
+
+    /* Footer */
+    .footer-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+        text-align: center;
+    }
+}
+
+/* Small Mobile - Fine Tuning */
+@media (max-width: 480px) {
+
+    /* Reduce overall spacing further */
+    section {
+        padding: 2rem 0 !important;
+    }
+
+    .section-header {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .section-title {
+        font-size: 1.5rem !important;
+    }
+
+    .section-label {
+        font-size: 0.85rem !important;
+    }
+
+    /* Hero */
+    .hero-title {
+        font-size: 2rem !important;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem !important;
+        color: rgba(255, 255, 255, 0.95) !important;
+    }
+
+    /* Floating Cards - hide or minimize */
+    .floating-card {
+        transform: scale(0.8);
+    }
+
+    /* Quick Metrics */
+    .metric-item .value {
+        font-size: 1.5rem !important;
+    }
+
+    .metric-item .label {
+        font-size: 0.85rem !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    /* Bento Cards */
+    .bento-card {
+        padding: 1.2rem !important;
+    }
+
+    .bento-card .metric-value {
+        font-size: 1.5rem !important;
+    }
+
+    /* Video Section - reduce empty space */
+    .video-section {
+        padding: 2rem 0 !important;
+    }
+
+    .video-container {
+        margin-top: 1rem !important;
+    }
+
+    /* Revenue Engineering */
+    .rev-evo-section {
+        padding: 2rem 0 !important;
+    }
+
+    .rev-evo-subtitle {
+        font-size: 0.95rem !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    .rev-evo-item-text h4 {
+        font-size: 0.95rem !important;
+    }
+
+    .rev-evo-item-text p {
+        font-size: 0.85rem !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    /* Timeline Cards */
+    .flow-card h4 {
+        font-size: 1.1rem !important;
+    }
+
+    .flow-card p {
+        font-size: 1rem !important;
+        color: rgba(255, 255, 255, 0.95) !important;
+    }
+
+    .milestone-price {
+        font-size: 1.5rem !important;
+    }
+
+    /* Pillar Cards */
+    .pillar-card h3 {
+        font-size: 1.2rem !important;
+    }
+
+    .pillar-card p {
+        font-size: 0.95rem !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    .pillar-subtitle {
+        font-size: 0.85rem !important;
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* CTA */
+    .cta-title {
+        font-size: 1.5rem !important;
+    }
+
+    .cta-subtitle {
+        font-size: 0.95rem !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    /* Buttons */
+    .btn-primary,
+    .btn-ghost {
+        padding: 0.8rem 1.5rem !important;
+        font-size: 0.95rem !important;
+    }
+}
+
+/* Font visibility enhancement for ALL subtexts */
+.section-label,
+.pillar-subtitle,
+.metric-label,
+.rev-evo-subtitle,
+.rev-evo-item-text p,
+.pillar-card p,
+.flow-card p,
+.cta-subtitle {
+    font-family: 'Tajawal', sans-serif !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+}
