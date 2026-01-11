@@ -1204,22 +1204,16 @@ class FundingCalculator {
             }) || this.rounds[this.rounds.length - 1]; // fallback للجولة الأخيرة
         }
 
-        // السعر الحالي = سعر آخر جولة قبل أو عند شهر المرحلة
-        const currentStockPrice = phaseRound ? phaseRound.stockPrice : this.initialPrice;
-        const totalShares = phaseRound ? phaseRound.totalShares : this.initialShares;
+        // السعر الحالي = سعر آخر جولة حرفياً (أحدث سهم في النظام)
+        const lastRound = this.rounds[this.rounds.length - 1];
+        const currentStockPrice = lastRound ? lastRound.stockPrice : this.initialPrice;
+        const totalShares = lastRound ? lastRound.totalShares : this.initialShares;
 
-        // السعر المتوقع = سعر أقرب جولة بعد شهر المرحلة
-        let expectedStockPrice = currentStockPrice; // افتراضياً نفس السعر
-        const nextRound = this.rounds
-            .filter(r => r.timing)
-            .find(r => {
-                const rMonth = parseInt(r.timing.match(/\d+/)?.[0] || 0);
-                return rMonth > phaseMonth;
-            });
-
-        if (nextRound) {
-            expectedStockPrice = nextRound.stockPrice;
-        }
+        // السعر المتوقع = السعر الحالي + تأثير إعادة الاستثمار على قيمة السهم
+        const reinvestRate = 100 - (parseFloat(document.getElementById('distributionRate')?.value) || 30);
+        const reinvestPerShare = totalShares > 0 ? (annualProfit * (reinvestRate / 100)) / totalShares : 0;
+        // مضاعف 4x كمتوسط لتأثير إعادة الاستثمار على التقييم
+        const expectedStockPrice = currentStockPrice + (reinvestPerShare * 4);
 
         // EPS calculation based on shares at that phase
         const eps = totalShares > 0 ? annualProfit / totalShares : 0;
