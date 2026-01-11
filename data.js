@@ -77,26 +77,26 @@ window.PERMANENT_DATA = {
         good: {
             name: "أرباح جيدة",
             month: 24,
-            members: 8000,
-            monthlyGTV: 6000000,
+            members: 16383,
+            monthlyGTV: 15831083, /* Approx derived from profit */
             commission: 0.05,
-            annualProfit: 500000
+            annualProfit: 949865
         },
         veryGood: {
             name: "أرباح جيدة جداً",
             month: 36,
-            members: 15000,
-            monthlyGTV: 12000000,
+            members: 32767,
+            monthlyGTV: 33089016, /* Approx derived from profit */
             commission: 0.05,
-            annualProfit: 1500000
+            annualProfit: 1985341
         },
         excellent: {
             name: "أرباح ممتازة",
             month: 48,
-            members: 30000,
-            monthlyGTV: 25000000,
+            members: 65535,
+            monthlyGTV: 74977450, /* Approx derived from profit */
             commission: 0.05,
-            annualProfit: 4000000
+            annualProfit: 4498647
         }
     }
 };
