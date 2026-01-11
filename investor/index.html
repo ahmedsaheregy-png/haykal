@@ -18,48 +18,54 @@
 
 <body>
 
+    <!-- Top Confidential Banner -->
+    <div class="top-confidential-bar"
+        style="background: #ff0055; color: white; text-align: center; padding: 0.8rem; font-weight: bold; font-family: 'Tajawal'; font-size: 1.1rem; border-bottom: 2px solid rgba(255,255,255,0.1);">
+        <i class="fa-solid fa-lock" style="margin-left: 10px;"></i>
+        صفحة خاصة بالشركاء - بيانات سرية غير معدة للنشر العام
+    </div>
+
     <!-- Floating Nav -->
-    <nav class="floating-nav">
+    <nav class="floating-nav" style="top: 50px;"> <!-- Pushed down by top bar -->
         <div class="nav-content">
-            <div class="brand-container" style="display: flex; flex-direction: column; align-items: flex-start;">
-                <!-- Unified Logo Component -->
+            <div class="brand-container">
+                <!-- Unified Logo Component Only -->
                 <div class="unified-logo" style="display: flex; align-items: center; gap: 10px;">
                     <span class="brand-name" style="font-size: 1.8rem; line-height: 1;">SAWYAN</span>
                     <i class="fa-solid fa-building-columns" style="color: var(--cyan); font-size: 1.8rem;"></i>
                 </div>
-                <!-- Optional Subtitle -->
-                <span
-                    style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 5px; font-weight: 500;">Business
-                    Snapshot - نبذة عن الأرقام</span>
             </div>
             <div class="nav-menu">
                 <a href="#metrics">الأرقام</a>
-                <a href="#how">الآلية</a>
-                <a href="#returns">العوائد</a>
-                <a href="#invest" class="nav-cta">استثمر الآن</a>
+                <a href="#revenue-model">الآلية</a>
+                <a href="#growth">العوائد</a>
+                <a href="#invest" class="nav-cta">تواصل مع المؤسسين</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero: Split Screen -->
-    <section class="hero-split">
-        <div class="confidential-notice" style="
-            position: absolute;
-            top: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 0, 110, 0.1);
-            border: 1px solid rgba(255, 0, 110, 0.3);
-            color: #ff4d9e;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            z-index: 10;
-        ">
-            <i class="fa-solid fa-lock" style="margin-left: 5px;"></i> صفحة خاصة بالشركاء غير معدة للنشر
-        </div>
+    <section class="hero-split" style="margin-top: 40px;">
+        <!-- Old Confidential Notice Removed -->
+
         <div class="hero-content">
+            <!-- Business Snapshot Badge -->
+            <div class="snapshot-badge-container" style="margin-bottom: 2rem;">
+                <span class="snapshot-badge" style="
+                    background: linear-gradient(90deg, var(--cyan), #8338ec);
+                    color: #fff;
+                    padding: 0.8rem 1.5rem;
+                    border-radius: 50px;
+                    font-weight: 800;
+                    font-size: 1.2rem;
+                    box-shadow: 0 4px 20px rgba(0, 245, 255, 0.3);
+                    font-family: 'Cairo';
+                    letter-spacing: 0.5px;
+                ">
+                    Business Snapshot - نبذة عن الأرقام
+                </span>
+            </div>
+
             <div class="hero-badge">
                 <span class="pulse-dot"></span>
                 جولة تمويل تبدأ قريبا بإذن الله
