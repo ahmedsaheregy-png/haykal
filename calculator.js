@@ -402,6 +402,11 @@ class FundingCalculator {
                 }
 
                 loaded = true;
+            } else {
+                // CRITICAL FIX: Project ID exists in URL but data not found
+                // Generate a NEW project ID instead of overwriting the missing one
+                console.warn(`Project ${this.projectId} not found in localStorage. Creating new project.`);
+                this.projectId = null; // Clear the old ID so a new one will be generated on save
             }
         }
 
@@ -441,7 +446,7 @@ class FundingCalculator {
         this.updateResultsTables();
 
         try {
-            this.saveState(); // Save immediately to create the record
+            this.saveState(); // Save immediately to create the record (with NEW ID)
         } catch (e) {
             console.error("Save state failed, but continuing UI render:", e);
         }
