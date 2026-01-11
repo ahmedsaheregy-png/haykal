@@ -1368,19 +1368,22 @@ class FundingCalculator {
         const timing = round.timing;
         const name = round.name;
 
-        // 1. Check Name for obvious clues (highest priority for "Round 1")
-        if (name && (name.includes('جولة 1 ') || name.includes('Round 1') || name.includes('تأسيس') || name.includes('pre-seed'))) {
-            return 0; // Absolute first
-        }
-
-        // 2. Check Timing string
+        // 1. Check Timing string FIRST (User input is King)
         if (timing) {
-            if (timing.includes('التأسيس') || timing.includes('الافتتاح')) return 1;
-            const match = timing.match(/\d+/);
+            const match = timing.match(/-?\d+/); // Support negative months too!
             if (match) return parseInt(match[0]);
+
+            // Dynamic keywords in timing field
+            if (timing.includes('التأسيس') || timing.includes('الافتتاح')) return 1;
         }
 
-        // 3. Fallback: If timing empty, push to end
+        // 2. Fallback: Check Name if timing is empty/unclear
+        if (name) {
+            if (name.includes('قبل') || name.includes('pre-') || name.includes('Pre-')) return 0; // e.g. Pre-seed
+            if (name.includes('جولة 1 ') || name.includes('Round 1') || name.includes('تأسيس')) return 1;
+        }
+
+        // 3. Last Resort: Push to end
         return 999;
     }
 
