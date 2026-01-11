@@ -448,7 +448,8 @@ a,
 
 /* ==== VISION VIDEO SECTION ==== */
 .vision-section {
-    padding: 2rem 0;
+    padding: 1rem 0;
+    /* Reduced from 2rem */
     background: var(--void);
 }
 
@@ -481,7 +482,8 @@ a,
 
 /* ==== METRICS BENTO ==== */
 .metrics-bento {
-    padding: clamp(2rem, 4vh, 3rem) 0;
+    padding: clamp(1rem, 2vh, 2rem) 0;
+    /* Reduced from clamp(2rem, 4vh, 3rem) */
     background: linear-gradient(180deg, var(--void), var(--surface));
 }
 
