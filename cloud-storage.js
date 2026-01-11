@@ -108,7 +108,7 @@ const CloudStorage = {
             el.style.borderColor = 'rgba(59, 130, 246, 0.3)';
             el.style.background = 'rgba(59, 130, 246, 0.1)';
         } else if (status === 'saved') {
-            el.innerHTML = '<i class="fa-solid fa-cloud-check"></i> تم الحفظ في Google Drive';
+            el.innerHTML = '<i class="fa-solid fa-cloud-check"></i> تم الحفظ في سحابة المشروع';
             el.style.color = '#10B981';
             el.style.borderColor = 'rgba(16, 185, 129, 0.3)';
             el.style.background = 'rgba(16, 185, 129, 0.1)';
