@@ -1884,3 +1884,94 @@ a,
     font-family: 'Tajawal', sans-serif !important;
     color: var(--text-prose) !important;
 }
+
+/* ==== ENHANCED STOCK GROWTH DISPLAY ==== */
+.milestone-price {
+    font-size: 1.8rem !important;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--cyan), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+    margin-top: 0.8rem;
+}
+
+/* First card (Start Price) */
+.flow-card:first-of-type .milestone-price {
+    background: linear-gradient(135deg, #00ff88, var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Last card (Exit Price) - Make it POP */
+.flow-card:last-of-type .milestone-price {
+    font-size: 2.2rem !important;
+    background: linear-gradient(135deg, var(--gold), #ff6b35);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        text-shadow: 0 0 20px rgba(255, 190, 11, 0.4);
+    }
+
+    50% {
+        text-shadow: 0 0 40px rgba(255, 190, 11, 0.7);
+    }
+}
+
+/* Stock Growth Summary Banner */
+.stock-growth-banner {
+    background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(255, 190, 11, 0.1));
+    border: 1px solid rgba(0, 245, 255, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 600px;
+    text-align: center;
+}
+
+.stock-growth-banner .growth-label {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.stock-growth-banner .growth-range {
+    font-size: 2.5rem;
+    font-weight: 900;
+    font-family: 'Cairo', sans-serif;
+}
+
+.stock-growth-banner .growth-range .from-price {
+    color: #00ff88;
+}
+
+.stock-growth-banner .growth-range .to-price {
+    background: linear-gradient(135deg, var(--gold), #ff6b35);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stock-growth-banner .growth-arrow {
+    color: var(--cyan);
+    margin: 0 0.5rem;
+    animation: bounceArrow 1s infinite;
+}
+
+@keyframes bounceArrow {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(10px);
+    }
+}
