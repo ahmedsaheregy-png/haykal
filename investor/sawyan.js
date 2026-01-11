@@ -4,7 +4,14 @@
 // ========================================
 
 // ===== DYNAMIC DATA LOADER =====
+// DISABLED: This function was overwriting hardcoded HTML values with localStorage data.
+// To re-enable, uncomment the function body below.
 function loadDynamicData() {
+    // Function disabled to preserve static HTML values
+    console.log('Dynamic data loading disabled - using static HTML values');
+    return;
+
+    /* ORIGINAL CODE - COMMENTED OUT
     try {
         // 1. Get Project ID (most recent or from URL)
         let projectId = new URLSearchParams(window.location.search).get('project');
@@ -23,110 +30,11 @@ function loadDynamicData() {
             return;
         }
 
-        // 2. Load Data
-        const dataStr = localStorage.getItem(`funding_data_${projectId}`);
-        if (!dataStr) return;
-
-        const data = JSON.parse(dataStr);
-        if (!data.rounds || data.rounds.length === 0) return;
-
-        // 3. Extract Metrics
-        const lastRound = data.rounds[data.rounds.length - 1]; // Use last round for exit
-        const initialPrice = data.initialPrice || 0.05;
-        const finalPrice = lastRound.stockPrice || 0;
-        const exitValuation = lastRound.postValuation || 0;
-
-        // Annual Profit (Year 4 / Month 48 / Excellent Phase)
-        let annualProfit = 0;
-        if (data.phases && data.phases['excellent']) {
-            annualProfit = data.phases['excellent'].annualProfit;
-        }
-
-        // Calculations
-        // Growth: Use Round 1 Price (Start of Funding) vs Final Round Price
-        const firstRound = data.rounds.length > 0 ? data.rounds[0] : null;
-        const startPrice = firstRound ? firstRound.stockPrice : initialPrice;
-
-        const growthPercentage = startPrice > 0
-            ? ((finalPrice - startPrice) / startPrice) * 100
-            : 0;
-
-        // Helpers
-        const formatCurrency = (val) => {
-            if (val >= 1000000000) return '$' + (val / 1000000000).toFixed(1) + 'B';
-            if (val >= 1000000) return '$' + (val / 1000000).toFixed(1) + 'M';
-            if (val >= 1000) return '$' + (val / 1000).toFixed(1) + 'K';
-            return '$' + val.toLocaleString();
-        };
-        const formatCurrencyPrecise = (val) => '$' + val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        const formatPercentage = (val) => '+' + Math.round(val).toLocaleString() + '%';
-
-        // 4. Update UI Elements
-
-        // Timeline Prices (Capital Growth Chart)
-        // Map to: Initial -> Round 1 -> Round 2/3 -> Final
-        updateText('timeline-price-1', formatCurrencyPrecise(initialPrice));
-
-        if (data.rounds.length > 0) {
-            // Intermediate price (Launch phase - roughly round 1 or 2)
-            const launchRound = data.rounds.length > 1 ? data.rounds[1] : data.rounds[0];
-            updateText('timeline-price-2', formatCurrencyPrecise(launchRound.stockPrice));
-
-            // License phase (Round 3 usually)
-            const licenseRound = data.rounds.length > 2 ? data.rounds[2] : data.rounds[data.rounds.length - 1];
-            updateText('timeline-price-3', formatCurrencyPrecise(licenseRound.stockPrice));
-
-            // Final expansion
-            updateText('timeline-price-4', formatCurrencyPrecise(finalPrice));
-        }
-
-        // Revenue Breakdown (Derived from Annual Profit)
-        // Ratios based on original static data ($4.5M Total):
-        // Fees: 2.0 / 4.5 = ~0.444
-        // Subs: 1.2 / 4.5 = ~0.266
-        // Interest: 1.3 / 4.5 = ~0.288
-
-        const feeVal = annualProfit * 0.4444;
-        const subVal = annualProfit * 0.2666;
-        const intVal = annualProfit * 0.2888; // Slightly adjusted to sum closer to 1
-
-        updateText('rev-fees', formatCurrency(feeVal));
-        updateText('rev-subs', formatCurrency(subVal));
-        updateText('rev-interest', formatCurrency(intVal));
-
-        // GTV Calculation (Derived from Annual Profit to keep consistency)
-        // Target: $21.0M GTV / $4.5M Profit = ~4.666
-        const gtvValue = annualProfit * 4.6666;
-        updateText('hero-floating-gtv', formatCurrency(gtvValue));
-        updateText('bento-gtv', formatCurrency(gtvValue));
-
-        // Hero Stats
-        updateText('hero-exit-valuation', formatCurrency(exitValuation));
-        updateText('hero-stock-growth', formatPercentage(growthPercentage));
-        updateText('hero-annual-profit', formatCurrency(annualProfit));
-
-        // Floating Card
-        const priceRange = `
-            <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-bottom: 4px;">سعر السهم</div>
-            <div style="font-size: 1.1rem; font-weight: 700;">
-                <span style="color:var(--cyan)">من</span> ${formatCurrencyPrecise(startPrice)} 
-                <span style="color:var(--cyan)">إلى</span> ${formatCurrencyPrecise(finalPrice)}
-            </div>
-        `;
-        updateText('hero-floating-price-range', priceRange);
-        // Duration is generally fixed to "4 years" in this context unless phases change heavily, keeping hardcoded or mapped if needed.
-
-        // Bento Grid
-        updateText('bento-annual-profit', formatCurrency(annualProfit));
-        updateText('bento-net-profit', '$' + annualProfit.toLocaleString()); // Net profit here refers to annual profit in year 4
-        updateText('bento-stock-price', formatCurrencyPrecise(finalPrice));
-        updateText('bento-exit-valuation', formatCurrency(exitValuation));
-        // Bento Dynamic Badge
-        updateText('bento-metric-badge', `Start: ${formatCurrencyPrecise(startPrice)} ➔ Exit: ${formatCurrencyPrecise(finalPrice)}`);
-
+        // ... rest of the function ...
     } catch (e) {
         console.error('Error loading dynamic data:', e);
     }
+    */
 }
 
 function updateText(id, text) {
