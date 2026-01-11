@@ -678,7 +678,7 @@ class FundingCalculator {
             this.recalculateAll();
         });
 
-        card.querySelector('.round-timing').addEventListener('input', (e) => {
+        card.querySelector('.round-timing').addEventListener('change', (e) => {
             const round = this.rounds.find(r => r.id === roundData.id);
             if (round) {
                 round.timing = e.target.value;
