@@ -1295,10 +1295,12 @@ class FundingCalculator {
 
     getPhaseNameFallback(key) {
         const names = {
-            'startup': 'مرحلة التأسيس',
+            'launch': 'الافتتاح',
             'breakeven': 'نقطة التعادل',
-            'growth': 'مرحلة النمو',
-            'excellent': 'مرحلة الازدهار'
+            'weak': 'أرباح ضعيفة',
+            'good': 'أرباح جيدة',
+            'veryGood': 'أرباح جيدة جداً',
+            'excellent': 'أرباح ممتازة'
         };
         return names[key] || key;
     }

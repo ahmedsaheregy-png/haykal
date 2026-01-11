@@ -49,39 +49,54 @@ window.PERMANENT_DATA = {
         }
     ],
 
-    // بيانات مراحل النمو (مصدر الحقيقة)
     phases: {
-        startup: {
-            name: "مرحلة التأسيس",
+        launch: {
+            name: "الافتتاح",
             month: 1,
-            members: 50,
-            monthlyGTV: 200000,
+            members: 0,
+            monthlyGTV: 0,
             commission: 0.05,
-            annualProfit: 120000
+            annualProfit: 0
         },
         breakeven: {
             name: "نقطة التعادل",
             month: 11,
-            members: 500,
+            members: 2047,
             monthlyGTV: 1500000,
             commission: 0.05,
-            annualProfit: 900000
+            annualProfit: 0
         },
-        growth: {
-            name: "مرحلة النمو",
+        weak: {
+            name: "أرباح ضعيفة",
             month: 12,
-            members: 2000,
-            monthlyGTV: 5000000,
+            members: 4095,
+            monthlyGTV: 3000000,
             commission: 0.05,
-            annualProfit: 3000000
+            annualProfit: 124254
+        },
+        good: {
+            name: "أرباح جيدة",
+            month: 24,
+            members: 8000,
+            monthlyGTV: 6000000,
+            commission: 0.05,
+            annualProfit: 500000
+        },
+        veryGood: {
+            name: "أرباح جيدة جداً",
+            month: 36,
+            members: 15000,
+            monthlyGTV: 12000000,
+            commission: 0.05,
+            annualProfit: 1500000
         },
         excellent: {
-            name: "مرحلة الازدهار",
-            month: 36,
-            members: 10000,
-            monthlyGTV: 21000000,
+            name: "أرباح ممتازة",
+            month: 48,
+            members: 30000,
+            monthlyGTV: 25000000,
             commission: 0.05,
-            annualProfit: 4498647
+            annualProfit: 4000000
         }
     }
 };
