@@ -49,12 +49,40 @@ window.PERMANENT_DATA = {
         }
     ],
 
-    // بيانات مراحل النمو (إذا لزم الأمر)
+    // بيانات مراحل النمو (مصدر الحقيقة)
     phases: {
-        startup: { monthlyGTV: 200000, commission: 0.05, annualProfit: 120000 },
-        breakeven: { monthlyGTV: 1500000, commission: 0.05, annualProfit: 900000 },
-        growth: { monthlyGTV: 5000000, commission: 0.05, annualProfit: 3000000 },
-        excellent: { monthlyGTV: 21000000, commission: 0.05, annualProfit: 4498647 }
+        startup: {
+            name: "مرحلة التأسيس",
+            month: 1,
+            members: 50,
+            monthlyGTV: 200000,
+            commission: 0.05,
+            annualProfit: 120000
+        },
+        breakeven: {
+            name: "نقطة التعادل",
+            month: 11,
+            members: 500,
+            monthlyGTV: 1500000,
+            commission: 0.05,
+            annualProfit: 900000
+        },
+        growth: {
+            name: "مرحلة النمو",
+            month: 12,
+            members: 2000,
+            monthlyGTV: 5000000,
+            commission: 0.05,
+            annualProfit: 3000000
+        },
+        excellent: {
+            name: "مرحلة الازدهار",
+            month: 36,
+            members: 10000,
+            monthlyGTV: 21000000,
+            commission: 0.05,
+            annualProfit: 4498647
+        }
     }
 };
 

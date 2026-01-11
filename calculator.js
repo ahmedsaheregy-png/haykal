@@ -1261,9 +1261,9 @@ class FundingCalculator {
         Object.entries(this.phases).forEach(([key, phase]) => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td class="phase-name">${phase.name}</td>
-                <td><input type="number" class="phase-month" data-phase="${key}" value="${phase.month}" min="1" max="120"></td>
-                <td><input type="number" class="phase-members" data-phase="${key}" value="${phase.members}" min="0" step="100"></td>
+                <td class="phase-name">${phase.name || this.getPhaseNameFallback(key)}</td>
+                <td><input type="number" class="phase-month" data-phase="${key}" value="${phase.month || 12}" min="1" max="120"></td>
+                <td><input type="number" class="phase-members" data-phase="${key}" value="${phase.members || 0}" min="0" step="100"></td>
                 <td><input type="number" class="phase-profit" data-phase="${key}" value="${phase.annualProfit}" min="0" step="1000"></td>
             `;
             tbody.appendChild(row);
@@ -1291,6 +1291,16 @@ class FundingCalculator {
                 this.saveState();
             });
         });
+    }
+
+    getPhaseNameFallback(key) {
+        const names = {
+            'startup': 'مرحلة التأسيس',
+            'breakeven': 'نقطة التعادل',
+            'growth': 'مرحلة النمو',
+            'excellent': 'مرحلة الازدهار'
+        };
+        return names[key] || key;
     }
 
     // Update round tags on timeline based on round timings
