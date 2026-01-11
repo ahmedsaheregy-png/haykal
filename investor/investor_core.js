@@ -3,20 +3,29 @@
 // Version: 4.0 (DIRECT READ MODE)
 // ========================================
 
-// ===== DYNAMIC DATA ENGINE (MIRROR MODE) =====
+// ===== DYNAMIC DATA ENGINE (AUTO-SYNC MODE) =====
 async function loadDynamicData() {
-    console.log('🪞 Loading Data (Mirror Mode)...');
+    console.log('🔄 Loading Data (Auto-Sync Mode)...');
 
-    // PRIMARY SOURCE: data.js (PERMANENT_DATA) - The Golden Copy
-    // This is the source of truth, synchronized with the Calculator
-    let projectData = window.PERMANENT_DATA;
+    // 1. Initialize Cloud Storage
+    const cloud = new CloudStorage();
+    await cloud.init();
+
+    // 2. PRIMARY SOURCE: Cloud (Supabase) - For Live Auto-Sync
+    let projectData = await cloud.loadState();
+
+    // 3. FALLBACK: data.js (PERMANENT_DATA) if cloud is empty
+    if (!projectData || !projectData.rounds || projectData.rounds.length === 0) {
+        console.log('☁️ Cloud empty, using PERMANENT_DATA fallback');
+        projectData = window.PERMANENT_DATA;
+    }
 
     if (!projectData || !projectData.rounds) {
-        console.error('❌ PERMANENT_DATA not found! Check data.js');
+        console.error('❌ No data source found!');
         return;
     }
 
-    console.log('✅ Data Loaded from PERMANENT_DATA:', projectData);
+    console.log('✅ Data Loaded:', projectData);
 
     const rounds = projectData.rounds || [];
     const phases = projectData.phases || {};
