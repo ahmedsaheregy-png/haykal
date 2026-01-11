@@ -3,28 +3,20 @@
 // Version: 4.0 (DIRECT READ MODE)
 // ========================================
 
-// ===== DYNAMIC DATA ENGINE (READ-ONLY) =====
+// ===== DYNAMIC DATA ENGINE (MIRROR MODE) =====
 async function loadDynamicData() {
-    console.log('🔄 Loading Calculator Data (Direct Read)...');
+    console.log('🪞 Loading Data (Mirror Mode)...');
 
-    // 1. Initialize Cloud Storage
-    const cloud = new CloudStorage();
-    await cloud.init();
+    // PRIMARY SOURCE: data.js (PERMANENT_DATA) - The Golden Copy
+    // This is the source of truth, synchronized with the Calculator
+    let projectData = window.PERMANENT_DATA;
 
-    // 2. Load Data (Cloud -> Local -> Default)
-    let projectData = await cloud.loadState();
-
-    // Fallback if cloud is empty
     if (!projectData || !projectData.rounds) {
-        if (window.PERMANENT_DATA) {
-            projectData = window.PERMANENT_DATA;
-        } else {
-            console.error('❌ No data source found!');
-            return;
-        }
+        console.error('❌ PERMANENT_DATA not found! Check data.js');
+        return;
     }
 
-    console.log('✅ Data Loaded:', projectData);
+    console.log('✅ Data Loaded from PERMANENT_DATA:', projectData);
 
     const rounds = projectData.rounds || [];
     const phases = projectData.phases || {};
