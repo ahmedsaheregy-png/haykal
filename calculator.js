@@ -1210,10 +1210,10 @@ class FundingCalculator {
         const totalShares = lastRound ? lastRound.totalShares : this.initialShares;
 
         // السعر المتوقع = السعر الحالي + تأثير إعادة الاستثمار على قيمة السهم
-        const reinvestRate = 100 - (parseFloat(document.getElementById('distributionRate')?.value) || 30);
-        const reinvestPerShare = totalShares > 0 ? (annualProfit * (reinvestRate / 100)) / totalShares : 0;
+        // reinvestRate already declared above (line 1167)
+        const reinvestImpact = totalShares > 0 ? (annualProfit * (reinvestRate / 100)) / totalShares : 0;
         // مضاعف 4x كمتوسط لتأثير إعادة الاستثمار على التقييم
-        const expectedStockPrice = currentStockPrice + (reinvestPerShare * 4);
+        const expectedStockPrice = currentStockPrice + (reinvestImpact * 4);
 
         // EPS calculation based on shares at that phase
         const eps = totalShares > 0 ? annualProfit / totalShares : 0;
