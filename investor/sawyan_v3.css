@@ -1256,6 +1256,56 @@ a,
         display: none;
     }
 
+    /* ==== MOBILE RESPONSIVENESS (CRITICAL) ==== */
+    @media screen and (max-width: 768px) {
+
+        /* Hero Split - Force Stack */
+        .hero-split {
+            display: flex !important;
+            flex-direction: column !important;
+            padding-top: 120px !important;
+            /* Less padding on mobile */
+            padding-bottom: 2rem !important;
+            gap: 2rem !important;
+            height: auto !important;
+            min-height: auto !important;
+        }
+
+        .hero-content {
+            text-align: center;
+            width: 100%;
+        }
+
+        .hero-title {
+            font-size: 2.5rem !important;
+            /* Smaller title */
+            line-height: 1.2;
+        }
+
+        .hero-visual {
+            width: 100%;
+            height: 300px !important;
+            /* Fixed height for visual on mobile */
+            margin-top: 1rem;
+        }
+
+        /* Vision Section - tighter spacing */
+        .vision-section {
+            margin-top: 0 !important;
+            padding-top: 2rem !important;
+        }
+
+        .vision-section .section-label {
+            font-size: 1.8rem !important;
+        }
+
+        /* Metrics Title */
+        .metrics-bento {
+            padding-top: 2rem !important;
+            margin-top: 0 !important;
+        }
+    }
+
     .floating-nav {
         top: 10px;
     }
