@@ -24,14 +24,6 @@ window.PERMANENT_DATA = {
             notes: "قبل الافتتاح"
         },
         {
-            id: 3,
-            name: "الجولة 3 التعادل SERIES B",
-            fundingAmount: 400000,
-            soldPercentage: 12,
-            timing: "الشهر 11",
-            notes: "نقطة التعادل"
-        },
-        {
             id: 4,
             name: "الجولة 4 EMI SERIES C",
             fundingAmount: 5000000,

@@ -392,6 +392,12 @@ class FundingCalculator {
             if (data.phases.good && data.phases.good.annualProfit === 500000) {
                 console.log('🔄 جاري تحديث بيانات الأرباح القديمة إلى القيم الصحيحة...');
                 this.phases = JSON.parse(JSON.stringify(window.PERMANENT_DATA.phases));
+
+                // Remove Month 11 Round (ID 3) if present
+                if (this.rounds) {
+                    this.rounds = this.rounds.filter(r => r.id !== 3 && r.timing !== 'الشهر 11');
+                }
+
                 this.saveState(); // Save the fix permanently
             } else {
                 this.phases = data.phases;
