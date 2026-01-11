@@ -916,14 +916,13 @@ class FundingCalculator {
 
     // --- Read-Only / Admin Protection Logic ---
     checkAccessMode() {
-        // Check if user has "admin" access stored
-        const isAdmin = localStorage.getItem('haykal_admin_access') === 'true';
+        // DISABLED: Read-only mode was blocking editing for the owner.
+        // All users can now edit. To re-enable protection, uncomment below.
+        this.setReadOnlyMode(false); // Allow editing by default
 
-        if (!isAdmin) {
-            this.setReadOnlyMode(true);
-        } else {
-            this.setReadOnlyMode(false); // Enable editing
-        }
+        // OLD LOGIC (kept for reference):
+        // const isAdmin = localStorage.getItem('haykal_admin_access') === 'true';
+        // if (!isAdmin) { this.setReadOnlyMode(true); } else { this.setReadOnlyMode(false); }
 
         this.setupAdminControls();
     }
