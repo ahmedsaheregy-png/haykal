@@ -1207,19 +1207,7 @@ a,
         gap: 1rem;
     }
 
-    .timeline-flow {
-        grid-template-columns: 1fr;
-    }
 
-    .flow-arrow {
-        transform: rotate(-90deg);
-        margin: 1rem 0;
-    }
-
-    .flow-card {
-        width: 100%;
-        margin: 0 auto;
-    }
 
     .pillars-grid {
         grid-template-columns: 1fr;
@@ -1360,6 +1348,16 @@ a,
         padding: 0 0.5rem;
         display: flex;
         flex-direction: column;
+    }
+
+    .flow-arrow {
+        transform: rotate(-90deg);
+        margin: 1rem 0;
+    }
+
+    .flow-card {
+        width: 100%;
+        margin: 0 auto;
     }
 }
 
