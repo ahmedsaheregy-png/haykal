@@ -545,9 +545,8 @@ a,
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-areas:
-        "revenue revenue revenue dashboard dashboard dashboard"
-        "revenue revenue revenue gtv shares exit"
-        "growth growth growth gtv shares exit";
+        "dashboard dashboard dashboard growth growth growth"
+        "gtv gtv shares shares exit exit";
     gap: 1.5rem;
     grid-auto-rows: minmax(280px, auto);
 }
@@ -1617,12 +1616,13 @@ a,
 
     .bento-grid {
         display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
+        grid-template-columns: 1fr !important;
         grid-template-areas:
-            "revenue revenue"
-            "dashboard dashboard"
-            "gtv shares"
-            "exit growth" !important;
+            "dashboard"
+            "growth"
+            "gtv"
+            "shares"
+            "exit" !important;
         gap: 1rem !important;
     }
 
