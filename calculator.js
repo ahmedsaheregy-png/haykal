@@ -668,14 +668,20 @@ class FundingCalculator {
 
         card.querySelector('.funding-amount').addEventListener('input', (e) => {
             const round = this.rounds.find(r => r.id === roundData.id);
-            if (round) { round.fundingAmount = parseFloat(e.target.value) || 0; this.saveState(); }
-            this.recalculateAll();
+            if (round) {
+                round.fundingAmount = parseFloat(e.target.value) || 0;
+                this.recalculateAll(); // Update math first
+                this.saveState(); // Then save full state including stockPrice
+            }
         });
 
         card.querySelector('.sold-percentage').addEventListener('input', (e) => {
             const round = this.rounds.find(r => r.id === roundData.id);
-            if (round) { round.soldPercentage = parseFloat(e.target.value) || 0; this.saveState(); }
-            this.recalculateAll();
+            if (round) {
+                round.soldPercentage = parseFloat(e.target.value) || 0;
+                this.recalculateAll(); // Update math first
+                this.saveState(); // Then save full state including stockPrice
+            }
         });
 
         card.querySelector('.round-timing').addEventListener('change', (e) => {

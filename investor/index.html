@@ -97,8 +97,12 @@
                     </div>
                 </div>
                 <div class="floating-card card-2">
-                    <div class="card-label" id="hero-floating-price-range">سعر السهم</div>
-                    <div class="card-value" style="font-size: 1.1rem;" id="hero-floating-duration">من $1.14 إلى $85.27
+                    <div class="card-label" id="hero-floating-price-range">نمو السهم</div>
+                    <div class="card-value" style="font-size: 1.1rem; line-height: 1.6;" id="hero-floating-duration">
+                        <div style="font-size: 0.9em; color: #94a3b8;">من <span id="start-price-display">...</span>
+                        </div>
+                        <div style="font-size: 1.1em; font-weight: bold; color: #4ade80;">إلى <span
+                                id="end-price-display">...</span></div>
                     </div>
                     <div class="mini-chart">
                         <div class="bar" style="height: 40%"></div>
@@ -408,7 +412,12 @@
         </div>
     </footer>
 
-    <script src="sawyan.js?v=2.0"></script>
+    <!-- Dynamic Data Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../cloud-storage.js?v=2.0_FINAL"></script>
+    <script src="../data.js?v=2.0_CORRECT_VALUES"></script>
+
+    <script src="investor_core.js?v=4.0_NO_CALC_JUST_READ"></script>
 </body>
 
 </html>

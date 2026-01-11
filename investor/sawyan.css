@@ -77,6 +77,7 @@ a,
 }
 
 /* ==== FLOATING NAV ==== */
+/* ==== FLOATING NAV (FIXED) ==== */
 .floating-nav {
     position: fixed;
     top: 20px;
@@ -84,10 +85,32 @@ a,
     transform: translateX(-50%);
     z-index: 9999;
     width: 95%;
-    max-width: 1100px;
-    -webkit-transform: translateX(-50%);
-    will-change: transform;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Wider to avoid cutoff */
+    max-width: 1400px;
+    /* Increased max-width */
+    transition: all 0.3s ease;
+}
+
+/* ... (nav-content styles remain, just tweaking badge below) ... */
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 0, 110, 0.15);
+    /* More visible bg */
+    border: 1px solid rgba(255, 0, 110, 0.5);
+    /* Stronger border */
+    padding: 0.6rem 1.4rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #ff4d9e;
+    /* Brighter Pink Text */
+    text-shadow: 0 0 10px rgba(255, 0, 110, 0.3);
+    /* Glow */
+    margin-bottom: 2rem;
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.1);
 }
 
 .nav-content {
