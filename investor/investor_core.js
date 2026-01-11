@@ -84,7 +84,7 @@ async function loadDynamicData() {
     if (startSharePrice > 0) {
         // Growth calc: (End - Start) / Start
         const growth = ((lastSharePrice - startSharePrice) / startSharePrice) * 100;
-        updateText('hero-stock-growth', `+${Math.round(growth).toLocaleString()}%`);
+        updateText('hero-stock-growth', `${Math.round(growth)}%`);
     }
 
     // 4. Timeline Prices (Direct Read)
