@@ -418,6 +418,18 @@ class FundingCalculator {
             this.currentPhase = data.currentPhase;
         }
 
+        // SELF-HEALING: If stockPrice is missing from cloud data, recalculate and resave
+        // This fixes old data that was saved before the stockPrice persistence fix
+        if (this.rounds && this.rounds.length > 0) {
+            const needsRecalc = this.rounds.some(r => r.stockPrice === undefined || r.stockPrice === null);
+            if (needsRecalc) {
+                console.log('🔧 Self-Healing: Detected missing stockPrice - recalculating and resaving...');
+                this.recalculateAll();
+                this.saveState();
+                console.log('✅ Self-Healing complete: Data resaved with calculated values');
+            }
+        }
+
         // RADICAL FIX: Always sort rounds by timing to prevent "Joula 2 before Joula 1"
         this.sortRounds();
 
