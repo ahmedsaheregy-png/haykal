@@ -1182,7 +1182,7 @@ class FundingCalculator {
         // البحث عن الجولة التي توقيتها يتطابق مع شهر المرحلة
         let phaseRound = this.rounds.find(r => {
             if (!r.timing) return false;
-            const roundMonth = parseInt(r.timing.match(/\d+/)?.[0] || 0);
+            const roundMonth = parseInt(r.timing.match(/-?\d+/)?.[0] || 0);
             return roundMonth === phaseMonth;
         });
 
@@ -1192,14 +1192,14 @@ class FundingCalculator {
             const sortedRounds = [...this.rounds]
                 .filter(r => r.timing)
                 .sort((a, b) => {
-                    const aMonth = parseInt(a.timing.match(/\d+/)?.[0] || 0);
-                    const bMonth = parseInt(b.timing.match(/\d+/)?.[0] || 0);
+                    const aMonth = parseInt(a.timing.match(/-?\d+/)?.[0] || 0);
+                    const bMonth = parseInt(b.timing.match(/-?\d+/)?.[0] || 0);
                     return bMonth - aMonth; // ترتيب تنازلي
                 });
 
             // أخذ أقرب جولة لها توقيت أقل من أو يساوي شهر المرحلة
             phaseRound = sortedRounds.find(r => {
-                const rMonth = parseInt(r.timing.match(/\d+/)?.[0] || 0);
+                const rMonth = parseInt(r.timing.match(/-?\d+/)?.[0] || 0);
                 return rMonth <= phaseMonth;
             }) || this.rounds[this.rounds.length - 1]; // fallback للجولة الأخيرة
         }
@@ -1213,7 +1213,7 @@ class FundingCalculator {
         const nextRound = this.rounds
             .filter(r => r.timing)
             .find(r => {
-                const rMonth = parseInt(r.timing.match(/\d+/)?.[0] || 0);
+                const rMonth = parseInt(r.timing.match(/-?\d+/)?.[0] || 0);
                 return rMonth > phaseMonth;
             });
 
