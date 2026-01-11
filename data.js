@@ -8,7 +8,8 @@
  * آخر تحديث: 2026-01-11
  */
 
-const PERMANENT_DATA = {
+// Ensure global access
+window.PERMANENT_DATA = {
     projectName: "هيكل ملكية البنك",
     initialShares: 1000000,
     initialPrice: 0.05,
