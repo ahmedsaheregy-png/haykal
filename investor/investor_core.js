@@ -54,8 +54,45 @@ async function loadDynamicData() {
         return monthA - monthB;
     });
 
-    // 4. READ VALUES DIRECTLY (No Math)
+    // 4. READ VALUES DIRECTLY (No Math) - WITH FALLBACK
     if (rounds.length === 0) return;
+
+    // FALLBACK: If stockPrice is missing, calculate it
+    // This handles old data that was saved before the persistence fix
+    let previousTotalShares = parseFloat(projectData.initialShares) || 1000000;
+
+    rounds.forEach(round => {
+        // Ensure numeric values
+        const fundingAmount = parseFloat(round.fundingAmount || round.amount) || 0;
+        const soldPercentage = parseFloat(round.soldPercentage) || 0;
+
+        // If stockPrice is missing, calculate it
+        if (round.stockPrice === undefined || round.stockPrice === null) {
+            // Calculate Post Valuation
+            if (soldPercentage > 0) {
+                round.postValuation = fundingAmount / (soldPercentage / 100);
+            } else {
+                round.postValuation = 0;
+            }
+
+            // Calculate Total Shares (Dilution)
+            if (soldPercentage < 100) {
+                round.totalShares = Math.round(previousTotalShares / (1 - soldPercentage / 100));
+            } else {
+                round.totalShares = previousTotalShares;
+            }
+
+            // Calculate Stock Price
+            if (round.totalShares > 0) {
+                round.stockPrice = round.postValuation / round.totalShares;
+            } else {
+                round.stockPrice = 0;
+            }
+        }
+
+        // Track for next round's dilution calculation
+        previousTotalShares = round.totalShares || previousTotalShares;
+    });
 
     // First Round (Founding)
     const firstRound = rounds[0];
