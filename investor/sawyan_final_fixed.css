@@ -2039,6 +2039,22 @@ a,
         max-width: 100% !important;
     }
 
+    /* Force buttons side-by-side on mobile */
+    .hero-actions {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+
+    .hero-actions .btn {
+        width: auto !important;
+        padding: 0.8rem 1rem !important;
+        font-size: 0.9rem !important;
+        flex: 0 1 auto !important;
+    }
+
     .hero-stats-inline {
         justify-content: center !important;
         gap: 1.5rem !important;
