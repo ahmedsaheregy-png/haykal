@@ -394,9 +394,10 @@ class FundingCalculator {
                 this.phases = JSON.parse(JSON.stringify(window.PERMANENT_DATA.phases));
 
                 // Remove Month 11 Round (ID 3) if present
-                if (this.rounds) {
-                    this.rounds = this.rounds.filter(r => r.id !== 3 && r.timing !== 'الشهر 11');
-                }
+                // USER REQUEST: Disable violent deletion. Keeping user data intact.
+                // if (this.rounds) {
+                //    this.rounds = this.rounds.filter(r => r.id !== 3 && r.timing !== 'الشهر 11');
+                // }
 
                 this.saveState(); // Save the fix permanently
             } else {
@@ -406,6 +407,9 @@ class FundingCalculator {
         if (data.currentPhase) {
             this.currentPhase = data.currentPhase;
         }
+
+        // RADICAL FIX: Always sort rounds by timing to prevent "Joula 2 before Joula 1"
+        this.sortRounds();
 
         // Update UI
         document.getElementById('projectNameInput').value = this.projectName;
@@ -668,9 +672,8 @@ class FundingCalculator {
             const round = this.rounds.find(r => r.id === roundData.id);
             if (round) {
                 round.timing = e.target.value;
-                this.updateResultsTables();
-                this.updateRoundTags();
-                this.saveState();
+                // RADICAL FIX: Auto-sort and refresh UI on timing change
+                this.sortAndRefresh();
             }
         });
 
@@ -1325,9 +1328,15 @@ class FundingCalculator {
             if (!round.timing) return;
 
             // Extract month number from timing (e.g., "12", "Month 12", "شهر 12")
-            const monthMatch = round.timing.match(/\d+/);
-            if (!monthMatch) return;
-            const roundMonth = parseInt(monthMatch[0]);
+            // Special case for "Founding"
+            let roundMonth = 0;
+            if (round.timing.includes('التأسيس') || round.timing.includes('الافتتاح')) {
+                roundMonth = 1;
+            } else {
+                const monthMatch = round.timing.match(/\d+/);
+                if (!monthMatch) return;
+                roundMonth = parseInt(monthMatch[0]);
+            }
 
             // Find matching phase by month
             Object.entries(this.phases).forEach(([key, phase]) => {
@@ -1341,6 +1350,37 @@ class FundingCalculator {
                 }
             });
         });
+    }
+
+    // --- RADICAL FIX: Sorting Logic ---
+
+    getRoundMonth(timing) {
+        if (!timing) return 999; // End of list if undefined
+        if (timing.includes('التأسيس') || timing.includes('الافتتاح')) return 1;
+        const match = timing.match(/\d+/);
+        return match ? parseInt(match[0]) : 999;
+    }
+
+    sortRounds() {
+        if (!this.rounds) return;
+        this.rounds.sort((a, b) => {
+            const monthA = this.getRoundMonth(a.timing);
+            const monthB = this.getRoundMonth(b.timing);
+
+            // If months are equal, keep current ID order (stable sort mostly)
+            if (monthA === monthB) {
+                return a.id - b.id;
+            }
+            return monthA - monthB;
+        });
+    }
+
+    sortAndRefresh() {
+        this.sortRounds();
+        this.reRenderAllRounds();
+        this.updateRoundTags(); // Update timeline tags
+        this.recalculateAll();
+        this.saveState();
     }
 
     // Safety fallback: Check if rounds display correctly
