@@ -4,39 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة جولات التمويل - هيكل تمويل وملكية</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap"
-        rel="stylesheet">
+    <title>هيكل ملكية البنك | SAWYAN</title>
+    <!-- Tajawal Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style -->
     <link rel="stylesheet" href="style.css?v=2.1">
+    <link rel="stylesheet" href="sawyan.css?v=3.2">
 </head>
 
 <body>
     <!-- Header -->
     <header>
-        <div class="header-content">
-            <div class="logo-container">
-                <i class="fa-solid fa-chart-line logo-icon"></i>
-                <h1>حاسبة جولات التمويل <input type="text" id="projectNameInput" class="project-name-input"
-                        placeholder="اسم المشروع"></h1>
-            </div>
-            <div class="header-actions">
-                <button id="newProjectBtn" class="header-btn"><i class="fa-solid fa-plus"></i> مشروع جديد</button>
-                <button id="saveProjectsMenuBtn" class="header-btn"><i class="fa-solid fa-folder-open"></i>
-                    مشاريعي</button>
-                <!-- Projects Dropdown -->
-                <div id="projectsDropdown" class="projects-dropdown" style="display: none;">
-                    <h4>المشاريع المحفوظة</h4>
-                    <ul id="projectsList"></ul>
-                </div>
-                <button id="toggleEditBtn" class="toggle-edit-btn" title="وضع التعديل">
-                    <i class="fa-solid fa-lock"></i>
-                </button>
-            </div>
+        <button id="toggleEditBtn" class="toggle-edit-btn" title="وضع التعديل">
+            <i class="fa-solid fa-lock"></i>
+        </button>
+        </div>
         </div>
     </header>
 
@@ -297,7 +281,17 @@
         <p>حاسبة جولات التمويل - أداة لتخطيط هيكل الملكية والاستثمار</p>
     </footer>
 
-    <script src="calculator.js?v=force_bust_1"></script>
+    <!-- Supabase CDN for Cloud Storage -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Cloud Storage Module -->
+    <script src="cloud-storage.js?v=1.0"></script>
+
+    <!-- Fallback Data (used if cloud is unavailable) -->
+    <script src="data.js?v=1.2_final"></script>
+
+    <!-- Main Calculator -->
+    <script src="calculator.js?v=5.1_cloud_fix"></script>
     <script>
         // Force reload if we see the error
         window.addEventListener('error', function (e) {
