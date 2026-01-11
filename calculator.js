@@ -404,6 +404,16 @@ class FundingCalculator {
                 this.phases = data.phases;
             }
         }
+
+        // DATA CLEANUP: Ensure Founding round has timing text
+        if (this.rounds) {
+            this.rounds.forEach(r => {
+                if (!r.timing && (r.name.includes('تأسيس') || r.name.includes('Founding') || r.name.includes('Round 1') || r.name.includes('جولة 1'))) {
+                    r.timing = 'التأسيس';
+                }
+            });
+        }
+
         if (data.currentPhase) {
             this.currentPhase = data.currentPhase;
         }
@@ -1354,18 +1364,31 @@ class FundingCalculator {
 
     // --- RADICAL FIX: Sorting Logic ---
 
-    getRoundMonth(timing) {
-        if (!timing) return 999; // End of list if undefined
-        if (timing.includes('التأسيس') || timing.includes('الافتتاح')) return 1;
-        const match = timing.match(/\d+/);
-        return match ? parseInt(match[0]) : 999;
+    getRoundMonth(round) {
+        const timing = round.timing;
+        const name = round.name;
+
+        // 1. Check Name for obvious clues (highest priority for "Round 1")
+        if (name && (name.includes('جولة 1 ') || name.includes('Round 1') || name.includes('تأسيس') || name.includes('pre-seed'))) {
+            return 0; // Absolute first
+        }
+
+        // 2. Check Timing string
+        if (timing) {
+            if (timing.includes('التأسيس') || timing.includes('الافتتاح')) return 1;
+            const match = timing.match(/\d+/);
+            if (match) return parseInt(match[0]);
+        }
+
+        // 3. Fallback: If timing empty, push to end
+        return 999;
     }
 
     sortRounds() {
         if (!this.rounds) return;
         this.rounds.sort((a, b) => {
-            const monthA = this.getRoundMonth(a.timing);
-            const monthB = this.getRoundMonth(b.timing);
+            const monthA = this.getRoundMonth(a);
+            const monthB = this.getRoundMonth(b);
 
             // If months are equal, keep current ID order (stable sort mostly)
             if (monthA === monthB) {
