@@ -1261,143 +1261,7 @@ a,
     }
 }
 
-/* ==== MOBILE RESPONSIVENESS (CRITICAL) ==== */
-@media screen and (max-width: 768px) {
-    .nav-menu {
-        display: none;
-    }
-
-    /* Hero Split - Force Stack & Center */
-    .hero-split {
-        display: flex !important;
-        flex-direction: column !important;
-        padding-top: 140px !important;
-        padding-bottom: 3rem !important;
-        gap: 2rem !important;
-        height: auto !important;
-        min-height: auto !important;
-        text-align: center !important;
-        /* Force center alignment */
-    }
-
-    .hero-content {
-        text-align: center !important;
-        width: 100% !important;
-        padding: 0 1rem !important;
-        /* Add breathing room */
-    }
-
-    .hero-badge {
-        display: inline-flex !important;
-        /* Ensure it doesn't span full width awkwardly */
-        margin: 0 auto 1.5rem auto !important;
-        /* Center horizontally */
-        position: relative !important;
-        top: auto !important;
-        left: auto !important;
-    }
-
-    .hero-title {
-        font-size: 2.2rem !important;
-        line-height: 1.3 !important;
-        margin-bottom: 1rem !important;
-    }
-
-    .hero-description {
-        font-size: 1.1rem !important;
-        margin: 0 auto 2rem auto !important;
-        max-width: 100% !important;
-    }
-
-    .hero-stats-inline {
-        justify-content: center !important;
-        /* Center stats */
-        gap: 1.5rem !important;
-    }
-
-    /* Fix overlapping cloud badge on mobile */
-    .floating-status {
-        bottom: 10px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        width: max-content !important;
-        z-index: 100 !important;
-    }
-}
-
-.hero-visual {
-    width: 100%;
-    height: 300px !important;
-    /* Fixed height for visual on mobile */
-    margin-top: 2rem;
-    position: relative;
-}
-
-/* Adjust floating cards for mobile to prevent overlap */
-.floating-card {
-    padding: 1rem !important;
-    min-width: auto !important;
-    width: auto !important;
-}
-
-.floating-card.card-1 {
-    top: 0 !important;
-    right: 0 !important;
-    left: auto !important;
-    transform: scale(0.8) !important;
-    transform-origin: top right;
-}
-
-.floating-card.card-2 {
-    bottom: 0 !important;
-    left: 0 !important;
-    top: auto !important;
-    transform: scale(0.8) !important;
-    transform-origin: bottom left;
-}
-
-.card-value {
-    font-size: 1.5rem !important;
-}
-
-/* Vision Section - tighter spacing */
-.vision-section {
-    margin-top: 0 !important;
-    padding-top: 2rem !important;
-}
-
-.vision-section .section-label {
-    font-size: 1.8rem !important;
-}
-
-/* Metrics Title */
-.metrics-bento {
-    padding-top: 2rem !important;
-    margin-top: 0 !important;
-}
-
-
-.floating-nav {
-    top: 10px;
-}
-
-.nav-content {
-    padding: 0.6rem 1rem;
-}
-
-.brand-icon {
-    width: 35px;
-    height: 35px;
-    font-size: 1.1rem;
-}
-
-.brand-name {
-    font-size: 1.1rem;
-}
-
-.hero-split {
-    padding: 100px 1.5rem 40px;
-}
+/* Mobile styles moved to end of file */
 
 .hero-title {
     font-size: 2.2rem;
@@ -2118,5 +1982,142 @@ a,
 
     50% {
         transform: translateX(10px);
+    }
+}
+
+/* =========================================
+   CRITICAL MOBILE OVERRIDES (MOVED TO END)
+   ========================================= */
+@media screen and (max-width: 768px) {
+    .nav-menu {
+        display: none;
+    }
+
+    /* Hero Split - Force Stack & Center */
+    .hero-split {
+        display: flex !important;
+        flex-direction: column !important;
+        padding-top: 140px !important;
+        padding-bottom: 3rem !important;
+        gap: 2rem !important;
+        height: auto !important;
+        min-height: auto !important;
+        text-align: center !important;
+    }
+
+    .hero-content {
+        text-align: center !important;
+        width: 100% !important;
+        padding: 0 1rem !important;
+    }
+
+    .hero-badge {
+        display: inline-flex !important;
+        margin: 0 auto 1.5rem auto !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        /* Ensure Cyan Color persists on Mobile */
+        background: rgba(0, 245, 255, 0.1) !important;
+        border: 1px solid rgba(0, 245, 255, 0.3) !important;
+        color: #00f5ff !important;
+    }
+
+    .pulse-dot {
+        background: #00f5ff !important;
+    }
+
+    .hero-title {
+        font-size: 2.2rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .hero-description {
+        font-size: 1.1rem !important;
+        margin: 0 auto 2rem auto !important;
+        max-width: 100% !important;
+    }
+
+    .hero-stats-inline {
+        justify-content: center !important;
+        gap: 1.5rem !important;
+    }
+
+    /* Fix overlapping cloud badge on mobile */
+    .floating-status {
+        bottom: 10px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: max-content !important;
+        z-index: 100 !important;
+    }
+
+    .hero-visual {
+        width: 100%;
+        height: 300px !important;
+        margin-top: 2rem;
+        position: relative;
+    }
+
+    /* Adjust floating cards for mobile */
+    .floating-card {
+        padding: 1rem !important;
+        min-width: auto !important;
+        width: auto !important;
+    }
+
+    .floating-card.card-1 {
+        top: 0 !important;
+        right: 0 !important;
+        left: auto !important;
+        transform: scale(0.8) !important;
+        transform-origin: top right;
+    }
+
+    .floating-card.card-2 {
+        bottom: 0 !important;
+        left: 0 !important;
+        top: auto !important;
+        transform: scale(0.8) !important;
+        transform-origin: bottom left;
+    }
+
+    .card-value {
+        font-size: 1.5rem !important;
+    }
+
+    /* Vision Section - tighter spacing */
+    .vision-section {
+        margin-top: 0 !important;
+        padding-top: 2rem !important;
+    }
+
+    .vision-section .section-label {
+        font-size: 1.8rem !important;
+    }
+
+    /* Metrics Title */
+    .metrics-bento {
+        padding-top: 2rem !important;
+        margin-top: 0 !important;
+    }
+
+    .floating-nav {
+        top: 10px;
+    }
+
+    .nav-content {
+        padding: 0.6rem 1rem;
+    }
+
+    .brand-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1.1rem;
+    }
+
+    .brand-name {
+        font-size: 1.1rem;
     }
 }
