@@ -1194,15 +1194,13 @@ footer {
 }
 
 /* =========================================
-   AGGRESSIVE SAFE MODE (Force Updates)
+   AGGRESSIVE SAFE MODE (Refined)
    ========================================= */
-/* Ensure no text is ever too small */
+/* Ensure text elements have minimum readability, but don't break containers */
 body,
 p,
 li,
-a,
-span,
-div {
+a {
     font-size: 1rem !important;
     /* Min 16px */
 }
@@ -1212,9 +1210,7 @@ div {
     body,
     p,
     li,
-    a,
-    span,
-    div {
+    a {
         font-size: 1.125rem !important;
         /* 18px on Desktop */
     }
