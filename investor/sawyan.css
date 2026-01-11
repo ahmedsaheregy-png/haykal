@@ -157,12 +157,12 @@ a,
 
 /* ==== HERO SPLIT ==== */
 .hero-split {
-    min-height: 100vh;
+    min-height: auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    gap: 4rem;
-    padding: clamp(8rem, 15vh, 10rem) clamp(1rem, 5vw, 4rem) 4rem;
+    gap: 3rem;
+    padding: clamp(5rem, 8vh, 6rem) clamp(1rem, 4vw, 3rem) 2rem;
     position: relative;
     overflow: hidden;
 }
@@ -1604,13 +1604,19 @@ a,
     }
 
     /* Hero Section */
+    .hero-split {
+        grid-template-columns: 1fr !important;
+        padding: 5rem 1rem 2rem !important;
+        gap: 2rem !important;
+    }
+
     .hero-content {
-        padding-top: 80px;
-        gap: 1.5rem;
+        padding-top: 0;
+        gap: 1rem;
     }
 
     .hero-visual {
-        height: clamp(200px, 40vh, 350px);
+        height: clamp(200px, 35vh, 300px);
     }
 
     /* Floating cards - smaller */
@@ -1854,49 +1860,4 @@ a,
 .cta-subtitle {
     font-family: 'Tajawal', sans-serif !important;
     color: var(--text-prose) !important;
-}
-
-
-/* =========================================
-   AGGRESSIVE SAFE MODE (Refined)
-   ========================================= */
-/* Ensure text elements have minimum readability, but don't break containers */
-body,
-p,
-li,
-a {
-    font-size: 1rem !important;
-    /* Min 16px */
-}
-
-@media (min-width: 1024px) {
-
-    body,
-    p,
-    li,
-    a {
-        font-size: 1.125rem !important;
-        /* 18px on Desktop */
-    }
-}
-
-/* Ensure no text is dark gray */
-p,
-li,
-span,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-a {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    /* Boost contrast */
-}
-
-.text-secondary,
-.text-muted {
-    color: #e0e6ed !important;
-    /* Force bright silver */
 }
