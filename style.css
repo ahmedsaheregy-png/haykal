@@ -9,7 +9,10 @@
     --background-color: #0f0f1a;
     --card-bg: #1f1f3a;
     --text-primary: #ffffff;
-    --text-secondary: #a0a0b0;
+    --text-secondary: #e0e6ed;
+    /* Bright silver for high contrast */
+    --text-tertiary: #cbd5e1;
+    /* Lighter gray, never dark */
     --input-bg: #2a2a4a;
     --border-color: #3a3a5a;
     --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -35,6 +38,27 @@ body {
     line-height: 1.6;
     direction: rtl;
     min-height: 100vh;
+    font-size: 18px;
+    /* Globally increased base size */
+}
+
+/* Force Tajawal functionality */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+div,
+a,
+button,
+input,
+label,
+th,
+td {
+    font-family: 'Tajawal', sans-serif !important;
 }
 
 /* Header */

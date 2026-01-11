@@ -14,9 +14,18 @@
     --purple: #8338ec;
     --gold: #ffbe0b;
 
+    /* Text Colors - High Contrast */
+    --text-primary: #ffffff;
+    --text-prose: #e0e6ed;
+    /* Bright silver, strictly high contrast */
+    --text-secondary: #cbd5e1;
+    /* Lighter gray, never dark */
+
     /* Effects */
-    --glass-bg: rgba(18, 23, 46, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-bg: rgba(18, 23, 46, 0.85);
+    /* Increased opacity for better contrast */
+    --glass-border: rgba(255, 255, 255, 0.15);
+    /* Stronger border */
     --glow-cyan: 0 0 30px rgba(0, 245, 255, 0.4);
     --glow-pink: 0 0 30px rgba(255, 0, 110, 0.4);
     --glow-gold: 0 0 30px rgba(255, 190, 11, 0.4);
@@ -34,10 +43,12 @@
 body {
     font-family: 'Tajawal', 'Inter', sans-serif;
     background: var(--void);
-    color: #fff;
+    color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
     direction: rtl;
+    font-size: 18px;
+    /* Globally increased base size */
 }
 
 h1,
@@ -45,12 +56,24 @@ h2,
 h3,
 h4 {
     font-family: 'Cairo', sans-serif;
+    color: var(--text-primary);
+}
+
+/* Force Tajawal for specific text elements as requested */
+p,
+span,
+li,
+a,
+.section-label,
+.metric-label {
+    font-family: 'Tajawal', sans-serif !important;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 clamp(1rem, 5vw, 2rem);
+    padding: 0 clamp(1rem, 3vw, 1.5rem);
+    /* Tighter container padding */
 }
 
 /* ==== FLOATING NAV ==== */
@@ -113,7 +136,7 @@ h4 {
 }
 
 .nav-menu a {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-prose);
     text-decoration: none;
     font-weight: 600;
     font-size: 1rem;
@@ -401,7 +424,7 @@ h4 {
 
 /* ==== VISION VIDEO SECTION ==== */
 .vision-section {
-    padding: 8rem 0;
+    padding: 4rem 0;
     background: var(--void);
 }
 
@@ -680,7 +703,7 @@ h4 {
 
 /* ==== HOW IT WORKS ==== */
 .how-it-works {
-    padding: 8rem 0;
+    padding: 4rem 0;
 }
 
 .timeline-flow {
@@ -756,13 +779,13 @@ h4 {
 
 /* ==== STRATEGIC PILLARS ==== */
 .returns-section {
-    padding: 8rem 0;
+    padding: 4rem 0;
     background: var(--surface);
 }
 
 .section-intro {
     font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-prose);
     margin-top: 1rem;
     text-align: center;
 }
@@ -960,7 +983,7 @@ h4 {
 /* ==== CTA IMMERSIVE ==== */
 .cta-immersive {
     position: relative;
-    padding: 8rem 0;
+    padding: 4rem 0;
     overflow: hidden;
 }
 
@@ -1096,7 +1119,7 @@ h4 {
 }
 
 .footer-links a {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     text-decoration: none;
     transition: var(--smooth);
 }
@@ -1354,7 +1377,7 @@ h4 {
 .rev-evo-subtitle {
     font-family: 'Tajawal', sans-serif;
     font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-prose);
     max-width: 600px;
     margin: 1rem auto 0;
     text-align: center;
@@ -1501,7 +1524,7 @@ h4 {
 .rev-evo-item-text p {
     font-family: 'Tajawal', sans-serif;
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-prose);
     line-height: 1.6;
     margin: 0;
 }
@@ -1636,7 +1659,7 @@ h4 {
 
     .bento-card .metric-label {
         font-size: 0.95rem !important;
-        color: rgba(255, 255, 255, 0.9) !important;
+        color: var(--text-primary) !important;
     }
 
     .metric-badge-highlight {
@@ -1718,7 +1741,7 @@ h4 {
 
     .hero-subtitle {
         font-size: 1rem !important;
-        color: rgba(255, 255, 255, 0.95) !important;
+        color: var(--text-prose) !important;
     }
 
     /* Floating Cards - hide or minimize */
@@ -1733,7 +1756,7 @@ h4 {
 
     .metric-item .label {
         font-size: 0.85rem !important;
-        color: rgba(255, 255, 255, 0.9) !important;
+        color: var(--text-primary) !important;
     }
 
     /* Bento Cards */
@@ -1761,7 +1784,7 @@ h4 {
 
     .rev-evo-subtitle {
         font-size: 0.95rem !important;
-        color: rgba(255, 255, 255, 0.9) !important;
+        color: var(--text-primary) !important;
     }
 
     .rev-evo-item-text h4 {
@@ -1770,7 +1793,7 @@ h4 {
 
     .rev-evo-item-text p {
         font-size: 0.85rem !important;
-        color: rgba(255, 255, 255, 0.9) !important;
+        color: var(--text-primary) !important;
     }
 
     /* Timeline Cards */
@@ -1780,7 +1803,7 @@ h4 {
 
     .flow-card p {
         font-size: 1rem !important;
-        color: rgba(255, 255, 255, 0.95) !important;
+        color: var(--text-prose) !important;
     }
 
     .milestone-price {
@@ -1794,12 +1817,12 @@ h4 {
 
     .pillar-card p {
         font-size: 0.95rem !important;
-        color: rgba(255, 255, 255, 0.9) !important;
+        color: var(--text-primary) !important;
     }
 
     .pillar-subtitle {
         font-size: 0.85rem !important;
-        color: rgba(255, 255, 255, 0.7) !important;
+        color: var(--text-secondary) !important;
     }
 
     /* CTA */
@@ -1809,7 +1832,7 @@ h4 {
 
     .cta-subtitle {
         font-size: 0.95rem !important;
-        color: rgba(255, 255, 255, 0.9) !important;
+        color: var(--text-primary) !important;
     }
 
     /* Buttons */
@@ -1830,5 +1853,5 @@ h4 {
 .flow-card p,
 .cta-subtitle {
     font-family: 'Tajawal', sans-serif !important;
-    color: rgba(255, 255, 255, 0.85) !important;
+    color: var(--text-prose) !important;
 }
