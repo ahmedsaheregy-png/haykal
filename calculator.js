@@ -364,15 +364,15 @@ class FundingCalculator {
         // Try cloud first, then fallback
         tryCloudLoad().then(loaded => {
             // Check if loaded but empty or invalid rounds
-            const validRounds = Array.isArray(self.rounds) && self.rounds.length > 0;
-
-            if (!loaded || !validRounds) {
-                console.warn('⚠️ البيانات السحابية فارغة أو غير صالحة - جاري فرض البيانات الأساسية...');
+            // If NOT loaded from cloud (new user or connection error), use fallback
+            if (!loaded) {
+                console.warn('⚠️ لم يتم العثور على بيانات سحابية - جاري بدء المشروع الافتراضي...');
                 self.loadFromFallback();
 
-                // FORCE UPDATE CLOUD with valid data
-                console.log('♻️ جاري تحديث السحابة بالبيانات الصحيحة...');
+                // Seed cloud for the first time
                 self.saveState();
+            } else {
+                console.log('✅ تم تحميل بيانات المستخدم بنجاح');
             }
         });
 
