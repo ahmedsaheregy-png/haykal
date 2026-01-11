@@ -564,11 +564,14 @@ class FundingCalculator {
                                    min="0" step="1000">
                         </div>
                         <div class="input-group">
-                            <label>الحصة المباعة (%)</label>
-                            <input type="number" class="sold-percentage" 
-                                   data-round-id="${roundData.id}"
-                                   value="${roundData.soldPercentage}" 
-                                   min="0.1" max="100" step="0.1">
+                            <label>الحصة المباعة</label>
+                            <div class="input-with-suffix">
+                                <input type="number" class="sold-percentage" 
+                                       data-round-id="${roundData.id}"
+                                       value="${roundData.soldPercentage}" 
+                                       min="0.1" max="100" step="0.1">
+                                <span class="suffix">%</span>
+                            </div>
                         </div>
                         <div class="input-group">
                         <label>التوقيت (شهر رقم)</label>

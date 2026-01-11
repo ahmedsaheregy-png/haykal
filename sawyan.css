@@ -1861,3 +1861,27 @@ a,
     font-family: 'Tajawal', sans-serif !important;
     color: var(--text-prose) !important;
 }
+
+/* Input with Suffix Styles */
+.input-with-suffix {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-suffix input {
+    padding-left: 30px !important;
+    /* Make space for the suffix */
+    width: 100%;
+}
+
+.input-with-suffix .suffix {
+    position: absolute;
+    left: 10px;
+    color: var(--text-secondary);
+    /* Or a brighter color if needed */
+    font-weight: bold;
+    font-size: 0.9rem;
+    pointer-events: none;
+    z-index: 10;
+}
