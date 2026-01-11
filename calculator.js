@@ -230,6 +230,7 @@ class FundingCalculator {
     }
 
     showSaveIndicator() {
+        // RADICAL FIX: Show that changes are preview only
         let indicator = document.getElementById('saveIndicator');
         if (!indicator) {
             indicator = document.createElement('div');
@@ -238,25 +239,27 @@ class FundingCalculator {
                 position: fixed;
                 bottom: 20px;
                 left: 20px;
-                background: rgba(46, 204, 113, 0.9);
-                color: white;
-                padding: 8px 16px;
+                background: rgba(241, 196, 15, 0.95);
+                color: #333;
+                padding: 10px 18px;
                 border-radius: 20px;
-                font-size: 0.9rem;
+                font-size: 0.85rem;
                 opacity: 0;
                 transition: opacity 0.3s;
                 z-index: 1000;
                 pointer-events: none;
+                direction: rtl;
             `;
-            indicator.innerHTML = '<i class="fa-solid fa-check"></i> تم الحفظ';
             document.body.appendChild(indicator);
         }
+
+        indicator.innerHTML = '<i class="fa-solid fa-eye"></i> معاينة مؤقتة - للحفظ الدائم تواصل مع المطور';
 
         // Flash the indicator
         indicator.style.opacity = '1';
         setTimeout(() => {
             indicator.style.opacity = '0';
-        }, 1500);
+        }, 2500);
     }
 
     updateHeaderProjectName() {
@@ -377,79 +380,58 @@ class FundingCalculator {
     }
 
     loadState() {
-        let loaded = false;
+        // ===== RADICAL FIX: Load from PERMANENT_DATA (data.js) only =====
+        // No more localStorage - data is permanently stored in GitHub
 
-        if (this.projectId) {
-            // Try loading specific project
-            const savedData = localStorage.getItem(`funding_data_${this.projectId}`);
-            if (savedData) {
-                const state = JSON.parse(savedData);
-                this.projectName = state.name || "مشروع بدون اسم";
-                this.initialShares = state.initialShares;
-                this.initialPrice = state.initialPrice;
-                this.rounds = state.rounds || [];
-                this.roundCounter = state.roundCounter || 0;
-
-                // استعادة بيانات مراحل النمو المحفوظة
-                if (state.phases) {
-                    this.savedPhases = state.phases;
-                }
-                if (state.distributionRate !== undefined) {
-                    this.savedDistributionRate = state.distributionRate;
-                }
-                if (state.currentPhase) {
-                    this.savedCurrentPhase = state.currentPhase;
-                }
-
-                loaded = true;
-            } else {
-                // CRITICAL FIX: Project ID exists in URL but data not found
-                // Generate a NEW project ID instead of overwriting the missing one
-                console.warn(`Project ${this.projectId} not found in localStorage. Creating new project.`);
-                this.projectId = null; // Clear the old ID so a new one will be generated on save
-            }
-        }
-
-        if (loaded) {
-            // Update UI
-            document.getElementById('projectNameInput').value = this.projectName;
-            document.title = this.projectName;
-            document.getElementById('initialShares').value = this.initialShares;
-            document.getElementById('initialPrice').value = this.initialPrice;
-
-            // Clear and Re-render
-            this.reRenderAllRounds();
-
-            // Recalc
-            this.updateInitial();
+        if (typeof PERMANENT_DATA === 'undefined') {
+            console.error('PERMANENT_DATA not found! Make sure data.js is loaded before calculator.js');
+            alert('خطأ: ملف البيانات غير موجود. يرجى تحديث الصفحة.');
             return;
         }
 
-        // Fallback: New Project / No Data found / Invalid Project ID
-        // Use Defaults or user's requested "Bank Structure" title
-        this.projectName = "هيكل ملكية البنك";
+        // Load the permanent data
+        this.projectName = PERMANENT_DATA.projectName;
+        this.initialShares = PERMANENT_DATA.initialShares;
+        this.initialPrice = PERMANENT_DATA.initialPrice;
+        this.rounds = [];
+        this.roundCounter = 0;
+
+        // Load phases if available
+        if (PERMANENT_DATA.phases) {
+            this.savedPhases = PERMANENT_DATA.phases;
+        }
+
+        // Update UI with project name
         document.getElementById('projectNameInput').value = this.projectName;
+        document.title = this.projectName;
+        document.getElementById('initialShares').value = this.initialShares;
+        document.getElementById('initialPrice').value = this.initialPrice;
+
+        // Load rounds from permanent data
+        PERMANENT_DATA.rounds.forEach(roundData => {
+            this.roundCounter = Math.max(this.roundCounter, roundData.id);
+            const round = {
+                id: roundData.id,
+                name: roundData.name,
+                fundingAmount: roundData.fundingAmount,
+                soldPercentage: roundData.soldPercentage,
+                timing: roundData.timing || '',
+                notes: roundData.notes || '',
+                preValuation: 0,
+                postValuation: 0,
+                stockPrice: 0,
+                roundShares: 0,
+                totalShares: 0,
+                profitMultiplier: 0
+            };
+            this.rounds.push(round);
+        });
+
+        // Render all rounds
+        this.reRenderAllRounds();
         this.updateInitial();
 
-        // Populate Default Data from User's Request
-        if (this.rounds.length === 0) {
-            this.addRoundWithData("الجولة 1 تأسيس pre-seed", 60000, 5, "");
-            // Skip Round 2 (Series A) as requested
-            this.roundCounter++; // Skip ID 2
-            this.addRoundWithData("الجولة 3 التعادل SERIES B", 400000, 12, "الشهر 11");
-            this.addRoundWithData("الجولة 4 EMI SERIES C", 5000000, 10, "الشهر 12");
-            this.addRoundWithData("الجولة 5 التوسع الدولي", 20000000, 15, "الشهر 36");
-        }
-
-        // Explicitly render immediately for new users
-        this.reRenderAllRounds();
-        this.updateResultsTables();
-
-        try {
-            this.saveState(); // Save immediately to create the record (with NEW ID)
-        } catch (e) {
-            console.error("Save state failed, but continuing UI render:", e);
-        }
+        console.log('✅ البيانات محمّلة من data.js (مصدر ثابت على GitHub)');
     }
 
     // Deprecated: Kept for backward compatibility with cached versions
