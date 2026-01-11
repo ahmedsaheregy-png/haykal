@@ -1093,13 +1093,19 @@ class FundingCalculator {
     }
 
     updateInvestorJourney() {
+        // Safety check: Make sure phases exist
+        if (!this.phases || !this.phases[this.currentPhase]) {
+            console.warn('Phases not initialized, skipping updateInvestorJourney');
+            return;
+        }
+
         // Get values from inputs
         const distributionRate = parseFloat(document.getElementById('distributionRate')?.value) || 30;
         const reinvestRate = 100 - distributionRate;
 
         // Get current phase data
         const phase = this.phases[this.currentPhase];
-        const annualProfit = phase.annualProfit;
+        const annualProfit = phase.annualProfit || 0;
 
         // Update the profit input to show current phase profit
         const profitInput = document.getElementById('expectedProfit');
