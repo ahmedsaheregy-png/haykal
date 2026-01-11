@@ -1867,21 +1867,37 @@ a,
     position: relative;
     display: flex;
     align-items: center;
+    direction: ltr;
+    /* Force LTR for number formatting */
 }
 
-.input-with-suffix input {
-    padding-left: 30px !important;
-    /* Make space for the suffix */
+/* Hide Spin Buttons */
+/* Hide Spin Buttons */
+.input-with-suffix input[type=number]::-webkit-inner-spin-button,
+.input-with-suffix input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+.input-with-suffix input[type=number] {
+    -moz-appearance: textfield;
+    padding-left: 35px !important;
+    /* Space for % sign on left */
+    text-align: left !important;
+    /* Align number close to % */
     width: 100%;
+    font-weight: 700;
 }
 
 .input-with-suffix .suffix {
     position: absolute;
-    left: 10px;
-    color: var(--text-secondary);
-    /* Or a brighter color if needed */
-    font-weight: bold;
-    font-size: 0.9rem;
+    left: 12px;
+    color: var(--cyan);
+    /* Highlight color */
+    font-weight: 900;
+    font-size: 1.1rem;
     pointer-events: none;
     z-index: 10;
+    top: 50%;
+    transform: translateY(-50%);
 }
