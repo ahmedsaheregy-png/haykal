@@ -76,14 +76,10 @@ class FundingCalculator {
             });
         }
 
-        document.getElementById('newProjectBtn').addEventListener('click', () => {
-            this.createNewProject();
-        });
 
-        document.getElementById('saveProjectsMenuBtn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.toggleProjectsMenu();
-        });
+
+        // Removed old project buttons listeners (newProjectBtn, saveProjectsMenuBtn) 
+        // as they are no longer in index.html
 
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
@@ -367,18 +363,16 @@ class FundingCalculator {
 
         // Try cloud first, then fallback
         tryCloudLoad().then(loaded => {
-            // Check if loaded but empty rounds (initial empty state)
-            const emptyRounds = self.rounds.length === 0;
+            // Check if loaded but empty or invalid rounds
+            const validRounds = Array.isArray(self.rounds) && self.rounds.length > 0;
 
-            if (!loaded || emptyRounds) {
-                console.log('⚠️ البيانات السحابية فارغة أو غير موجودة - جاري تحميل البيانات الأساسية...');
+            if (!loaded || !validRounds) {
+                console.warn('⚠️ البيانات السحابية فارغة أو غير صالحة - جاري فرض البيانات الأساسية...');
                 self.loadFromFallback();
 
-                // CRITICAL: Seed the cloud with the fallback data immediately so it's not empty next time
-                setTimeout(() => {
-                    self.saveState();
-                    console.log('✅ تم رفع البيانات الأساسية إلى السحابة (تلقائياً)');
-                }, 2000);
+                // FORCE UPDATE CLOUD with valid data
+                console.log('♻️ جاري تحديث السحابة بالبيانات الصحيحة...');
+                self.saveState();
             }
         });
 
