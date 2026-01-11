@@ -76,7 +76,6 @@ a,
     /* Tighter container padding */
 }
 
-/* ==== FLOATING NAV ==== */
 /* ==== FLOATING NAV (FIXED) ==== */
 .floating-nav {
     position: fixed;
@@ -84,10 +83,10 @@ a,
     left: 50%;
     transform: translateX(-50%);
     z-index: 9999;
-    width: 95%;
-    /* Wider to avoid cutoff */
-    max-width: 1400px;
-    /* Increased max-width */
+    width: calc(100% - 40px);
+    /* Fixed margin instead of percentage */
+    max-width: 1200px;
+    /* Reduced for better stability */
     transition: all 0.3s ease;
 }
 
@@ -180,12 +179,14 @@ a,
 
 /* ==== HERO SPLIT ==== */
 .hero-split {
-    min-height: auto;
+    min-height: 100vh;
+    /* Full viewport height */
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
     gap: 3rem;
-    padding: clamp(5rem, 8vh, 6rem) clamp(1rem, 4vw, 3rem) 2rem;
+    padding: 100px clamp(1rem, 4vw, 3rem) 2rem;
+    /* Fixed top padding for nav clearance */
     position: relative;
     overflow: hidden;
 }
