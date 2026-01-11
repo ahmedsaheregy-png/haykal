@@ -388,7 +388,14 @@ class FundingCalculator {
         this.roundCounter = data.roundCounter || 0;
 
         if (data.phases) {
-            this.phases = data.phases;
+            // MIGRATION FIX: Auto-update old data values (500k -> 949k)
+            if (data.phases.good && data.phases.good.annualProfit === 500000) {
+                console.log('🔄 جاري تحديث بيانات الأرباح القديمة إلى القيم الصحيحة...');
+                this.phases = JSON.parse(JSON.stringify(window.PERMANENT_DATA.phases));
+                this.saveState(); // Save the fix permanently
+            } else {
+                this.phases = data.phases;
+            }
         }
         if (data.currentPhase) {
             this.currentPhase = data.currentPhase;
