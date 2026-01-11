@@ -22,8 +22,15 @@
     <nav class="floating-nav">
         <div class="nav-content">
             <div class="brand">
-                <div class="brand-icon">S</div>
-                <span class="brand-name">SAWYAN</span>
+                <div class="brand-icon"
+                    style="background: none; box-shadow: none; color: var(--cyan); font-size: 1.8rem;">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <div class="brand-text-col" style="display: flex; flex-direction: column; line-height: 1;">
+                    <span class="brand-name">SAWYAN</span>
+                    <span style="font-size: 0.7rem; color: var(--text-secondary); letter-spacing: 1px;">Business
+                        Snapshot - نبذة عن الأرقام</span>
+                </div>
             </div>
             <div class="nav-menu">
                 <a href="#metrics">الأرقام</a>
@@ -36,6 +43,22 @@
 
     <!-- Hero: Split Screen -->
     <section class="hero-split">
+        <div class="confidential-notice" style="
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 0, 110, 0.1);
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            color: #ff4d9e;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 10;
+        ">
+            <i class="fa-solid fa-lock" style="margin-left: 5px;"></i> صفحة خاصة بالشركاء غير معدة للنشر
+        </div>
         <div class="hero-content">
             <div class="hero-badge">
                 <span class="pulse-dot"></span>

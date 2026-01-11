@@ -19,14 +19,32 @@
     <header>
         <div class="header-container">
             <div class="logo">
-                <i class="fa-solid fa-chart-pie"></i>
-                <h1>هيكل ملكية البنك</h1>
+                <i class="fa-solid fa-building-columns" style="color: #00f5ff; font-size: 1.5rem;"></i>
+                <h1 style="font-family: 'Cairo', sans-serif; font-weight: 800;">SAWYAN</h1>
             </div>
             <div class="header-controls">
                 <div class="project-name-container">
                     <input type="text" id="projectNameInput" value="هيكل ملكية البنك" placeholder="اسم المشروع">
                     <button id="saveProjectName" title="حفظ الاسم"><i class="fa-solid fa-check"></i></button>
                 </div>
+                <a href="investor/index.html" class="btn-snapshot" style="
+                    background: linear-gradient(135deg, #00f5ff, #8338ec);
+                    color: white;
+                    padding: 0.6rem 1.2rem;
+                    border-radius: 8px;
+                    text-decoration: none;
+                    font-weight: bold;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    box-shadow: 0 4px 15px rgba(0,245,255,0.3);
+                    transition: transform 0.2s;
+                    font-family: 'Tajawal';
+                " onmouseover="this.style.transform='translateY(-2px)'"
+                    onmouseout="this.style.transform='translateY(0)'">
+                    <i class="fa-solid fa-rocket"></i>
+                    <span>Business Snapshot</span>
+                </a>
             </div>
         </div>
     </header>
