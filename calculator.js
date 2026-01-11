@@ -22,6 +22,11 @@ class FundingCalculator {
     }
 
     init() {
+        // Initialize Cloud Storage
+        if (typeof CloudStorage !== 'undefined' && CloudStorage.init) {
+            CloudStorage.init();
+        }
+
         // Setup Event Listeners
         document.getElementById('initialShares').addEventListener('input', () => { this.updateInitial(); this.saveState(); });
         document.getElementById('initialPrice').addEventListener('input', () => { this.updateInitial(); this.saveState(); });
@@ -30,26 +35,7 @@ class FundingCalculator {
         // Project Management UI interaction
         this.setupProjectUI();
 
-        // 1. Check URL for project ID
-        const urlParams = new URLSearchParams(window.location.search);
-        this.projectId = urlParams.get('project');
-
-        // 2. If no ID in URL, try to load the LAST edited project
-        if (!this.projectId) {
-            const projects = this.getAllProjects();
-            if (projects.length > 0) {
-                // Sort by lastModified descending to get the most recent one
-                projects.sort((a, b) => (b.lastModified || 0) - (a.lastModified || 0));
-                this.projectId = projects[0].id;
-
-                // Update URL to reflect this project without reloading
-                const newUrl = `${window.location.pathname}?project=${this.projectId}`;
-                window.history.replaceState({ path: newUrl }, '', newUrl);
-            }
-        }
-
-        // 3. Load state or initialize default
-        // loadState now handles both loading and creating defaults if missing
+        // Load state from cloud or fallback to data.js
         this.loadState();
 
         // --- ADMIN CHECK ---
@@ -189,43 +175,23 @@ class FundingCalculator {
     }
 
     saveState() {
-        // Generate ID if not exists (for first save of default project)
-        if (!this.projectId) {
-            this.projectId = 'proj_' + Date.now();
-            // Update URL without reload
-            const newUrl = `${window.location.pathname}?project=${this.projectId}`;
-            window.history.pushState({ path: newUrl }, '', newUrl);
-        }
-
         const state = {
-            id: this.projectId,
-            name: this.projectName,
+            projectName: this.projectName,
             initialShares: this.initialShares,
             initialPrice: this.initialPrice,
             rounds: this.rounds,
             roundCounter: this.roundCounter,
             lastModified: Date.now(),
-            // حفظ بيانات مراحل النمو
             phases: this.phases,
             distributionRate: parseFloat(document.getElementById('distributionRate')?.value) || 30,
             currentPhase: this.currentPhase
         };
 
-        // Save specific Project Data
-        localStorage.setItem(`funding_data_${this.projectId}`, JSON.stringify(state));
-
-        // Update Project List Index
-        let projects = this.getAllProjects();
-        const existingIndex = projects.findIndex(p => p.id === this.projectId);
-        if (existingIndex >= 0) {
-            projects[existingIndex].name = this.projectName;
-            projects[existingIndex].lastModified = state.lastModified;
-        } else {
-            projects.push({ id: this.projectId, name: this.projectName, lastModified: state.lastModified });
+        // Save to Cloud (Supabase) - PERMANENT
+        if (typeof CloudStorage !== 'undefined' && CloudStorage.save) {
+            CloudStorage.save(state);
         }
-        localStorage.setItem(this.projectsListKey, JSON.stringify(projects));
 
-        this.showSaveIndicator();
         this.updateHeaderProjectName();
     }
 
@@ -380,34 +346,82 @@ class FundingCalculator {
     }
 
     loadState() {
-        // ===== RADICAL FIX: Load from PERMANENT_DATA (data.js) only =====
-        // No more localStorage - data is permanently stored in GitHub
+        // ===== CLOUD STORAGE: Try loading from Supabase first =====
+        const self = this;
 
+        async function tryCloudLoad() {
+            if (typeof CloudStorage !== 'undefined' && CloudStorage.load) {
+                try {
+                    const cloudData = await CloudStorage.load();
+                    if (cloudData) {
+                        self.applyLoadedData(cloudData);
+                        console.log('✅ البيانات محمّلة من السحابة (Supabase)');
+                        return true;
+                    }
+                } catch (err) {
+                    console.warn('Cloud load failed, falling back to data.js:', err);
+                }
+            }
+            return false;
+        }
+
+        // Try cloud first, then fallback
+        tryCloudLoad().then(loaded => {
+            if (!loaded) {
+                self.loadFromFallback();
+            }
+        });
+
+        // Load from fallback immediately for first render
+        this.loadFromFallback();
+    }
+
+    applyLoadedData(data) {
+        this.projectName = data.projectName || "هيكل ملكية البنك";
+        this.initialShares = data.initialShares || 1000000;
+        this.initialPrice = data.initialPrice || 0.05;
+        this.rounds = data.rounds || [];
+        this.roundCounter = data.roundCounter || 0;
+
+        if (data.phases) {
+            this.phases = data.phases;
+        }
+        if (data.currentPhase) {
+            this.currentPhase = data.currentPhase;
+        }
+
+        // Update UI
+        document.getElementById('projectNameInput').value = this.projectName;
+        document.title = this.projectName;
+        document.getElementById('initialShares').value = this.initialShares;
+        document.getElementById('initialPrice').value = this.initialPrice;
+
+        // Re-render
+        this.reRenderAllRounds();
+        this.updateInitial();
+    }
+
+    loadFromFallback() {
         if (typeof PERMANENT_DATA === 'undefined') {
-            console.error('PERMANENT_DATA not found! Make sure data.js is loaded before calculator.js');
-            alert('خطأ: ملف البيانات غير موجود. يرجى تحديث الصفحة.');
+            console.error('PERMANENT_DATA not found!');
             return;
         }
 
-        // Load the permanent data
         this.projectName = PERMANENT_DATA.projectName;
         this.initialShares = PERMANENT_DATA.initialShares;
         this.initialPrice = PERMANENT_DATA.initialPrice;
         this.rounds = [];
         this.roundCounter = 0;
 
-        // Load phases if available
         if (PERMANENT_DATA.phases) {
             this.savedPhases = PERMANENT_DATA.phases;
         }
 
-        // Update UI with project name
         document.getElementById('projectNameInput').value = this.projectName;
         document.title = this.projectName;
         document.getElementById('initialShares').value = this.initialShares;
         document.getElementById('initialPrice').value = this.initialPrice;
 
-        // Load rounds from permanent data
         PERMANENT_DATA.rounds.forEach(roundData => {
             this.roundCounter = Math.max(this.roundCounter, roundData.id);
             const round = {
@@ -427,11 +441,10 @@ class FundingCalculator {
             this.rounds.push(round);
         });
 
-        // Render all rounds
         this.reRenderAllRounds();
         this.updateInitial();
 
-        console.log('✅ البيانات محمّلة من data.js (مصدر ثابت على GitHub)');
+        console.log('✅ البيانات محمّلة من data.js (fallback)');
     }
 
     // Deprecated: Kept for backward compatibility with cached versions
