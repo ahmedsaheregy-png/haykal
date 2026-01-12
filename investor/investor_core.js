@@ -57,8 +57,13 @@ async function loadDynamicData() {
     // 4. READ VALUES DIRECTLY (True Binding - Highest Valuation Logic)
     if (rounds.length === 0) return;
 
-    // First Round (Founding) - Typically the one with lowest pre-valuation or ID
-    const firstRound = rounds[0];
+    // First Round (Founding/Start) - DETERMINISTIC LOGIC:
+    // We find the round with the LOWEST non-zero Post-Money Valuation.
+    // This represents the 'Start' of the value creation journey.
+    const firstRound = rounds.reduce((min, round) => {
+        if (round.postValuation <= 0) return min; // Skip empty rounds
+        return (round.postValuation < min.postValuation) ? round : min;
+    }, rounds[0]);
 
     // Last Round (Exit) - DETERMINISTIC LOGIC:
     // Instead of trusting array order (which can be messy), we find the round
