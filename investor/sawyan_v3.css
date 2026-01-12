@@ -2202,6 +2202,7 @@ a,
         width: 100% !important;
     }
 }
+
 /* ==== PREMIUM CTA REDESIGN ==== */
 .cta-options {
     display: grid;
@@ -2225,7 +2226,7 @@ a,
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .cta-option::before {
@@ -2262,7 +2263,7 @@ a,
 .option-icon {
     font-size: 4rem;
     margin-bottom: 1.5rem;
-    filter: drop-shadow(0 0 20px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
     transition: 0.4s;
 }
 
@@ -2291,9 +2292,35 @@ a,
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
-    
+
     .cta-option {
         padding: 2.5rem 1.5rem;
     }
 }
 
+
+/* =========================================
+   FORCEFUL MOBILE OVERRIDES (APPENDED)
+   ========================================= */
+@media screen and (max-width: 600px) {
+
+    /* Hide distraction elements on mobile */
+    .hero-visual,
+    .hero-badge,
+    .snapshot-badge-container,
+    .floating-card {
+        display: none !important;
+    }
+
+    /* Fix Hero Padding & Gap */
+    .hero-split {
+        padding-top: 2rem !important;
+        gap: 1.5rem !important;
+    }
+
+    /* Ensure Title is visible and nice */
+    .hero-title {
+        margin-top: 1rem !important;
+        font-size: 2rem !important;
+    }
+}
