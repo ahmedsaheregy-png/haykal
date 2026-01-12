@@ -2330,37 +2330,41 @@ a,
     }
 
     /* Ensure Title is visible and nice */
+    /* Ensure Title is visible and nice */
     .hero-title {
         margin-top: 1rem !important;
         font-size: 2rem !important;
     }
+}
 
-    /* =========================================
+/* END MOBILE QUERY */
+
+/* =========================================
    DESKTOP HERO FIX (APPENDED)
    ========================================= */
-    @media screen and (min-width: 1024px) {
-        .hero-split {
-            padding-top: 6rem;
-            align-items: center;
-            /* Vertically center content */
-            gap: 4rem;
-        }
-
-        .hero-content {
-            max-width: 600px;
-            text-align: right;
-            /* Ensure Arabic RTL alignment */
-        }
-
-        .hero-title {
-            font-size: 4rem;
-            line-height: 1.1;
-            margin-bottom: 1rem;
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            color: var(--text-secondary);
-        }
+@media screen and (min-width: 1024px) {
+    .hero-split {
+        padding-top: 6rem;
+        align-items: center;
+        /* Vertically center content */
+        gap: 4rem;
     }
+
+    .hero-content {
+        max-width: 600px;
+        text-align: right;
+        /* Ensure Arabic RTL alignment */
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        color: var(--text-secondary);
+    }
+}
