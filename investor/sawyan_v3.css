@@ -79,15 +79,21 @@ a,
 /* ==== FLOATING NAV (FIXED) ==== */
 .floating-nav {
     position: fixed;
-    top: 20px;
+    top: 60px;
+    /* Increased from 20px to clear the Top Bar */
     left: 50%;
     transform: translateX(-50%);
-    z-index: 9999;
-    width: calc(100% - 40px);
-    /* Fixed margin instead of percentage */
+    width: 90%;
     max-width: 1200px;
-    /* Reduced for better stability */
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    /* Pillow shape */
+    padding: 1rem 2rem;
+    z-index: 999;
     transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* ... (nav-content styles remain, just tweaking badge below) ... */
