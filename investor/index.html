@@ -13,31 +13,23 @@
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="sawyan_v3.css?v=5.0_FRESH_SYNC_FIXED">
+    <link rel="stylesheet" href="sawyan_v3.css?v=FIX_FINAL_2">
 </head>
 
 <body>
-
-    <!-- Top Confidential Banner -->
-    <div class="top-confidential-bar"
-        style="background: #ff0055; color: white; text-align: center; padding: 0.8rem; font-weight: bold; font-family: 'Tajawal'; font-size: 1rem; border-bottom: 2px solid rgba(255,255,255,0.1); width: 100%; z-index: 1000; position: relative;">
-        <i class="fa-solid fa-lock" style="margin-left: 10px;"></i>
-        صفحة خاصة بالشركاء والمستثمرين - غير معدة للنشر
-    </div>
 
     <!-- Floating Nav -->
     <nav class="floating-nav">
         <div class="nav-content">
             <div class="brand">
-                <i class="fa-solid fa-building-columns brand-icon"
-                    style="background: none; -webkit-text-fill-color: initial; color: #00f2ff; font-size: 1.5rem;"></i>
+                <div class="brand-icon">S</div>
                 <span class="brand-name">SAWYAN</span>
             </div>
             <div class="nav-menu">
                 <a href="#metrics">الأرقام</a>
                 <a href="#how">الآلية</a>
                 <a href="#returns">العوائد</a>
-                <a href="../index.html" class="nav-cta">هيكل الملكية والربح</a>
+                <a href="#invest" class="nav-cta">استثمر الآن</a>
             </div>
         </div>
     </nav>
@@ -45,23 +37,9 @@
     <!-- Hero: Split Screen -->
     <section class="hero-split">
         <div class="hero-content">
-            <!-- Grouped Badges row -->
-            <!-- Clean Status Indicator (Eyebrow) -->
-            <div class="hero-badge" style="
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                background: rgba(0, 245, 255, 0.08); 
-                border: 1px solid rgba(0, 245, 255, 0.2);
-                padding: 0.4rem 1rem;
-                border-radius: 100px;
-                margin-bottom: 1.5rem;
-                backdrop-filter: blur(5px);
-            ">
-                <span class="pulse-dot" style="background: #00f5ff; box-shadow: 0 0 10px #00f5ff;"></span>
-                <span style="color: #00f5ff; font-size: 0.9rem; font-weight: 600; font-family: 'Cairo';">جولة استثمارية
-                    تبدأ
-                    قريبا بإذن الله</span>
+            <div class="hero-badge">
+                <span class="pulse-dot"></span>
+                جولة تمويل تبدأ قريبا بإذن الله
             </div>
 
             <h1 class="hero-title">
@@ -133,12 +111,7 @@
     <section class="vision-section" id="vision">
         <div class="container">
             <div class="section-header centered">
-                <h2 class="section-title"
-                    style="font-size: 2.5rem; line-height: 1.4; background: linear-gradient(90deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                    ليس مجرد مشروع...<br>
-                    <span style="color: var(--cyan); -webkit-text-fill-color: var(--cyan);">بل منظومة اقتصادية
-                        متكاملة</span>
-                </h2>
+                <h2 class="section-title">رؤيتنا</h2>
             </div>
 
             <div class="video-container">
@@ -182,9 +155,9 @@
 
                 <div class="bento-card metric" style="grid-area: exit;">
                     <div class="metric-icon">📈</div>
-                    <div class="metric-value" id="bento-stock-price">$77.79</div>
+                    <div class="metric-value" id="bento-stock-price">$85.27</div>
                     <div class="metric-label">سعر السهم المستهدف (Target Stock Price)</div>
-                    <div class="metric-badge-highlight" id="bento-metric-badge">Start: $1.14 ➔ Exit: $77.79</div>
+                    <div class="metric-badge-highlight" id="bento-metric-badge">Start: $1.14 ➔ Exit: $85.27</div>
                 </div>
 
                 <!-- Exit Valuation Card -->
@@ -239,7 +212,7 @@
                 </div>
 
                 <!-- Arrow -->
-                <div class="rev-evo-arrow">←</div>
+                <div class="rev-evo-arrow">➝</div>
 
                 <!-- Phase 2: License Driven -->
                 <div class="rev-evo-card rev-evo-phase2">
@@ -294,7 +267,7 @@
                 <div class="growth-label">نمو السهم من البداية للنهاية</div>
                 <div class="growth-range">
                     <span class="from-price" id="start-price-display">$1.14</span>
-                    <span class="growth-arrow">←</span>
+                    <span class="growth-arrow">→</span>
                     <span class="to-price" id="end-price-display">$77.79</span>
                 </div>
             </div>
@@ -351,7 +324,9 @@
     <section class="returns-section" id="pillars">
         <div class="container">
             <div class="section-header centered">
+                <span class="section-label">ميزتنا الاستراتيجية</span>
                 <h2 class="section-title">لماذا SAWYAN؟</h2>
+                <p class="section-intro">Why SAWYAN? Strategic Pillars</p>
             </div>
 
             <div class="pillars-grid">
@@ -389,7 +364,13 @@
                 <p class="cta-subtitle">انضم لمستثمرين يبنون مستقبل الدفع والاستثمار في العالم العربي</p>
 
                 <div class="cta-options">
-
+                    <a href="mailto:invest@sawyanbank.com" class="cta-option">
+                        <div class="option-icon">📧</div>
+                        <div class="option-content">
+                            <strong>تواصل عبر البريد</strong>
+                            <span>invest@sawyanbank.com</span>
+                        </div>
+                    </a>
 
                     <a href="https://wa.me/1234567890" class="cta-option">
                         <div class="option-icon">💬</div>

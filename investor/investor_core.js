@@ -54,13 +54,20 @@ async function loadDynamicData() {
         return monthA - monthB;
     });
 
-    // 4. READ VALUES DIRECTLY (Pure Mirror - No Calculations)
+    // 4. READ VALUES DIRECTLY (True Binding - Highest Valuation Logic)
     if (rounds.length === 0) return;
 
-    // First Round (Founding)
+    // First Round (Founding) - Typically the one with lowest pre-valuation or ID
     const firstRound = rounds[0];
-    // Last Round (Exit/Global)
-    const lastRound = rounds[rounds.length - 1];
+
+    // Last Round (Exit) - DETERMINISTIC LOGIC:
+    // Instead of trusting array order (which can be messy), we find the round
+    // with the HIGHEST Post-Money Valuation. This represents the 'Exit' state.
+    const lastRound = rounds.reduce((max, round) => {
+        return (round.postValuation > max.postValuation) ? round : max;
+    }, rounds[0]);
+
+    console.log('🎯 Bound to Exit Round:', lastRound.name, 'Price:', lastRound.stockPrice);
 
     // READ from saved calculated properties
     const startSharePrice = firstRound.stockPrice || 0;
@@ -69,44 +76,22 @@ async function loadDynamicData() {
 
     // --- Update DOM ---
 
-    // 1. Hero Metrics (SMART SYNC)
-    // Only update if we have meaningful data (Protection against reset)
-    if (exitValuation > 10000000) { // Safety threshold: 10M
-        updateText('hero-exit-valuation', formatCurrency(exitValuation));
-        updateText('bento-exit-valuation', formatCurrency(exitValuation));
-    } else {
-        console.warn('⚠️ Fetched data too low ($' + exitValuation + '), keeping hardcoded values.');
-    }
+    // 1. Hero Metrics
+    updateText('hero-exit-valuation', formatCurrency(exitValuation));
+    updateText('bento-exit-valuation', formatCurrency(exitValuation));
 
     // 2. Annual Profit (Excellent Phase)
     const annualProfit = phases.excellent ? (phases.excellent.annualProfit || 0) : 0;
-    if (annualProfit > 100000) {
-        updateText('hero-annual-profit', formatCurrency(annualProfit));
-        updateText('bento-net-profit', formatCurrency(annualProfit));
-    }
+    updateText('hero-annual-profit', formatCurrency(annualProfit));
+    updateText('bento-net-profit', formatCurrency(annualProfit));
 
-    // 3. Stock Price & Growth (SMART SYNC)
-    // Validate: If price is suspiciously low (e.g. < $5), FORCE FALLBACK to PERMANENT_DATA
-    if (lastSharePrice < 5) {
-        console.warn('⚠️ Stock Price too low (' + lastSharePrice + '), using PERMANENT_DATA fallback.');
-        // Try to find the last round from PERMANENT_DATA
-        const fallbackRounds = window.PERMANENT_DATA.rounds || [];
-        if (fallbackRounds.length > 0) {
-            lastSharePrice = fallbackRounds[fallbackRounds.length - 1].stockPrice || 77.79;
-        }
-    }
+    // 3. Stock Price & Growth
+    updateText('bento-stock-price', formatCurrency(lastSharePrice, false)); // No 'M' suffix
 
-    if (lastSharePrice > 1 && startSharePrice > 0) {
-        updateText('bento-stock-price', formatCurrency(lastSharePrice, false)); // No 'M' suffix
+    if (startSharePrice > 0) {
         // Growth calc: (End - Start) / Start
         const growth = ((lastSharePrice - startSharePrice) / startSharePrice) * 100;
-        updateText('hero-stock-growth', `${Math.round(growth)}%`);
-
-        // Also update sub-label in Bento using CORRECT ID
-        const bentoSubLabel = document.getElementById('bento-metric-badge');
-        if (bentoSubLabel) {
-            bentoSubLabel.innerHTML = `Start: ${formatCurrency(startSharePrice, false)} &rarr; Exit: ${formatCurrency(lastSharePrice, false)}`;
-        }
+        updateText('hero-stock-growth', `+${Math.round(growth).toLocaleString()}%`);
     }
 
     // 4. Timeline Prices (Direct Read)
