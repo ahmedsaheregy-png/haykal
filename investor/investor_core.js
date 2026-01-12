@@ -86,14 +86,24 @@ async function loadDynamicData() {
     }
 
     // 3. Stock Price & Growth (SMART SYNC)
+    // Validate: If price is suspiciously low (e.g. < $5), FORCE FALLBACK to PERMANENT_DATA
+    if (lastSharePrice < 5) {
+        console.warn('⚠️ Stock Price too low (' + lastSharePrice + '), using PERMANENT_DATA fallback.');
+        // Try to find the last round from PERMANENT_DATA
+        const fallbackRounds = window.PERMANENT_DATA.rounds || [];
+        if (fallbackRounds.length > 0) {
+            lastSharePrice = fallbackRounds[fallbackRounds.length - 1].stockPrice || 77.79;
+        }
+    }
+
     if (lastSharePrice > 1 && startSharePrice > 0) {
         updateText('bento-stock-price', formatCurrency(lastSharePrice, false)); // No 'M' suffix
         // Growth calc: (End - Start) / Start
         const growth = ((lastSharePrice - startSharePrice) / startSharePrice) * 100;
         updateText('hero-stock-growth', `${Math.round(growth)}%`);
 
-        // Also update sub-label in Bento
-        const bentoSubLabel = document.querySelector('#bento-stock-price + .card-label + .card-sublabel');
+        // Also update sub-label in Bento using CORRECT ID
+        const bentoSubLabel = document.getElementById('bento-metric-badge');
         if (bentoSubLabel) {
             bentoSubLabel.innerHTML = `Start: ${formatCurrency(startSharePrice, false)} &rarr; Exit: ${formatCurrency(lastSharePrice, false)}`;
         }
