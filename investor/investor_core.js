@@ -69,22 +69,22 @@ async function loadDynamicData() {
 
     // --- Update DOM ---
 
-    // 1. Hero Metrics
-    updateText('hero-exit-valuation', formatCurrency(exitValuation));
-    updateText('bento-exit-valuation', formatCurrency(exitValuation));
+    // 1. Hero Metrics (DISABLED TO PROTECT HARDCODED VALUES)
+    // updateText('hero-exit-valuation', formatCurrency(exitValuation));
+    // updateText('bento-exit-valuation', formatCurrency(exitValuation));
 
     // 2. Annual Profit (Excellent Phase)
     const annualProfit = phases.excellent ? (phases.excellent.annualProfit || 0) : 0;
-    updateText('hero-annual-profit', formatCurrency(annualProfit));
-    updateText('bento-net-profit', formatCurrency(annualProfit));
+    // updateText('hero-annual-profit', formatCurrency(annualProfit));
+    // updateText('bento-net-profit', formatCurrency(annualProfit));
 
-    // 3. Stock Price & Growth
-    updateText('bento-stock-price', formatCurrency(lastSharePrice, false)); // No 'M' suffix
+    // 3. Stock Price & Growth (DISABLED)
+    // updateText('bento-stock-price', formatCurrency(lastSharePrice, false)); // No 'M' suffix
 
     if (startSharePrice > 0) {
         // Growth calc: (End - Start) / Start
         const growth = ((lastSharePrice - startSharePrice) / startSharePrice) * 100;
-        updateText('hero-stock-growth', `${Math.round(growth)}%`);
+        // updateText('hero-stock-growth', `${Math.round(growth)}%`);
     }
 
     // 4. Timeline Prices (Direct Read)
