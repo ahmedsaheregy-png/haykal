@@ -69,22 +69,34 @@ async function loadDynamicData() {
 
     // --- Update DOM ---
 
-    // 1. Hero Metrics (DISABLED TO PROTECT HARDCODED VALUES)
-    // updateText('hero-exit-valuation', formatCurrency(exitValuation));
-    // updateText('bento-exit-valuation', formatCurrency(exitValuation));
+    // 1. Hero Metrics (SMART SYNC)
+    // Only update if we have meaningful data (Protection against reset)
+    if (exitValuation > 10000000) { // Safety threshold: 10M
+        updateText('hero-exit-valuation', formatCurrency(exitValuation));
+        updateText('bento-exit-valuation', formatCurrency(exitValuation));
+    } else {
+        console.warn('⚠️ Fetched data too low ($' + exitValuation + '), keeping hardcoded values.');
+    }
 
     // 2. Annual Profit (Excellent Phase)
     const annualProfit = phases.excellent ? (phases.excellent.annualProfit || 0) : 0;
-    // updateText('hero-annual-profit', formatCurrency(annualProfit));
-    // updateText('bento-net-profit', formatCurrency(annualProfit));
+    if (annualProfit > 100000) {
+        updateText('hero-annual-profit', formatCurrency(annualProfit));
+        updateText('bento-net-profit', formatCurrency(annualProfit));
+    }
 
-    // 3. Stock Price & Growth (DISABLED)
-    // updateText('bento-stock-price', formatCurrency(lastSharePrice, false)); // No 'M' suffix
-
-    if (startSharePrice > 0) {
+    // 3. Stock Price & Growth (SMART SYNC)
+    if (lastSharePrice > 1 && startSharePrice > 0) {
+        updateText('bento-stock-price', formatCurrency(lastSharePrice, false)); // No 'M' suffix
         // Growth calc: (End - Start) / Start
         const growth = ((lastSharePrice - startSharePrice) / startSharePrice) * 100;
-        // updateText('hero-stock-growth', `${Math.round(growth)}%`);
+        updateText('hero-stock-growth', `${Math.round(growth)}%`);
+
+        // Also update sub-label in Bento
+        const bentoSubLabel = document.querySelector('#bento-stock-price + .card-label + .card-sublabel');
+        if (bentoSubLabel) {
+            bentoSubLabel.innerHTML = `Start: ${formatCurrency(startSharePrice, false)} &rarr; Exit: ${formatCurrency(lastSharePrice, false)}`;
+        }
     }
 
     // 4. Timeline Prices (Direct Read)
