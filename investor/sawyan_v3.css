@@ -2317,10 +2317,10 @@ a,
         display: none !important;
     }
 
-    /* Badges must be visible */
+    /* Badges should be HIDDEN on mobile for cleaner look */
     .hero-badge,
     .snapshot-badge {
-        display: inline-flex !important;
+        display: none !important;
     }
 
     /* Fix Hero Padding & Gap */
