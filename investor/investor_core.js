@@ -169,10 +169,17 @@ if (floatingNav) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadDynamicData(); // Load data first
+    // 1. Initial Load & Setup
+    loadDynamicData();
     initScrollAnimations();
     initSmoothScroll();
     initNavbarScroll();
+
+    // 2. RADICAL BINDING: Live Pulse (Auto-Sync every 3 seconds)
+    // This ensures that any change in the calculator is reflected here instantly without refresh.
+    setInterval(() => {
+        loadDynamicData();
+    }, 3000);
 });
 
 // ========================================
