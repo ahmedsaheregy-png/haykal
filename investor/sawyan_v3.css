@@ -2344,7 +2344,8 @@ a,
    ========================================= */
 @media screen and (min-width: 1024px) {
     .hero-split {
-        padding-top: 6rem;
+        padding-top: 11rem;
+        /* Increased to reveal hidden badge */
         align-items: center;
         /* Vertically center content */
         gap: 4rem;
