@@ -2145,7 +2145,8 @@ a,
     }
 
     .floating-nav {
-        top: 10px;
+        top: 60px;
+        /* Force clears Red Bar on Mobile too */
     }
 
     .nav-content {
