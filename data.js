@@ -22,7 +22,6 @@ window.PERMANENT_DATA = {
             soldPercentage: 5,
             timing: "-6",
             notes: "قبل الافتتاح",
-            // Pre-calculated values (from Calculator)
             postValuation: 1200000,
             preValuation: 1140000,
             totalShares: 1052632,
@@ -62,11 +61,11 @@ window.PERMANENT_DATA = {
             soldPercentage: 15,
             timing: "36",
             notes: "",
-            postValuation: 133333333,
+            postValuation: 133333333, // Target $133M
             preValuation: 113333333,
             totalShares: 1714035,
             roundShares: 257105,
-            stockPrice: 77.7891
+            stockPrice: 77.79 // Target $77.79
         }
     ],
 
