@@ -92,6 +92,12 @@ async function loadDynamicData() {
         // Growth calc: (End - Start) / Start
         const growth = ((lastSharePrice - startSharePrice) / startSharePrice) * 100;
         updateText('hero-stock-growth', `+${Math.round(growth).toLocaleString()}%`);
+
+        // Restore: Update sub-label in Bento
+        const bentoSubLabel = document.getElementById('bento-metric-badge');
+        if (bentoSubLabel) {
+            bentoSubLabel.innerHTML = `Start: ${formatCurrency(startSharePrice, false)} &rarr; Exit: ${formatCurrency(lastSharePrice, false)}`;
+        }
     }
 
     // 4. Timeline Prices (Direct Read)
