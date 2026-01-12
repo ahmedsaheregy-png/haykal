@@ -2311,12 +2311,16 @@ a,
    ========================================= */
 @media screen and (max-width: 600px) {
 
-    /* Hide distraction elements on mobile */
+    /* Hide distraction elements on mobile - KEEP BADGES VISIBLE */
     .hero-visual,
-    .hero-badge,
-    .snapshot-badge-container,
     .floating-card {
         display: none !important;
+    }
+
+    /* Badges must be visible */
+    .hero-badge,
+    .snapshot-badge {
+        display: inline-flex !important;
     }
 
     /* Fix Hero Padding & Gap */
