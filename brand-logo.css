@@ -1,0 +1,16 @@
+/* Shared Logo Styles */
+.brand-logo-box {
+    background: linear-gradient(135deg, #00f2ff 0%, #0099ff 100%);
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    width: 45px;
+    height: 45px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 242, 255, 0.4);
+    margin-right: 0;
+    margin-left: 0;
+}
